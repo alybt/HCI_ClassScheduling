@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="assets/css/modals.css">
+    <link rel="stylesheet" href="assets/css/nav-enhanced.css">
+    <link rel="stylesheet" href="assets/css/breadcrumbs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="profile.html" class="nav-link active" data-page="profile">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Profile Settings</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>System Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Profile Settings</h1>
+                <div class="header-right">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar-container">
+                        <div class="profile-avatar">
+                            <img src="assets/img/admin-avatar.png" alt="Admin Avatar" id="profile-avatar-img">
+                            <div class="avatar-overlay">
+                                <i class="fas fa-camera"></i>
+                                <span>Change</span>
+                            </div>
+                            <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="profile-title">
+                        <h2>Admin User</h2>
+                        <p>Administrator</p>
+                        <span class="profile-id">ID: admin</span>
+                    </div>
+                </div>
+
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="personal">Personal Information</button>
+                    <button class="tab-btn" data-tab="security">Security</button>
+                    <button class="tab-btn" data-tab="preferences">Preferences</button>
+                    <button class="tab-btn" data-tab="notifications">Notifications</button>
+                </div>
+
+                <div class="profile-content">
+                    <!-- Personal Information Tab -->
+                    <div class="tab-content active" id="personal-tab">
+                        <form id="personal-form">
+                            <div class="form-group">
+                                <label for="full-name">Full Name</label>
+                                <input type="text" id="full-name" value="Admin User">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" value="admin@myccs.edu">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" value="+1 (555) 123-4567">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="position">Position</label>
+                                <input type="text" id="position" value="System Administrator">
+                            </div>
+                            <div class="form-group">
+                                <label for="department">Department</label>
+                                <select id="department">
+                                    <option value="it" selected>Information Technology</option>
+                                    <option value="cs">Computer Science</option>
+                                    <option value="is">Information Systems</option>
+                                    <option value="admin">Administration</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="bio">Bio</label>
+                                <textarea id="bio" rows="4">System administrator responsible for managing the Class Scheduling System. Contact for technical issues and system support.</textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary">Cancel</button>
+                                <button type="submit" class="btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div class="tab-content" id="security-tab">
+                        <form id="security-form">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" id="new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm Password</label>
+                                    <input type="password" id="confirm-password">
+                                </div>
+                            </div>
+                            <div class="password-requirements">
+                                <h4>Password Requirements:</h4>
+                                <ul>
+                                    <li>At least 8 characters long</li>
+                                    <li>Contains at least one uppercase letter</li>
+                                    <li>Contains at least one number</li>
+                                    <li>Contains at least one special character</li>
+                                </ul>
+                            </div>
+                            <div class="form-group">
+                                <label>Two-Factor Authentication</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="two-factor" class="toggle-input">
+                                    <label for="two-factor" class="toggle-label"></label>
+                                    <span class="toggle-text">Enable two-factor authentication</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Session Management</label>
+                                <div class="session-list">
+                                    <div class="session-item">
+                                        <div class="session-info">
+                                            <i class="fas fa-laptop"></i>
+                                            <div>
+                                                <h4>Windows PC - Chrome</h4>
+                                                <p>Current session • Last active: Just now</p>
+                                            </div>
+                                        </div>
+                                        <span class="session-active">Active</span>
+                                    </div>
+                                    <div class="session-item">
+                                        <div class="session-info">
+                                            <i class="fas fa-mobile-alt"></i>
+                                            <div>
+                                                <h4>iPhone - Safari</h4>
+                                                <p>Last active: 2 days ago</p>
+                                            </div>
+                                        </div>
+                                        <button class="btn-text">Logout</button>
+                                    </div>
+                                </div>
+                                <button class="btn-secondary btn-full">Logout from all other devices</button>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary">Cancel</button>
+                                <button type="submit" class="btn-primary">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Preferences Tab -->
+                    <div class="tab-content" id="preferences-tab">
+                        <form id="preferences-form">
+                            <div class="form-group">
+                                <label>Theme Preference</label>
+                                <div class="theme-options">
+                                    <div class="theme-option">
+                                        <input type="radio" name="theme" id="theme-light" checked>
+                                        <label for="theme-light">
+                                            <div class="theme-preview light-theme"></div>
+                                            <span>Light</span>
+                                        </label>
+                                    </div>
+                                    <div class="theme-option">
+                                        <input type="radio" name="theme" id="theme-dark">
+                                        <label for="theme-dark">
+                                            <div class="theme-preview dark-theme"></div>
+                                            <span>Dark</span>
+                                        </label>
+                                    </div>
+                                    <div class="theme-option">
+                                        <input type="radio" name="theme" id="theme-system">
+                                        <label for="theme-system">
+                                            <div class="theme-preview system-theme"></div>
+                                            <span>System</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Language</label>
+                                <select id="language-preference">
+                                    <option value="en" selected>English</option>
+                                    <option value="es">Spanish</option>
+                                    <option value="fr">French</option>
+                                    <option value="de">German</option>
+                                    <option value="zh">Chinese</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Time Format</label>
+                                <div class="radio-group">
+                                    <div class="radio-option">
+                                        <input type="radio" name="time-format" id="time-12" checked>
+                                        <label for="time-12">12-hour (1:30 PM)</label>
+                                    </div>
+                                    <div class="radio-option">
+                                        <input type="radio" name="time-format" id="time-24">
+                                        <label for="time-24">24-hour (13:30)</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Date Format</label>
+                                <select id="date-format">
+                                    <option value="mdy" selected>MM/DD/YYYY</option>
+                                    <option value="dmy">DD/MM/YYYY</option>
+                                    <option value="ymd">YYYY/MM/DD</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Default Dashboard View</label>
+                                <select id="default-view">
+                                    <option value="overview" selected>Overview</option>
+                                    <option value="calendar">Calendar</option>
+                                    <option value="activity">Recent Activity</option>
+                                </select>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary">Reset to Default</button>
+                                <button type="submit" class="btn-primary">Save Preferences</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Notifications Tab -->
+                    <div class="tab-content" id="notifications-tab">
+                        <form id="notifications-form">
+                            <div class="notification-group">
+                                <h3>Email Notifications</h3>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Reservation Requests</h4>
+                                        <p>Receive emails when new reservation requests are submitted</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="email-reservations" class="toggle-input" checked>
+                                        <label for="email-reservations" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>System Alerts</h4>
+                                        <p>Receive emails about system updates and maintenance</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="email-alerts" class="toggle-input" checked>
+                                        <label for="email-alerts" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>User Account Changes</h4>
+                                        <p>Receive emails when user accounts are created or modified</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="email-accounts" class="toggle-input">
+                                        <label for="email-accounts" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-group">
+                                <h3>In-App Notifications</h3>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Reservation Updates</h4>
+                                        <p>Receive notifications when reservations are modified</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="app-reservations" class="toggle-input" checked>
+                                        <label for="app-reservations" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Messages</h4>
+                                        <p>Receive notifications for new messages from users</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="app-messages" class="toggle-input" checked>
+                                        <label for="app-messages" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>System Notifications</h4>
+                                        <p>Receive notifications about system status and updates</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="app-system" class="toggle-input" checked>
+                                        <label for="app-system" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary">Reset to Default</button>
+                                <button type="submit" class="btn-primary">Save Notification Settings</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/nav-enhanced.js"></script>
+    <script src="assets/js/profile.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/logout.js"></script>
+</body>
+</html>

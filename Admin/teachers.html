@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Database - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/teachers.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="assets/css/modals.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="assets/img/logo.png" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link active" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Teacher Database</h1>
+                <div class="header-right">
+                    <div class="search-container">
+                        <input type="text" placeholder="Search teachers...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="teacher-container">
+                <div class="toolbar">
+                    <button class="btn-primary" id="add-teacher-btn"><i class="fas fa-plus"></i> Add Teacher</button>
+                    <div class="filter-group">
+                        <select id="department-filter">
+                            <option value="all">All Departments</option>
+                            <option value="cs">Computer Science</option>
+                            <option value="it">Information Technology</option>
+                            <option value="is">Information Systems</option>
+                            <option value="math">Mathematics</option>
+                        </select>
+                        <select id="status-filter">
+                            <option value="all">All Status</option>
+                            <option value="active">Active</option>
+                            <option value="on-leave">On Leave</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <button class="btn-export"><i class="fas fa-download"></i> Export</button>
+                </div>
+
+                <div class="teacher-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Department</th>
+                                <th>Subjects</th>
+                                <th>Contact</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>T-001</td>
+                                <td>
+                                    <div class="teacher-info">
+                                        <img src="assets/img/teacher1.png" alt="Teacher">
+                                        <div>
+                                            <strong>Prof. John Doe</strong>
+                                            <span>Full Professor</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Computer Science</td>
+                                <td>
+                                    <div class="subject-tags">
+                                        <span class="tag">CS 201</span>
+                                        <span class="tag">CS 301</span>
+                                        <span class="tag">CS 106</span>
+                                    </div>
+                                </td>
+                                <td>johndoe@example.com</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T-002</td>
+                                <td>
+                                    <div class="teacher-info">
+                                        <img src="assets/img/teacher2.png" alt="Teacher">
+                                        <div>
+                                            <strong>Prof. Jane Smith</strong>
+                                            <span>Associate Professor</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Computer Science</td>
+                                <td>
+                                    <div class="subject-tags">
+                                        <span class="tag">CC 100</span>
+                                        <span class="tag">CC 101</span>
+                                    </div>
+                                </td>
+                                <td>janesmith@example.com</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T-003</td>
+                                <td>
+                                    <div class="teacher-info">
+                                        <img src="assets/img/teacher3.png" alt="Teacher">
+                                        <div>
+                                            <strong>Prof. Maria Garcia</strong>
+                                            <span>Assistant Professor</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Information Technology</td>
+                                <td>
+                                    <div class="subject-tags">
+                                        <span class="tag">IT 101</span>
+                                        <span class="tag">IT 201</span>
+                                    </div>
+                                </td>
+                                <td>mariagarcia@example.com</td>
+                                <td><span class="status-badge on-leave">On Leave</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T-004</td>
+                                <td>
+                                    <div class="teacher-info">
+                                        <img src="assets/img/teacher4.png" alt="Teacher">
+                                        <div>
+                                            <strong>Prof. Robert Johnson</strong>
+                                            <span>Associate Professor</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Information Systems</td>
+                                <td>
+                                    <div class="subject-tags">
+                                        <span class="tag">IS 101</span>
+                                        <span class="tag">IS 201</span>
+                                    </div>
+                                </td>
+                                <td>robertjohnson@example.com</td>
+                                <td><span class="status-badge active">Active</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>T-005</td>
+                                <td>
+                                    <div class="teacher-info">
+                                        <img src="assets/img/teacher5.png" alt="Teacher">
+                                        <div>
+                                            <strong>Prof. William Chen</strong>
+                                            <span>Full Professor</span>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>Mathematics</td>
+                                <td>
+                                    <div class="subject-tags">
+                                        <span class="tag">MATH 101</span>
+                                        <span class="tag">MATH 201</span>
+                                    </div>
+                                </td>
+                                <td>williamchen@example.com</td>
+                                <td><span class="status-badge inactive">Inactive</span></td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                        <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                        <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination">
+                    <button class="btn-prev"><i class="fas fa-chevron-left"></i></button>
+                    <div class="page-numbers">
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                    </div>
+                    <button class="btn-next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Teacher Modal -->
+    <div class="modal" id="teacher-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Teacher</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="teacher-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="teacher-id">Teacher ID</label>
+                            <input type="text" id="teacher-id" placeholder="Enter teacher ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-status">Status</label>
+                            <select id="teacher-status">
+                                <option value="active">Active</option>
+                                <option value="on-leave">On Leave</option>
+                                <option value="inactive">Inactive</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="teacher-fname">First Name</label>
+                            <input type="text" id="teacher-fname" placeholder="Enter first name">
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-lname">Last Name</label>
+                            <input type="text" id="teacher-lname" placeholder="Enter last name">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="teacher-title">Title</label>
+                            <select id="teacher-title">
+                                <option value="professor">Professor</option>
+                                <option value="associate">Associate Professor</option>
+                                <option value="assistant">Assistant Professor</option>
+                                <option value="instructor">Instructor</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="teacher-department">Department</label>
+                            <select id="teacher-department">
+                                <option value="cs">Computer Science</option>
+                                <option value="it">Information Technology</option>
+                                <option value="is">Information Systems</option>
+                                <option value="math">Mathematics</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-email">Email</label>
+                        <input type="email" id="teacher-email" placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-phone">Phone</label>
+                        <input type="tel" id="teacher-phone" placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-subjects">Subjects</label>
+                        <div class="subject-selection">
+                            <div class="available-subjects">
+                                <h4>Available Subjects</h4>
+                                <div class="subject-list">
+                                    <div class="subject-item" data-id="cs101">
+                                        <span>CS 101 - Introduction to Programming</span>
+                                        <button type="button" class="btn-add-subject"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <div class="subject-item" data-id="cs102">
+                                        <span>CS 102 - Data Structures</span>
+                                        <button type="button" class="btn-add-subject"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <div class="subject-item" data-id="it101">
+                                        <span>IT 101 - Information Technology Fundamentals</span>
+                                        <button type="button" class="btn-add-subject"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                    <div class="subject-item" data-id="math101">
+                                        <span>MATH 101 - Calculus</span>
+                                        <button type="button" class="btn-add-subject"><i class="fas fa-plus"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="selected-subjects">
+                                <h4>Selected Subjects</h4>
+                                <div class="subject-list" id="selected-subjects-list">
+                                    <!-- Selected subjects will be added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-schedule">Weekly Schedule</label>
+                        <div class="schedule-grid">
+                            <div class="schedule-header">
+                                <div class="time-label"></div>
+                                <div>Monday</div>
+                                <div>Tuesday</div>
+                                <div>Wednesday</div>
+                                <div>Thursday</div>
+                                <div>Friday</div>
+                            </div>
+                            <div class="schedule-body">
+                                <div class="time-row">
+                                    <div class="time-label">8:00 AM</div>
+                                    <div class="time-slot" data-day="mon" data-time="8"></div>
+                                    <div class="time-slot" data-day="tue" data-time="8"></div>
+                                    <div class="time-slot" data-day="wed" data-time="8"></div>
+                                    <div class="time-slot" data-day="thu" data-time="8"></div>
+                                    <div class="time-slot" data-day="fri" data-time="8"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">9:00 AM</div>
+                                    <div class="time-slot" data-day="mon" data-time="9"></div>
+                                    <div class="time-slot" data-day="tue" data-time="9"></div>
+                                    <div class="time-slot" data-day="wed" data-time="9"></div>
+                                    <div class="time-slot" data-day="thu" data-time="9"></div>
+                                    <div class="time-slot" data-day="fri" data-time="9"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">10:00 AM</div>
+                                    <div class="time-slot" data-day="mon" data-time="10"></div>
+                                    <div class="time-slot" data-day="tue" data-time="10"></div>
+                                    <div class="time-slot" data-day="wed" data-time="10"></div>
+                                    <div class="time-slot" data-day="thu" data-time="10"></div>
+                                    <div class="time-slot" data-day="fri" data-time="10"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">11:00 AM</div>
+                                    <div class="time-slot" data-day="mon" data-time="11"></div>
+                                    <div class="time-slot" data-day="tue" data-time="11"></div>
+                                    <div class="time-slot" data-day="wed" data-time="11"></div>
+                                    <div class="time-slot" data-day="thu" data-time="11"></div>
+                                    <div class="time-slot" data-day="fri" data-time="11"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">12:00 PM</div>
+                                    <div class="time-slot" data-day="mon" data-time="12"></div>
+                                    <div class="time-slot" data-day="tue" data-time="12"></div>
+                                    <div class="time-slot" data-day="wed" data-time="12"></div>
+                                    <div class="time-slot" data-day="thu" data-time="12"></div>
+                                    <div class="time-slot" data-day="fri" data-time="12"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">1:00 PM</div>
+                                    <div class="time-slot" data-day="mon" data-time="13"></div>
+                                    <div class="time-slot" data-day="tue" data-time="13"></div>
+                                    <div class="time-slot" data-day="wed" data-time="13"></div>
+                                    <div class="time-slot" data-day="thu" data-time="13"></div>
+                                    <div class="time-slot" data-day="fri" data-time="13"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">2:00 PM</div>
+                                    <div class="time-slot" data-day="mon" data-time="14"></div>
+                                    <div class="time-slot" data-day="tue" data-time="14"></div>
+                                    <div class="time-slot" data-day="wed" data-time="14"></div>
+                                    <div class="time-slot" data-day="thu" data-time="14"></div>
+                                    <div class="time-slot" data-day="fri" data-time="14"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">3:00 PM</div>
+                                    <div class="time-slot" data-day="mon" data-time="15"></div>
+                                    <div class="time-slot" data-day="tue" data-time="15"></div>
+                                    <div class="time-slot" data-day="wed" data-time="15"></div>
+                                    <div class="time-slot" data-day="thu" data-time="15"></div>
+                                    <div class="time-slot" data-day="fri" data-time="15"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">4:00 PM</div>
+                                    <div class="time-slot" data-day="mon" data-time="16"></div>
+                                    <div class="time-slot" data-day="tue" data-time="16"></div>
+                                    <div class="time-slot" data-day="wed" data-time="16"></div>
+                                    <div class="time-slot" data-day="thu" data-time="16"></div>
+                                    <div class="time-slot" data-day="fri" data-time="16"></div>
+                                </div>
+                                <div class="time-row">
+                                    <div class="time-label">5:00 PM</div>
+                                    <div class="time-slot" data-day="mon" data-time="17"></div>
+                                    <div class="time-slot" data-day="tue" data-time="17"></div>
+                                    <div class="time-slot" data-day="wed" data-time="17"></div>
+                                    <div class="time-slot" data-day="thu" data-time="17"></div>
+                                    <div class="time-slot" data-day="fri" data-time="17"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="schedule-legend">
+                            <div class="legend-item">
+                                <div class="legend-color available"></div>
+                                <span>Available</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color unavailable"></div>
+                                <span>Unavailable</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color class-scheduled"></div>
+                                <span>Class Scheduled</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-teacher">Cancel</button>
+                <button class="btn-primary" id="save-teacher">Save Teacher</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Teacher Details Modal -->
+    <div class="modal" id="teacher-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Teacher Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="teacher-profile">
+                    <div class="teacher-profile-header">
+                        <div class="teacher-avatar">
+                            <img src="assets/img/teacher1.png" alt="Teacher" id="detail-teacher-avatar">
+                        </div>
+                        <div class="teacher-profile-info">
+                            <h3 id="detail-teacher-name">Prof. John Doe</h3>
+                            <p id="detail-teacher-title">Full Professor</p>
+                            <p id="detail-teacher-department">Computer Science Department</p>
+                            <span class="status-badge active" id="detail-teacher-status">Active</span>
+                        </div>
+                    </div>
+                    <div class="teacher-profile-details">
+                        <div class="detail-section">
+                            <h4>Contact Information</h4>
+                            <div class="detail-item">
+                                <span class="detail-label">Email:</span>
+                                <span class="detail-value" id="detail-teacher-email">johndoe@example.com</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Phone:</span>
+                                <span class="detail-value" id="detail-teacher-phone">(555) 123-4567</span>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Teaching Subjects</h4>
+                            <div class="subject-tags" id="detail-teacher-subjects">
+                                <span class="tag">CS 201 - Data Structures</span>
+                                <span class="tag">CS 301 - Database Systems</span>
+                                <span class="tag">CS 106 - Web Development</span>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Weekly Schedule</h4>
+                            <div class="schedule-grid" id="detail-teacher-schedule">
+                                <!-- Schedule will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Current Classes</h4>
+                            <table class="detail-table">
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Schedule</th>
+                                        <th>Room</th>
+                                        <th>Students</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detail-teacher-classes">
+                                    <tr>
+                                        <td>CS 201 - Data Structures</td>
+                                        <td>MWF 10:00 AM - 11:30 AM</td>
+                                        <td>LR 1</td>
+                                        <td>35</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CS 301 - Database Systems</td>
+                                        <td>TTh 1:00 PM - 3:00 PM</td>
+                                        <td>Lab 2</td>
+                                        <td>28</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="close-details">Close</button>
+                <button class="btn-primary" id="edit-from-details">Edit Teacher</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <!-- jQuery for the :contains selector -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/teachers.js"></script>
+</body>
+</html>

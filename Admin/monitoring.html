@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoring - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/monitoring.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="assets/img/logo.png" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link active" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Monitoring</h1>
+                <div class="header-right">
+                    <div class="search-container">
+                        <input type="text" placeholder="Search logs...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="monitoring-container">
+                <!-- Tabs -->
+                <div class="monitoring-tabs">
+                    <button class="tab-btn active" data-tab="system-logs">System Logs</button>
+                    <button class="tab-btn" data-tab="notifications">Notifications</button>
+                    <button class="tab-btn" data-tab="scheduling-status">Scheduling Status</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- System Logs Tab -->
+                    <div class="tab-pane active" id="system-logs">
+                        <div class="tab-header">
+                            <h2>System Logs</h2>
+                            <div class="tab-actions">
+                                <div class="filter-group">
+                                    <select id="log-type-filter">
+                                        <option value="all">All Types</option>
+                                        <option value="info">Info</option>
+                                        <option value="warning">Warning</option>
+                                        <option value="error">Error</option>
+                                        <option value="success">Success</option>
+                                    </select>
+                                    <select id="log-date-filter">
+                                        <option value="today">Today</option>
+                                        <option value="yesterday">Yesterday</option>
+                                        <option value="week">This Week</option>
+                                        <option value="month">This Month</option>
+                                        <option value="all">All Time</option>
+                                    </select>
+                                </div>
+                                <button class="btn-export"><i class="fas fa-download"></i> Export</button>
+                            </div>
+                        </div>
+                        <div class="logs-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>User</th>
+                                        <th>Message</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="log-item success">
+                                        <td>May 6, 2025 16:45</td>
+                                        <td><span class="log-badge success">Success</span></td>
+                                        <td>Prof. Jane Smith</td>
+                                        <td>Room reservation for LR 1 approved for CS 201 on May 10, 2025</td>
+                                        <td><button class="btn-details"><i class="fas fa-eye"></i></button></td>
+                                    </tr>
+                                    <tr class="log-item warning">
+                                        <td>May 6, 2025 16:30</td>
+                                        <td><span class="log-badge warning">Warning</span></td>
+                                        <td>System</td>
+                                        <td>Scheduling conflict detected: CC 100 and CS 201 in LR 2 at the same time</td>
+                                        <td><button class="btn-details"><i class="fas fa-eye"></i></button></td>
+                                    </tr>
+                                    <tr class="log-item info">
+                                        <td>May 6, 2025 16:15</td>
+                                        <td><span class="log-badge info">Info</span></td>
+                                        <td>Prof. John Doe</td>
+                                        <td>Class CC 101 rescheduled from May 7 to May 10, 2025</td>
+                                        <td><button class="btn-details"><i class="fas fa-eye"></i></button></td>
+                                    </tr>
+                                    <tr class="log-item error">
+                                        <td>May 6, 2025 15:45</td>
+                                        <td><span class="log-badge error">Error</span></td>
+                                        <td>System</td>
+                                        <td>CS 106 removed from schedule due to faculty unavailability</td>
+                                        <td><button class="btn-details"><i class="fas fa-eye"></i></button></td>
+                                    </tr>
+                                    <tr class="log-item info">
+                                        <td>May 6, 2025 15:30</td>
+                                        <td><span class="log-badge info">Info</span></td>
+                                        <td>Admin</td>
+                                        <td>New teacher account created for Prof. Maria Garcia</td>
+                                        <td><button class="btn-details"><i class="fas fa-eye"></i></button></td>
+                                    </tr>
+                                    <tr class="log-item success">
+                                        <td>May 6, 2025 15:15</td>
+                                        <td><span class="log-badge success">Success</span></td>
+                                        <td>Admin</td>
+                                        <td>System backup completed successfully</td>
+                                        <td><button class="btn-details"><i class="fas fa-eye"></i></button></td>
+                                    </tr>
+                                    <tr class="log-item warning">
+                                        <td>May 6, 2025 14:45</td>
+                                        <td><span class="log-badge warning">Warning</span></td>
+                                        <td>System</td>
+                                        <td>Room LR 5 approaching capacity limit for CS 301</td>
+                                        <td><button class="btn-details"><i class="fas fa-eye"></i></button></td>
+                                    </tr>
+                                    <tr class="log-item info">
+                                        <td>May 6, 2025 14:30</td>
+                                        <td><span class="log-badge info">Info</span></td>
+                                        <td>Student</td>
+                                        <td>Student Jane Smith viewed class schedule</td>
+                                        <td><button class="btn-details"><i class="fas fa-eye"></i></button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="pagination">
+                                <button class="btn-prev"><i class="fas fa-chevron-left"></i></button>
+                                <span>Page 1 of 5</span>
+                                <button class="btn-next"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notifications Tab -->
+                    <div class="tab-pane" id="notifications">
+                        <div class="tab-header">
+                            <h2>Notifications</h2>
+                            <div class="tab-actions">
+                                <button class="btn-primary" id="create-notification-btn"><i class="fas fa-plus"></i> Create Notification</button>
+                            </div>
+                        </div>
+                        <div class="notification-management">
+                            <div class="notification-list">
+                                <div class="notification-item">
+                                    <div class="notification-header">
+                                        <h3>Class Cancellation</h3>
+                                        <div class="notification-badges">
+                                            <span class="badge alert">Alert</span>
+                                            <span class="badge">Students</span>
+                                            <span class="badge">Teachers</span>
+                                        </div>
+                                    </div>
+                                    <p>CC 101 Introduction to Computing is cancelled today</p>
+                                    <div class="notification-footer">
+                                        <span class="notification-time">Sent: May 6, 2025 10:00 AM</span>
+                                        <div class="notification-actions">
+                                            <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-delete"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-header">
+                                        <h3>Room Change</h3>
+                                        <div class="notification-badges">
+                                            <span class="badge info">Info</span>
+                                            <span class="badge">Students</span>
+                                            <span class="badge">Teachers</span>
+                                        </div>
+                                    </div>
+                                    <p>CC 100 Introduction to Computing moved to Room 104 ADTECH</p>
+                                    <div class="notification-footer">
+                                        <span class="notification-time">Sent: May 6, 2025 08:30 AM</span>
+                                        <div class="notification-actions">
+                                            <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-delete"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-header">
+                                        <h3>System Maintenance</h3>
+                                        <div class="notification-badges">
+                                            <span class="badge warning">Warning</span>
+                                            <span class="badge">All Users</span>
+                                        </div>
+                                    </div>
+                                    <p>The scheduling system will be under maintenance on May 10, 2025 from 10:00 PM to 2:00 AM</p>
+                                    <div class="notification-footer">
+                                        <span class="notification-time">Sent: May 5, 2025 3:00 PM</span>
+                                        <div class="notification-actions">
+                                            <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-delete"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="notification-item">
+                                    <div class="notification-header">
+                                        <h3>Special Event</h3>
+                                        <div class="notification-badges">
+                                            <span class="badge info">Info</span>
+                                            <span class="badge">Students</span>
+                                        </div>
+                                    </div>
+                                    <p>Programming Competition will be held in the Auditorium on May 15, 2025</p>
+                                    <div class="notification-footer">
+                                        <span class="notification-time">Sent: May 5, 2025 10:00 AM</span>
+                                        <div class="notification-actions">
+                                            <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-delete"><i class="fas fa-trash"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Scheduling Status Tab -->
+                    <div class="tab-pane" id="scheduling-status">
+                        <div class="tab-header">
+                            <h2>Scheduling Status</h2>
+                            <div class="tab-actions">
+                                <div class="filter-group">
+                                    <select id="status-filter">
+                                        <option value="all">All Statuses</option>
+                                        <option value="not-set">Not Set</option>
+                                        <option value="conflict">Conflict</option>
+                                        <option value="rescheduled">Rescheduled</option>
+                                        <option value="scheduled">Scheduled</option>
+                                    </select>
+                                    <select id="course-filter">
+                                        <option value="all">All Courses</option>
+                                        <option value="cc100">CC 100</option>
+                                        <option value="cc101">CC 101</option>
+                                        <option value="cs201">CS 201</option>
+                                        <option value="cs301">CS 301</option>
+                                    </select>
+                                </div>
+                                <button class="btn-export"><i class="fas fa-download"></i> Export</button>
+                            </div>
+                        </div>
+                        <div class="status-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Teacher</th>
+                                        <th>Room</th>
+                                        <th>Schedule</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="status-item">
+                                        <td>CC 100 Introduction to Computing</td>
+                                        <td>Prof. John Doe</td>
+                                        <td>LR 2</td>
+                                        <td>MWF 3:00 PM - 5:00 PM</td>
+                                        <td><span class="status-badge conflict">Conflict</span></td>
+                                        <td>
+                                            <button class="btn-resolve"><i class="fas fa-wrench"></i></button>
+                                            <button class="btn-reschedule"><i class="fas fa-calendar-alt"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="status-item">
+                                        <td>CC 101 Introduction to Computing</td>
+                                        <td>Prof. Jane Smith</td>
+                                        <td>Lab 2</td>
+                                        <td>TTh 12:00 PM - 3:00 PM</td>
+                                        <td><span class="status-badge rescheduled">Rescheduled</span></td>
+                                        <td>
+                                            <button class="btn-view"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-approve"><i class="fas fa-check"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="status-item">
+                                        <td>CS 201 Data Structures</td>
+                                        <td>Prof. John Doe</td>
+                                        <td>LR 4</td>
+                                        <td>TTh 10:00 AM - 1:00 PM</td>
+                                        <td><span class="status-badge scheduled">Scheduled</span></td>
+                                        <td>
+                                            <button class="btn-view"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="status-item">
+                                        <td>CS 301 Database Systems</td>
+                                        <td>Prof. Maria Garcia</td>
+                                        <td>-</td>
+                                        <td>MWF 1:00 PM - 3:00 PM</td>
+                                        <td><span class="status-badge not-set">Not Set</span></td>
+                                        <td>
+                                            <button class="btn-assign"><i class="fas fa-map-marker-alt"></i></button>
+                                            <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr class="status-item">
+                                        <td>CS 106 Web Development</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>TTh 3:00 PM - 5:00 PM</td>
+                                        <td><span class="status-badge not-set">Not Set</span></td>
+                                        <td>
+                                            <button class="btn-assign"><i class="fas fa-map-marker-alt"></i></button>
+                                            <button class="btn-assign-teacher"><i class="fas fa-user-plus"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div class="pagination">
+                                <button class="btn-prev"><i class="fas fa-chevron-left"></i></button>
+                                <span>Page 1 of 3</span>
+                                <button class="btn-next"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Notification Modal -->
+    <div class="modal" id="create-notification-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Notification</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="notification-form">
+                    <div class="form-group">
+                        <label for="notification-title">Title</label>
+                        <input type="text" id="notification-title" placeholder="Enter notification title">
+                    </div>
+                    <div class="form-group">
+                        <label for="notification-message">Message</label>
+                        <textarea id="notification-message" placeholder="Enter notification message"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="notification-type">Type</label>
+                        <select id="notification-type">
+                            <option value="info">Info</option>
+                            <option value="alert">Alert</option>
+                            <option value="warning">Warning</option>
+                            <option value="success">Success</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Recipients</label>
+                        <div class="checkbox-group">
+                            <label>
+                                <input type="checkbox" value="students"> Students
+                            </label>
+                            <label>
+                                <input type="checkbox" value="teachers"> Teachers
+                            </label>
+                            <label>
+                                <input type="checkbox" value="admins"> Administrators
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="notification-schedule">Schedule</label>
+                        <select id="notification-schedule">
+                            <option value="now">Send Now</option>
+                            <option value="later">Schedule for Later</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="schedule-datetime-group" style="display: none;">
+                        <label for="schedule-datetime">Date & Time</label>
+                        <input type="datetime-local" id="schedule-datetime">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-notification">Cancel</button>
+                <button class="btn-primary" id="send-notification">Send Notification</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Log Details Modal -->
+    <div class="modal" id="log-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Log Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="log-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Time:</span>
+                        <span class="detail-value" id="log-time">May 6, 2025 16:45</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Type:</span>
+                        <span class="detail-value" id="log-type"><span class="log-badge success">Success</span></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">User:</span>
+                        <span class="detail-value" id="log-user">Prof. Jane Smith</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Message:</span>
+                        <span class="detail-value" id="log-message">Room reservation for LR 1 approved for CS 201 on May 10, 2025</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">IP Address:</span>
+                        <span class="detail-value" id="log-ip">192.168.1.105</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">User Agent:</span>
+                        <span class="detail-value" id="log-user-agent">Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Additional Info:</span>
+                        <pre id="log-additional-info">{
+  "action": "reservation_approval",
+  "course_id": "CS201",
+  "room_id": "LR1",
+  "date": "2025-05-10",
+  "time_start": "10:00",
+  "time_end": "13:00",
+  "approved_by": "admin@example.com"
+}</pre>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="close-log-details">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/monitoring.js"></script>
+</body>
+</html>

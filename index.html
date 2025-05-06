@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <img src="assets/img/logoCCS.jpg" alt="CCS Logo">
+                </div>
+                <h1>Class Scheduling System</h1>
+                <p>Please login to continue</p>
+            </div>
+            <div class="login-form">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                    <div class="error-message" id="username-error"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-input-container">
+                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                        <button type="button" id="toggle-password" class="toggle-password">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div class="error-message" id="password-error"></div>
+                </div>
+                <div class="form-group remember-me">
+                    <input type="checkbox" id="remember-me" name="remember-me">
+                    <label for="remember-me">Remember me</label>
+                    <a href="#" class="forgot-password">Forgot Password?</a>
+                </div>
+                <div class="form-group">
+                    <button type="button" id="login-btn" class="login-btn">Login</button>
+                </div>
+            </div>
+            <div class="login-footer">
+                <p>&copy; 2025 College of Computer Studies. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/login.js"></script>
+    
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgot-password-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Reset Password</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <p>Please enter your email address to receive a password reset link.</p>
+                <div class="form-group">
+                    <label for="reset-email">Email Address</label>
+                    <input type="email" id="reset-email" name="reset-email" placeholder="Enter your email address" required>
+                    <div class="error-message" id="reset-email-error"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="cancel-reset">Cancel</button>
+                <button type="button" class="btn btn-primary" id="send-reset">Send Reset Link</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

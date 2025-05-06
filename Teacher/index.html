@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teacher Dashboard - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/chat.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>My Courses</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Course Reservations</span>
+                </a>
+                <a href="schedule.html" class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>My Schedule</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/teacher-avatar.png" alt="Teacher Avatar">
+                </div>
+                <div class="user-info">
+                    <h3 id="teacher-name">Dr. Robert Johnson</h3>
+                    <p>Professor</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>Teacher Dashboard</h1>
+                <div class="header-right">
+                    <div class="date-display" id="current-date">May 7, 2025</div>
+                    <select id="semester-select">
+                        <option value="1st">1st Semester (Aug-Dec)</option>
+                        <option value="2nd">2nd Semester (Jan-May)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="dashboard-container">
+                <!-- Stats Cards -->
+                <div class="stats-section">
+                    <div class="stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h3>My Courses</h3>
+                            <p class="stats-count" id="courses-count">9</p>
+                        </div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h3>Total Students</h3>
+                            <p class="stats-count" id="students-count">280</p>
+                        </div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-icon pending">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h3>Pending Reservations</h3>
+                            <p class="stats-count" id="pending-count">3</p>
+                        </div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stats-icon approved">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stats-info">
+                            <h3>Approved Reservations</h3>
+                            <p class="stats-count" id="approved-count">0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Reservations Section -->
+                <div class="pending-section">
+                    <div class="section-header">
+                        <h2>Pending Reservations</h2>
+                        <a href="reservations.html" class="view-all">View All</a>
+                    </div>
+                    <div class="reservation-list" id="pending-reservations">
+                        <div class="reservation-item">
+                            <div class="reservation-info">
+                                <h3>CC100: INTRODUCTION TO COMPUTING</h3>
+                                <div class="reservation-details">
+                                    <p><i class="fas fa-user"></i> Jane Smith (2023-0001)</p>
+                                    <p><i class="fas fa-calendar-day"></i> Monday, Wednesday, Friday</p>
+                                    <p><i class="fas fa-clock"></i> 9:00 AM - 10:30 AM</p>
+                                    <p><i class="fas fa-door-open"></i> Room LR 3</p>
+                                </div>
+                            </div>
+                            <div class="reservation-actions">
+                                <button class="btn-approve" data-id="R001"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-reject" data-id="R001"><i class="fas fa-times"></i> Reject</button>
+                                <button class="btn-view" data-id="R001"><i class="fas fa-eye"></i> View</button>
+                            </div>
+                        </div>
+                        <div class="reservation-item">
+                            <div class="reservation-info">
+                                <h3>CC101: COMPUTER PROGRAMMING</h3>
+                                <div class="reservation-details">
+                                    <p><i class="fas fa-user"></i> John Doe (2023-0002)</p>
+                                    <p><i class="fas fa-calendar-day"></i> Tuesday, Thursday</p>
+                                    <p><i class="fas fa-clock"></i> 1:00 PM - 3:00 PM</p>
+                                    <p><i class="fas fa-door-open"></i> Room LR 4</p>
+                                </div>
+                            </div>
+                            <div class="reservation-actions">
+                                <button class="btn-approve" data-id="R002"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-reject" data-id="R002"><i class="fas fa-times"></i> Reject</button>
+                                <button class="btn-view" data-id="R002"><i class="fas fa-eye"></i> View</button>
+                            </div>
+                        </div>
+                        <div class="reservation-item">
+                            <div class="reservation-info">
+                                <h3>DS111: DISCRETE STRUCTURES 1</h3>
+                                <div class="reservation-details">
+                                    <p><i class="fas fa-user"></i> Michael Brown (2023-0003)</p>
+                                    <p><i class="fas fa-calendar-day"></i> Monday, Wednesday, Friday</p>
+                                    <p><i class="fas fa-clock"></i> 10:30 AM - 12:00 PM</p>
+                                    <p><i class="fas fa-door-open"></i> Room LR 5</p>
+                                </div>
+                            </div>
+                            <div class="reservation-actions">
+                                <button class="btn-approve" data-id="R003"><i class="fas fa-check"></i> Approve</button>
+                                <button class="btn-reject" data-id="R003"><i class="fas fa-times"></i> Reject</button>
+                                <button class="btn-view" data-id="R003"><i class="fas fa-eye"></i> View</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/teacher-data.js"></script>
+    <script src="assets/js/chat.js"></script>
+    <!-- Authentication Script -->
+    <script src="../assets/js/auth.js"></script>
+    <!-- Logout Script -->
+    <script src="../assets/js/logout.js"></script>
+    <!-- Chat Components -->
+    <div class="chat-launcher">
+        <i class="fas fa-comments"></i>
+        <div class="unread-indicator">2</div>
+    </div>
+
+    <div class="chat-list">
+        <div class="chat-list-header">
+            <h3>Messages</h3>
+            <button class="chat-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-list-search">
+            <input type="text" placeholder="Search conversations...">
+        </div>
+        <div class="chat-list-body">
+            <div class="chat-list-item" data-chat-id="admin-1">
+                <img src="assets/img/admin-avatar.png" alt="Admin" class="avatar">
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Admin
+                        <span class="time">9:42 AM</span>
+                    </div>
+                    <div class="last-message">That works for me. I'll make sure to inform my...</div>
+                </div>
+                <div class="unread-count">1</div>
+            </div>
+            <div class="chat-list-item" data-chat-id="student-1">
+                <img src="assets/img/student1.png" alt="Student" class="avatar">
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Jane Smith
+                        <span class="time">11:28 AM</span>
+                    </div>
+                    <div class="last-message">Great, I'll see you then. Please bring your...</div>
+                </div>
+            </div>
+            <div class="chat-list-item" data-chat-id="student-2">
+                <img src="assets/img/student2.png" alt="Student" class="avatar">
+                <div class="chat-info">
+                    <div class="chat-name">
+                        John Doe
+                        <span class="time">3:00 PM</span>
+                    </div>
+                    <div class="last-message">The system sometimes delays sending confirmation...</div>
+                </div>
+                <div class="unread-count">1</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

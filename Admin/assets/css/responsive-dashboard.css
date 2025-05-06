@@ -1,0 +1,185 @@
+/* Responsive Dashboard Styles with Sticky Behavior */
+
+/* Make dashboard elements sticky and responsive */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    position: relative;
+}
+
+/* No sticky sections to prevent overlapping */
+.overview-section {
+    position: relative;
+    max-height: none;
+    overflow-y: visible;
+    transition: all 0.3s ease;
+}
+
+/* Secondary sections should not be sticky to prevent overlapping */
+.activity-section,
+.room-section,
+.approvals-section {
+    position: relative;
+    max-height: none;
+    overflow-y: visible;
+}
+
+/* Scrollbar styling for sticky sections */
+.overview-section::-webkit-scrollbar,
+.activity-section::-webkit-scrollbar,
+.room-section::-webkit-scrollbar,
+.approvals-section::-webkit-scrollbar {
+    width: 6px;
+}
+
+.overview-section::-webkit-scrollbar-track,
+.activity-section::-webkit-scrollbar-track,
+.room-section::-webkit-scrollbar-track,
+.approvals-section::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.overview-section::-webkit-scrollbar-thumb,
+.activity-section::-webkit-scrollbar-thumb,
+.room-section::-webkit-scrollbar-thumb,
+.approvals-section::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+/* Responsive layout adjustments */
+@media (min-width: 1200px) {
+    .dashboard-container {
+        grid-template-columns: 2fr 1fr;
+        align-items: start;
+    }
+    
+    .overview-section {
+        grid-column: 1;
+        grid-row: 1;
+    }
+    
+    .activity-section {
+        grid-column: 2;
+        grid-row: 1;
+        position: relative;
+        top: 0;
+    }
+    
+    .room-section {
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .approvals-section {
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 1199px) and (min-width: 768px) {
+    .dashboard-container {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+        gap: 15px;
+    }
+    
+    .overview-section {
+        position: relative;
+        max-height: none;
+        grid-column: 1;
+        grid-row: 1;
+    }
+    
+    .activity-section {
+        position: relative;
+        top: 0;
+        max-height: none;
+        grid-column: 2;
+        grid-row: 1;
+    }
+    
+    .room-section {
+        position: relative;
+        grid-column: 1;
+        grid-row: 2;
+    }
+    
+    .approvals-section {
+        position: relative;
+        grid-column: 2;
+        grid-row: 2;
+    }
+}
+
+@media (max-width: 767px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .overview-section {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+    }
+    
+    .activity-section,
+    .room-section,
+    .approvals-section {
+        position: relative;
+        top: 0;
+        max-height: none;
+        overflow-y: visible;
+        margin-bottom: 15px;
+    }
+    
+    /* Ensure proper spacing between sections */
+    .dashboard-container > div {
+        margin-bottom: 15px;
+    }
+}
+
+/* Ensure sidebar is sticky */
+.sidebar {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Make main content area scrollable */
+.main-content {
+    overflow-y: auto;
+    height: 100vh;
+}
+
+/* Sticky header */
+.header {
+    position: sticky;
+    top: 0;
+    background-color: var(--secondary-color);
+    z-index: 10;
+    padding-top: 10px;
+}
+
+/* Adjust for mobile sidebar */
+@media (max-width: 768px) {
+    .container {
+        position: relative;
+    }
+    
+    .sidebar {
+        position: fixed;
+        height: 100%;
+        z-index: 100;
+    }
+    
+    .main-content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+    }
+}

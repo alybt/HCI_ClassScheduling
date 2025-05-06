@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/courses.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="courses.html" class="nav-link active" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>My Courses</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Course Reservations</span>
+                </a>
+                <a href="schedule.html" class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>My Schedule</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/teacher-avatar.png" alt="Teacher Avatar">
+                </div>
+                <div class="user-info">
+                    <h3 id="teacher-name">Dr. Robert Johnson</h3>
+                    <p>Professor</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>My Courses</h1>
+                <div class="header-right">
+                    <select id="semester-select">
+                        <option value="1st">1st Semester (Aug-Dec)</option>
+                        <option value="2nd">2nd Semester (Jan-May)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="courses-container">
+                <div class="semester-tabs">
+                    <button class="semester-tab active" data-semester="1st">1st Semester</button>
+                    <button class="semester-tab" data-semester="2nd">2nd Semester</button>
+                </div>
+
+                <!-- 1st Semester Courses -->
+                <div class="semester-content active" id="1st-semester">
+                    <div class="courses-grid" id="first-semester-courses">
+                        <!-- Course cards will be dynamically added here -->
+                    </div>
+                </div>
+
+                <!-- 2nd Semester Courses -->
+                <div class="semester-content" id="2nd-semester">
+                    <div class="courses-grid" id="second-semester-courses">
+                        <!-- Course cards will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Details Modal -->
+    <div class="modal" id="course-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-course-title">Course Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="course-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Course Code:</div>
+                        <div class="detail-value" id="modal-course-code"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Course Title:</div>
+                        <div class="detail-value" id="modal-course-name"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Schedule:</div>
+                        <div class="detail-value" id="modal-schedule"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Room:</div>
+                        <div class="detail-value" id="modal-room"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Students Enrolled:</div>
+                        <div class="detail-value" id="modal-students"></div>
+                    </div>
+                </div>
+
+                <div class="student-list-section">
+                    <h3>Enrolled Students</h3>
+                    <div class="student-list" id="modal-student-list">
+                        <!-- Student list will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/courses.js"></script>
+    <script src="assets/js/teacher-data.js"></script>
+    <!-- Authentication Script -->
+    <script src="../assets/js/auth.js"></script>
+    <!-- Logout Script -->
+    <script src="../assets/js/logout.js"></script>
+</body>
+</html>

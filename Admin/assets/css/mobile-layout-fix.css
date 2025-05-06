@@ -1,0 +1,180 @@
+/* Additional Mobile Layout Fixes for Admin Pages */
+
+/* Mobile sidebar toggle button */
+.sidebar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--primary-color);
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* Mobile navigation menu */
+@media (max-width: 992px) {
+    .sidebar-toggle {
+        display: block;
+    }
+    
+    .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+    }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    /* Fix header layout */
+    .header {
+        padding: 15px;
+        display: flex;
+        align-items: center;
+    }
+    
+    .header h1 {
+        font-size: 20px;
+        margin: 0;
+    }
+    
+    .header-right {
+        margin-left: auto;
+    }
+}
+
+/* Improved mobile table styles */
+@media (max-width: 768px) {
+    .course-table {
+        border-radius: 0;
+        box-shadow: none;
+        background: transparent;
+    }
+    
+    .course-table table {
+        min-width: 100%;
+    }
+    
+    .course-table tbody tr {
+        margin-bottom: 20px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        display: block;
+    }
+    
+    .course-table td {
+        padding: 12px 15px;
+        text-align: right;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .course-table td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-align: left;
+        margin-right: 10px;
+    }
+    
+    .course-info {
+        flex-direction: row;
+        justify-content: flex-end;
+        width: 100%;
+        text-align: right;
+    }
+    
+    .action-buttons {
+        justify-content: flex-end;
+    }
+    
+    /* Fix filter group */
+    .filter-group {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .filter-group select {
+        width: 100%;
+    }
+    
+    /* Fix pagination */
+    .pagination {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+}
+
+/* Fix for modal content on mobile */
+@media (max-width: 576px) {
+    .modal-content {
+        width: 95%;
+        max-width: none;
+        margin: 10px;
+        padding: 15px;
+    }
+    
+    .modal-header h2 {
+        font-size: 18px;
+    }
+    
+    .form-group {
+        margin-bottom: 15px;
+    }
+    
+    .form-group label {
+        margin-bottom: 5px;
+    }
+    
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .modal-footer button {
+        width: 100%;
+    }
+}
+
+/* Visual feedback for active filters */
+.filter-active {
+    background-color: rgba(76, 175, 80, 0.1);
+    transition: background-color 0.5s ease;
+}
+
+/* Fix for course details modal */
+.course-profile-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .detail-item {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 15px;
+    }
+    
+    .detail-label {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .detail-table {
+        display: block;
+        overflow-x: auto;
+    }
+}

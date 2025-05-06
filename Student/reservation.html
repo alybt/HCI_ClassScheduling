@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Reservation - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/reservation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="assets/img/logo.png" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="schedule.html" class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>My Class Schedule</span>
+                </a>
+                <a href="reservation.html" class="nav-link active" data-page="reservation">
+                    <i class="fas fa-calendar-plus"></i>
+                    <span>Course Reservation</span>
+                </a>
+                <a href="map.html" class="nav-link" data-page="map">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>College Map</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/avatar.png" alt="User Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Jane Smith</h3>
+                    <p>Student</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>Course Reservation</h1>
+                <div class="header-right">
+                    <select id="semester-select">
+                        <option value="1st">1st Semester (Aug-Dec)</option>
+                        <option value="2nd">2nd Semester (Jan-May)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="reservation-container">
+                <!-- Unscheduled Courses Section -->
+                <div class="unscheduled-section">
+                    <div class="section-header">
+                        <h2>Unscheduled/Conflicted Courses</h2>
+                        <div class="filter-container">
+                            <select id="status-filter">
+                                <option value="all">All</option>
+                                <option value="unscheduled">Unscheduled</option>
+                                <option value="conflicted">Conflicted</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="course-list">
+                        <div class="course-item unscheduled">
+                            <div class="course-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="course-info">
+                                <h3>CS 201 - Data Structures</h3>
+                                <p><i class="fas fa-user"></i> Prof. Jane Smith</p>
+                                <p><i class="fas fa-exclamation-circle"></i> <span class="status">Not scheduled yet</span></p>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn-reserve" data-course="CS 201" data-title="Data Structures" data-instructor="Prof. Jane Smith"><i class="fas fa-calendar-plus"></i> Reserve</button>
+                            </div>
+                        </div>
+
+                        <div class="course-item conflicted">
+                            <div class="course-icon">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="course-info">
+                                <h3>CS 301 - Database Systems</h3>
+                                <p><i class="fas fa-user"></i> Prof. John Doe</p>
+                                <p><i class="fas fa-exclamation-circle"></i> <span class="status">Conflicts with CS 202</span></p>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn-reserve" data-course="CS 301" data-title="Database Systems" data-instructor="Prof. John Doe"><i class="fas fa-calendar-plus"></i> Reserve</button>
+                            </div>
+                        </div>
+
+                        <div class="course-item unscheduled">
+                            <div class="course-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="course-info">
+                                <h3>CS 401 - Software Engineering</h3>
+                                <p><i class="fas fa-user"></i> Prof. Maria Garcia</p>
+                                <p><i class="fas fa-exclamation-circle"></i> <span class="status">Not scheduled yet</span></p>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn-reserve" data-course="CS 401" data-title="Software Engineering" data-instructor="Prof. Maria Garcia"><i class="fas fa-calendar-plus"></i> Reserve</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- My Reservations Section -->
+                <div class="my-reservations-section">
+                    <div class="section-header">
+                        <h2>My Reservations</h2>
+                        <div class="filter-container">
+                            <select id="reservation-filter">
+                                <option value="all">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="reservation-list">
+                        <div class="reservation-item pending">
+                            <div class="reservation-info">
+                                <h3>CS 202 - Algorithms</h3>
+                                <div class="reservation-details">
+                                    <p><i class="fas fa-user"></i> Prof. Robert Johnson</p>
+                                    <p><i class="fas fa-clock"></i> MWF 10:00 AM - 11:30 AM</p>
+                                    <p><i class="fas fa-door-open"></i> Room LR 2</p>
+                                    <p><i class="fas fa-calendar-alt"></i> Requested on May 5, 2025</p>
+                                </div>
+                            </div>
+                            <div class="reservation-status">
+                                <span class="status-badge pending">Pending</span>
+                                <button class="btn-cancel"><i class="fas fa-times"></i> Cancel</button>
+                            </div>
+                        </div>
+
+                        <div class="reservation-item approved">
+                            <div class="reservation-info">
+                                <h3>IT 101 - Introduction to Information Technology</h3>
+                                <div class="reservation-details">
+                                    <p><i class="fas fa-user"></i> Prof. William Chen</p>
+                                    <p><i class="fas fa-clock"></i> TTh 1:00 PM - 2:30 PM</p>
+                                    <p><i class="fas fa-door-open"></i> Room LR 5</p>
+                                    <p><i class="fas fa-calendar-alt"></i> Approved on May 3, 2025</p>
+                                </div>
+                            </div>
+                            <div class="reservation-status">
+                                <span class="status-badge approved">Approved</span>
+                            </div>
+                        </div>
+
+                        <div class="reservation-item rejected">
+                            <div class="reservation-info">
+                                <h3>MATH 201 - Calculus II</h3>
+                                <div class="reservation-details">
+                                    <p><i class="fas fa-user"></i> Prof. Sarah Lee</p>
+                                    <p><i class="fas fa-clock"></i> MWF 8:00 AM - 9:30 AM</p>
+                                    <p><i class="fas fa-door-open"></i> Room LR 3</p>
+                                    <p><i class="fas fa-calendar-alt"></i> Rejected on May 2, 2025</p>
+                                    <p><i class="fas fa-comment"></i> Reason: Room not available at requested time</p>
+                                </div>
+                            </div>
+                            <div class="reservation-status">
+                                <span class="status-badge rejected">Rejected</span>
+                                <button class="btn-retry"><i class="fas fa-redo"></i> Try Again</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservation Modal -->
+    <div class="modal" id="reservation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Reserve Course</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reservation-form">
+                    <div class="form-group">
+                        <label for="course-code">Course</label>
+                        <input type="text" id="course-code" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="course-title">Course Title</label>
+                        <input type="text" id="course-title" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="course-instructor">Instructor</label>
+                        <input type="text" id="course-instructor" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferred-days">Preferred Days</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="days" value="monday"> Monday</label>
+                            <label><input type="checkbox" name="days" value="tuesday"> Tuesday</label>
+                            <label><input type="checkbox" name="days" value="wednesday"> Wednesday</label>
+                            <label><input type="checkbox" name="days" value="thursday"> Thursday</label>
+                            <label><input type="checkbox" name="days" value="friday"> Friday</label>
+                            <label><input type="checkbox" name="days" value="saturday"> Saturday</label>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preferred-time-start">Start Time</label>
+                            <input type="time" id="preferred-time-start" value="08:00">
+                        </div>
+                        <div class="form-group">
+                            <label for="class-duration">Duration</label>
+                            <select id="class-duration">
+                                <option value="1.5">1:30 hr</option>
+                                <option value="2">2:00 hr</option>
+                                <option value="3">3:00 hr</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group time-display">
+                        <span>Your selected time slot: </span>
+                        <span id="time-slot-display">08:00 AM - 09:30 AM</span>
+                    </div>
+                    <div class="form-group">
+                        <label for="preferred-room">Preferred Room</label>
+                        <select id="preferred-room">
+                            <option value="">No preference</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group" id="room-suggestions">
+                        <!-- Room suggestions will be dynamically added here -->
+                    </div>
+                    <div class="form-group">
+                        <label for="reason">Reason for Request</label>
+                        <textarea id="reason" placeholder="Please explain why you need to reserve this course (e.g., schedule conflict, missed enrollment)"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-reservation">Cancel</button>
+                <button class="btn-primary" id="submit-reservation">Submit Reservation</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/rooms-data.js"></script>
+    <script src="assets/js/reservation.js"></script>
+</body>
+</html>

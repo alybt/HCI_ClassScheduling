@@ -1,0 +1,203 @@
+/* Layout Fix for Admin Pages */
+
+/* Reset container layout */
+.container {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Fix sidebar */
+.sidebar {
+    width: 250px;
+    min-width: 250px;
+    background-color: var(--primary-color);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    transition: all 0.3s ease;
+    overflow-y: auto;
+}
+
+/* Fix main content area */
+.main-content {
+    flex: 1;
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    min-height: 100vh;
+    background-color: var(--secondary-color);
+    transition: all 0.3s ease;
+    overflow-x: hidden;
+}
+
+/* Fix header */
+.header {
+    padding: 20px;
+    background-color: var(--secondary-color);
+    border-bottom: 1px solid #ddd;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* Fix courses container */
+.courses-container {
+    padding: 20px;
+    margin: 0;
+    width: auto;
+}
+
+/* Fix course table */
+.course-table {
+    overflow-x: auto;
+    width: 100%;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.course-table table {
+    width: 100%;
+    min-width: 900px;
+}
+
+/* Fix toolbar */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    gap: 15px;
+}
+
+/* Fix filter group */
+.filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Fix modals */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 60px;
+        min-width: 60px;
+    }
+    
+    .sidebar .logo h2,
+    .sidebar .nav-link span,
+    .sidebar .user-info {
+        display: none;
+    }
+    
+    .sidebar .nav-link {
+        justify-content: center;
+        padding: 15px 0;
+    }
+    
+    .sidebar .user-avatar {
+        margin-right: 0;
+    }
+    
+    .main-content {
+        margin-left: 60px;
+        width: calc(100% - 60px);
+    }
+    
+    .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .filter-group {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .course-table {
+        margin: 0 -15px;
+        width: calc(100% + 30px);
+        border-radius: 0;
+    }
+    
+    .courses-container {
+        padding: 15px;
+    }
+    
+    .header {
+        padding: 15px;
+    }
+}
+
+/* Fix for mobile table view */
+@media (max-width: 768px) {
+    .course-table table thead {
+        display: none;
+    }
+    
+    .course-table table tbody tr {
+        display: block;
+        margin-bottom: 15px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .course-table table tbody td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: right;
+        padding: 10px 15px;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    
+    .course-table table tbody td:before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-align: left;
+        margin-right: 10px;
+    }
+    
+    .course-table table tbody td:last-child {
+        border-bottom: none;
+    }
+    
+    .course-info {
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    
+    .action-buttons {
+        justify-content: flex-end;
+    }
+}

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="assets/css/chat.css">
+    <link rel="stylesheet" href="assets/css/nav-enhanced.css">
+    <link rel="stylesheet" href="assets/css/breadcrumbs.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Admin Dashboard</h1>
+                <div class="header-right">
+                    <div class="search-container">
+                        <input type="text" placeholder="Search...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-container">
+                <!-- Overview Section -->
+                <div class="overview-section">
+                    <div class="section-header">
+                        <h2>System Overview</h2>
+                        <span class="date-display">May 6, 2025</span>
+                    </div>
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>42</h3>
+                                <p>Active Reservations</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>7</h3>
+                                <p>Scheduling Conflicts</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>12</h3>
+                                <p>Pending Rescheduled</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3>5</h3>
+                                <p>Not Set Classes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity Section -->
+                <div class="activity-section">
+                    <div class="section-header">
+                        <h2>Recent Activity</h2>
+                        <a href="monitoring.html" class="view-all">View All</a>
+                    </div>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h3>Room Reservation Approved</h3>
+                                <p>LR 1 reserved for CS 201 on May 8, 2025</p>
+                                <span class="activity-time">10 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon conflict">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h3>Scheduling Conflict Detected</h3>
+                                <p>CC 100 and CS 201 scheduled for LR 2 at the same time</p>
+                                <span class="activity-time">30 minutes ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon reschedule">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h3>Class Rescheduled</h3>
+                                <p>CC 101 rescheduled to May 10, 2025 from May 7, 2025</p>
+                                <span class="activity-time">1 hour ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon not-set">
+                                <i class="fas fa-times-circle"></i>
+                            </div>
+                            <div class="activity-details">
+                                <h3>Class Not Set</h3>
+                                <p>CS 106 removed from schedule due to faculty unavailability</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Room Availability Section -->
+                <div class="rooms-section">
+                    <div class="section-header">
+                        <h2>Room Availability</h2>
+                        <a href="rooms.html" class="view-all">View All</a>
+                    </div>
+                    <div class="room-status-container">
+                        <div class="room-status-header">
+                            <div class="room-filter">
+                                <select id="building-filter">
+                                    <option value="all">All Buildings</option>
+                                    <option value="ccs">CCS Building</option>
+                                    <option value="highschool">Old High School</option>
+                                </select>
+                                <select id="floor-filter">
+                                    <option value="all">All Floors</option>
+                                    <option value="1">1st Floor</option>
+                                    <option value="2">2nd Floor</option>
+                                    <option value="3">3rd Floor</option>
+                                </select>
+                            </div>
+                            <div class="status-legend">
+                                <div class="legend-item">
+                                    <span class="status-dot available"></span>
+                                    <span>Available</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="status-dot occupied"></span>
+                                    <span>Occupied</span>
+                                </div>
+                                <div class="legend-item">
+                                    <span class="status-dot maintenance"></span>
+                                    <span>Maintenance</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="room-grid">
+                            <div class="room-card available">
+                                <h3>Lab 1</h3>
+                                <p>CCS Building, 1st Floor</p>
+                                <span class="room-status">Available</span>
+                            </div>
+                            <div class="room-card occupied">
+                                <h3>Lab 2</h3>
+                                <p>CCS Building, 1st Floor</p>
+                                <span class="room-status">CC 101 until 3:00 PM</span>
+                            </div>
+                            <div class="room-card available">
+                                <h3>LR 1</h3>
+                                <p>CCS Building, 2nd Floor</p>
+                                <span class="room-status">Available</span>
+                            </div>
+                            <div class="room-card available">
+                                <h3>LR 2</h3>
+                                <p>CCS Building, 2nd Floor</p>
+                                <span class="room-status">Available</span>
+                            </div>
+                            <div class="room-card available">
+                                <h3>LR 5</h3>
+                                <p>CCS Building, 3rd Floor</p>
+                                <span class="room-status">Available</span>
+                            </div>
+                            <div class="room-card maintenance">
+                                <h3>Auditorium</h3>
+                                <p>CCS Building, 2nd Floor</p>
+                                <span class="room-status">Under Maintenance</span>
+                            </div>
+                            <div class="room-card available">
+                                <h3>LR 3</h3>
+                                <p>Old High School, 2nd Floor</p>
+                                <span class="room-status">Available</span>
+                            </div>
+                            <div class="room-card occupied">
+                                <h3>LR 4</h3>
+                                <p>Old High School, 2nd Floor</p>
+                                <span class="room-status">CS 201 until 1:00 PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pending Approvals Section -->
+                <div class="approvals-section">
+                    <div class="section-header">
+                        <h2>Pending Approvals</h2>
+                        <a href="reservations.html" class="view-all">View All</a>
+                    </div>
+                    <div class="approvals-list">
+                        <div class="approval-item">
+                            <div class="approval-details">
+                                <h3>Room Reservation Request</h3>
+                                <p>Prof. Jane Smith requested LR 1 for CS 201 on May 10, 2025, 10:00 AM - 1:00 PM</p>
+                            </div>
+                            <div class="approval-actions">
+                                <button class="btn-approve"><i class="fas fa-check"></i></button>
+                                <button class="btn-reject"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="approval-item">
+                            <div class="approval-details">
+                                <h3>Reschedule Request</h3>
+                                <p>Prof. John Doe requested to reschedule CC 100 from May 7 to May 9, 2025</p>
+                            </div>
+                            <div class="approval-actions">
+                                <button class="btn-approve"><i class="fas fa-check"></i></button>
+                                <button class="btn-reject"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="approval-item">
+                            <div class="approval-details">
+                                <h3>Special Event Request</h3>
+                                <p>CS Department requested Auditorium for Programming Competition on May 15, 2025</p>
+                            </div>
+                            <div class="approval-actions">
+                                <button class="btn-approve"><i class="fas fa-check"></i></button>
+                                <button class="btn-reject"><i class="fas fa-times"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/dashboard.js"></script>
+    <script src="assets/js/chat.js"></script>
+    <script src="assets/js/nav-enhanced.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/logout.js"></script>
+    <!-- Chat Components -->
+    <div class="chat-launcher">
+        <i class="fas fa-comments"></i>
+        <div class="unread-indicator">3</div>
+    </div>
+
+    <div class="chat-list">
+        <div class="chat-list-header">
+            <h3>Messages</h3>
+            <button class="chat-close-btn"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-list-search">
+            <input type="text" placeholder="Search conversations...">
+        </div>
+        <div class="chat-list-body">
+            <div class="chat-list-item" data-chat-id="teacher-1">
+                <img src="assets/img/teacher1.png" alt="Teacher" class="avatar">
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Prof. John Doe
+                        <span class="time">9:42 AM</span>
+                    </div>
+                    <div class="last-message">The requirements remain the same as last semester...</div>
+                </div>
+                <div class="unread-count">2</div>
+            </div>
+            <div class="chat-list-item" data-chat-id="teacher-2">
+                <img src="assets/img/teacher2.png" alt="Teacher" class="avatar">
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Prof. Jane Smith
+                        <span class="time">11:28 AM</span>
+                    </div>
+                    <div class="last-message">Yes, LR 2 works perfectly. Thank you for the quick...</div>
+                </div>
+            </div>
+            <div class="chat-list-item" data-chat-id="student-1">
+                <img src="assets/img/student1.png" alt="Student" class="avatar">
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Jane Smith (Student)
+                        <span class="time">2:56 PM</span>
+                    </div>
+                    <div class="last-message">Thank you so much for your help!</div>
+                </div>
+                <div class="unread-count">1</div>
+            </div>
+            <div class="chat-list-item" data-chat-id="teacher-3">
+                <img src="assets/img/teacher3.png" alt="Teacher" class="avatar">
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Prof. Maria Garcia
+                        <span class="time">Yesterday</span>
+                    </div>
+                    <div class="last-message">I'll submit the final grades by Friday.</div>
+                </div>
+            </div>
+            <div class="chat-list-item" data-chat-id="teacher-4">
+                <img src="assets/img/teacher4.png" alt="Teacher" class="avatar">
+                <div class="chat-info">
+                    <div class="chat-name">
+                        Prof. Robert Johnson
+                        <span class="time">Yesterday</span>
+                    </div>
+                    <div class="last-message">The IT department resolved the issue with the...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

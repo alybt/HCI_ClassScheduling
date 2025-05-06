@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Reservations - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/reservations.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="assets/img/logo.png" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link active" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Manage Reservations</h1>
+                <div class="header-right">
+                    <div class="search-container">
+                        <input type="text" placeholder="Search reservations...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="reservations-container">
+                <!-- Tabs -->
+                <div class="reservations-tabs">
+                    <button class="tab-btn active" data-tab="pending">Pending Requests</button>
+                    <button class="tab-btn" data-tab="approved">Approved</button>
+                    <button class="tab-btn" data-tab="rescheduled">Rescheduled</button>
+                    <button class="tab-btn" data-tab="events">Events</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Pending Requests Tab -->
+                    <div class="tab-pane active" id="pending">
+                        <div class="tab-header">
+                            <h2>Pending Requests</h2>
+                            <div class="tab-actions">
+                                <button class="btn-primary"><i class="fas fa-plus"></i> Create Reservation</button>
+                            </div>
+                        </div>
+                        
+                        <div class="reservation-list">
+                            <div class="reservation-item">
+                                <div class="reservation-info">
+                                    <div class="reservation-header">
+                                        <h3>Room Reservation Request</h3>
+                                        <span class="reservation-date">Requested: May 6, 2025</span>
+                                    </div>
+                                    <div class="reservation-details">
+                                        <p><strong>Course:</strong> CS 201 Data Structures</p>
+                                        <p><strong>Teacher:</strong> Prof. Jane Smith</p>
+                                        <p><strong>Room:</strong> LR 1</p>
+                                        <p><strong>Date:</strong> May 10, 2025</p>
+                                        <p><strong>Time:</strong> 10:00 AM - 1:00 PM</p>
+                                        <p><strong>Reason:</strong> Regular class schedule</p>
+                                    </div>
+                                </div>
+                                <div class="reservation-actions">
+                                    <button class="btn-approve"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="btn-reject"><i class="fas fa-times"></i> Reject</button>
+                                    <button class="btn-reschedule"><i class="fas fa-calendar-alt"></i> Reschedule</button>
+                                </div>
+                            </div>
+                            
+                            <div class="reservation-item">
+                                <div class="reservation-info">
+                                    <div class="reservation-header">
+                                        <h3>Reschedule Request</h3>
+                                        <span class="reservation-date">Requested: May 6, 2025</span>
+                                    </div>
+                                    <div class="reservation-details">
+                                        <p><strong>Course:</strong> CC 100 Introduction to Computing</p>
+                                        <p><strong>Teacher:</strong> Prof. John Doe</p>
+                                        <p><strong>Room:</strong> Lab 2</p>
+                                        <p><strong>Original Date:</strong> May 7, 2025</p>
+                                        <p><strong>Original Time:</strong> 3:00 PM - 5:00 PM</p>
+                                        <p><strong>New Date:</strong> May 9, 2025</p>
+                                        <p><strong>New Time:</strong> 3:00 PM - 5:00 PM</p>
+                                        <p><strong>Reason:</strong> Faculty meeting on original date</p>
+                                    </div>
+                                </div>
+                                <div class="reservation-actions">
+                                    <button class="btn-approve"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="btn-reject"><i class="fas fa-times"></i> Reject</button>
+                                    <button class="btn-suggest"><i class="fas fa-lightbulb"></i> Suggest Alternative</button>
+                                </div>
+                            </div>
+                            
+                            <div class="reservation-item">
+                                <div class="reservation-info">
+                                    <div class="reservation-header">
+                                        <h3>Special Event Request</h3>
+                                        <span class="reservation-date">Requested: May 5, 2025</span>
+                                    </div>
+                                    <div class="reservation-details">
+                                        <p><strong>Event:</strong> Programming Competition</p>
+                                        <p><strong>Organizer:</strong> CS Department</p>
+                                        <p><strong>Room:</strong> Auditorium</p>
+                                        <p><strong>Date:</strong> May 15, 2025</p>
+                                        <p><strong>Time:</strong> 9:00 AM - 5:00 PM</p>
+                                        <p><strong>Expected Attendees:</strong> 100</p>
+                                        <p><strong>Equipment Needed:</strong> Projector, Sound System, Computers</p>
+                                    </div>
+                                </div>
+                                <div class="reservation-actions">
+                                    <button class="btn-approve"><i class="fas fa-check"></i> Approve</button>
+                                    <button class="btn-reject"><i class="fas fa-times"></i> Reject</button>
+                                    <button class="btn-suggest"><i class="fas fa-lightbulb"></i> Suggest Alternative</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Approved Tab -->
+                    <div class="tab-pane" id="approved">
+                        <div class="tab-header">
+                            <h2>Approved Reservations</h2>
+                            <div class="tab-actions">
+                                <div class="filter-group">
+                                    <select id="building-filter">
+                                        <option value="all">All Buildings</option>
+                                        <option value="ccs">CCS Building</option>
+                                        <option value="highschool">Old High School</option>
+                                    </select>
+                                    <select id="date-filter">
+                                        <option value="all">All Dates</option>
+                                        <option value="today">Today</option>
+                                        <option value="tomorrow">Tomorrow</option>
+                                        <option value="week">This Week</option>
+                                        <option value="month">This Month</option>
+                                    </select>
+                                </div>
+                                <button class="btn-export"><i class="fas fa-download"></i> Export</button>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar-view">
+                            <div class="calendar-header">
+                                <button class="btn-prev-month"><i class="fas fa-chevron-left"></i></button>
+                                <h3>May 2025</h3>
+                                <button class="btn-next-month"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="calendar-grid">
+                                <!-- Calendar will be generated by JavaScript -->
+                                <div class="calendar-days">
+                                    <div>Sun</div>
+                                    <div>Mon</div>
+                                    <div>Tue</div>
+                                    <div>Wed</div>
+                                    <div>Thu</div>
+                                    <div>Fri</div>
+                                    <div>Sat</div>
+                                </div>
+                                <div class="calendar-dates">
+                                    <!-- Calendar dates will be generated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="daily-schedule">
+                            <h3>Schedule for May 6, 2025</h3>
+                            <div class="schedule-grid">
+                                <!-- Rooms as columns -->
+                                <div class="room-labels">
+                                    <div class="time-label"></div>
+                                    <div class="room-label">Lab 1</div>
+                                    <div class="room-label">Lab 2</div>
+                                    <div class="room-label">LR 1</div>
+                                    <div class="room-label">LR 2</div>
+                                    <div class="room-label">Auditorium</div>
+                                </div>
+                                
+                                <!-- Time slots as rows -->
+                                <div class="time-slots">
+                                    <div class="time-row">
+                                        <div class="time-label">8:00 AM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">9:00 AM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">10:00 AM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">11:00 AM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">12:00 PM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot occupied" data-course="CC 101" data-teacher="Prof. Jane Smith" data-time="12:00 PM - 3:00 PM">
+                                            <div class="slot-content">CC 101</div>
+                                        </div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">1:00 PM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot occupied"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">2:00 PM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot occupied"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">3:00 PM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot occupied" data-course="CC 100" data-teacher="Prof. John Doe" data-time="3:00 PM - 5:00 PM">
+                                            <div class="slot-content">CC 100</div>
+                                        </div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">4:00 PM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot occupied"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">5:00 PM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                    <div class="time-row">
+                                        <div class="time-label">6:00 PM</div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                        <div class="slot"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rescheduled Tab -->
+                    <div class="tab-pane" id="rescheduled">
+                        <div class="tab-header">
+                            <h2>Rescheduled Classes</h2>
+                            <div class="tab-actions">
+                                <div class="filter-group">
+                                    <select id="status-filter">
+                                        <option value="all">All Statuses</option>
+                                        <option value="pending">Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+                                <button class="btn-export"><i class="fas fa-download"></i> Export</button>
+                            </div>
+                        </div>
+                        
+                        <div class="rescheduled-list">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Teacher</th>
+                                        <th>Original Schedule</th>
+                                        <th>New Schedule</th>
+                                        <th>Reason</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CC 100 Introduction to Computing</td>
+                                        <td>Prof. John Doe</td>
+                                        <td>May 7, 2025<br>3:00 PM - 5:00 PM<br>LR 2</td>
+                                        <td>May 9, 2025<br>3:00 PM - 5:00 PM<br>LR 2</td>
+                                        <td>Faculty meeting on original date</td>
+                                        <td><span class="status-badge pending">Pending</span></td>
+                                        <td>
+                                            <button class="btn-approve"><i class="fas fa-check"></i></button>
+                                            <button class="btn-reject"><i class="fas fa-times"></i></button>
+                                            <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CC 101 Introduction to Computing</td>
+                                        <td>Prof. Jane Smith</td>
+                                        <td>May 7, 2025<br>12:00 PM - 3:00 PM<br>Lab 2</td>
+                                        <td>May 10, 2025<br>12:00 PM - 3:00 PM<br>Lab 2</td>
+                                        <td>Teacher unavailable on original date</td>
+                                        <td><span class="status-badge approved">Approved</span></td>
+                                        <td>
+                                            <button class="btn-view"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-cancel"><i class="fas fa-ban"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>CS 301 Database Systems</td>
+                                        <td>Prof. Maria Garcia</td>
+                                        <td>May 8, 2025<br>1:00 PM - 3:00 PM<br>LR 5</td>
+                                        <td>May 12, 2025<br>1:00 PM - 3:00 PM<br>LR 5</td>
+                                        <td>Room maintenance on original date</td>
+                                        <td><span class="status-badge rejected">Rejected</span></td>
+                                        <td>
+                                            <button class="btn-view"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-suggest"><i class="fas fa-lightbulb"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Events Tab -->
+                    <div class="tab-pane" id="events">
+                        <div class="tab-header">
+                            <h2>Special Events</h2>
+                            <div class="tab-actions">
+                                <button class="btn-primary"><i class="fas fa-plus"></i> Add Event</button>
+                            </div>
+                        </div>
+                        
+                        <div class="events-list">
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <div class="month">MAY</div>
+                                    <div class="day">15</div>
+                                    <div class="year">2025</div>
+                                </div>
+                                <div class="event-info">
+                                    <h3>Programming Competition</h3>
+                                    <p><i class="fas fa-map-marker-alt"></i> Auditorium</p>
+                                    <p><i class="fas fa-clock"></i> 9:00 AM - 5:00 PM</p>
+                                    <p><i class="fas fa-user"></i> Organizer: CS Department</p>
+                                    <p><i class="fas fa-users"></i> Expected Attendees: 100</p>
+                                    <div class="event-description">
+                                        <p>Annual programming competition for CS students. Prizes will be awarded to top performers.</p>
+                                    </div>
+                                </div>
+                                <div class="event-actions">
+                                    <button class="btn-edit"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                    <button class="btn-notify"><i class="fas fa-bell"></i> Notify</button>
+                                </div>
+                            </div>
+                            
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <div class="month">MAY</div>
+                                    <div class="day">20</div>
+                                    <div class="year">2025</div>
+                                </div>
+                                <div class="event-info">
+                                    <h3>Guest Lecture: AI in Education</h3>
+                                    <p><i class="fas fa-map-marker-alt"></i> LR 1</p>
+                                    <p><i class="fas fa-clock"></i> 2:00 PM - 4:00 PM</p>
+                                    <p><i class="fas fa-user"></i> Speaker: Dr. James Wilson</p>
+                                    <p><i class="fas fa-users"></i> Expected Attendees: 40</p>
+                                    <div class="event-description">
+                                        <p>Special guest lecture on the applications of artificial intelligence in education.</p>
+                                    </div>
+                                </div>
+                                <div class="event-actions">
+                                    <button class="btn-edit"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                    <button class="btn-notify"><i class="fas fa-bell"></i> Notify</button>
+                                </div>
+                            </div>
+                            
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <div class="month">JUN</div>
+                                    <div class="day">5</div>
+                                    <div class="year">2025</div>
+                                </div>
+                                <div class="event-info">
+                                    <h3>End of Semester Meeting</h3>
+                                    <p><i class="fas fa-map-marker-alt"></i> Auditorium</p>
+                                    <p><i class="fas fa-clock"></i> 10:00 AM - 12:00 PM</p>
+                                    <p><i class="fas fa-user"></i> Organizer: Dean's Office</p>
+                                    <p><i class="fas fa-users"></i> Expected Attendees: 50</p>
+                                    <div class="event-description">
+                                        <p>End of semester meeting for faculty and staff to discuss the semester outcomes and plan for the next semester.</p>
+                                    </div>
+                                </div>
+                                <div class="event-actions">
+                                    <button class="btn-edit"><i class="fas fa-edit"></i> Edit</button>
+                                    <button class="btn-delete"><i class="fas fa-trash"></i> Delete</button>
+                                    <button class="btn-notify"><i class="fas fa-bell"></i> Notify</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create/Edit Reservation Modal -->
+    <div class="modal" id="reservation-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Create Reservation</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="reservation-form">
+                    <div class="form-group">
+                        <label for="reservation-type">Reservation Type</label>
+                        <select id="reservation-type">
+                            <option value="class">Regular Class</option>
+                            <option value="event">Special Event</option>
+                            <option value="meeting">Meeting</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservation-course">Course</label>
+                        <select id="reservation-course">
+                            <option value="">Select Course</option>
+                            <option value="cc100">CC 100 Introduction to Computing</option>
+                            <option value="cc101">CC 101 Introduction to Computing</option>
+                            <option value="cs201">CS 201 Data Structures</option>
+                            <option value="cs301">CS 301 Database Systems</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservation-teacher">Teacher</label>
+                        <select id="reservation-teacher">
+                            <option value="">Select Teacher</option>
+                            <option value="jdoe">Prof. John Doe</option>
+                            <option value="jsmith">Prof. Jane Smith</option>
+                            <option value="mgarcia">Prof. Maria Garcia</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservation-room">Room</label>
+                        <select id="reservation-room">
+                            <option value="">Select Room</option>
+                            <option value="lab1">Lab 1</option>
+                            <option value="lab2">Lab 2</option>
+                            <option value="lr1">LR 1</option>
+                            <option value="lr2">LR 2</option>
+                            <option value="lr5">LR 5</option>
+                            <option value="auditorium">Auditorium</option>
+                        </select>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reservation-date">Date</label>
+                            <input type="date" id="reservation-date">
+                        </div>
+                        <div class="form-group">
+                            <label for="reservation-start-time">Start Time</label>
+                            <input type="time" id="reservation-start-time">
+                        </div>
+                        <div class="form-group">
+                            <label for="reservation-end-time">End Time</label>
+                            <input type="time" id="reservation-end-time">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservation-reason">Reason/Description</label>
+                        <textarea id="reservation-reason" placeholder="Enter reason or description"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="reservation-recurring">Recurring</label>
+                        <select id="reservation-recurring">
+                            <option value="no">No</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="biweekly">Bi-weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="recurring-end-group" style="display: none;">
+                        <label for="recurring-end-date">End Date for Recurring</label>
+                        <input type="date" id="recurring-end-date">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-reservation">Cancel</button>
+                <button class="btn-primary" id="save-reservation">Save Reservation</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/reservations.js"></script>
+</body>
+</html>

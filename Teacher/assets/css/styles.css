@@ -1,0 +1,306 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f0f0f0;
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 60px;
+    background-color: #1e3a2b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 0;
+    color: white;
+}
+
+.sidebar-item {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.sidebar-item.active {
+    background-color: #4caf50;
+}
+
+.sidebar-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-item.bottom {
+    margin-top: auto;
+    margin-bottom: 10px;
+}
+
+/* Main Content Styles */
+.main-content {
+    flex: 1;
+    padding: 20px;
+    background-color: #e6e9f7;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+/* Common header styles for all pages */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    margin-bottom: 1.5rem;
+    border-radius: 0.5rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #333;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.date-display {
+    font-size: 0.9rem;
+    color: #555;
+    padding: 0.5rem 1rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+#semester-select {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    font-size: 0.9rem;
+    color: #333;
+    cursor: pointer;
+}
+
+/* Header Styles */
+.header {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    font-size: 24px;
+    color: #333;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#semester-select {
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 14px;
+}
+
+.view-toggle {
+    display: flex;
+    background-color: white;
+    border-radius: 20px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+}
+
+.view-toggle button {
+    padding: 8px 12px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.view-toggle button.active {
+    background-color: #4caf50;
+    color: white;
+}
+
+/* Section Styles */
+.notification-section {
+    grid-column: 1 / -1;
+}
+
+.classes-section {
+    grid-column: 1;
+    grid-row: 3;
+}
+
+.events-section {
+    grid-column: 1;
+    grid-row: 4;
+}
+
+.quick-action {
+    grid-column: 2;
+    grid-row: 3 / 5;
+    align-self: start;
+}
+
+h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* Card Styles */
+.notification-card, .class-card, .event-card {
+    background-color: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.notification-card {
+    min-height: 80px;
+}
+
+.class-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.class-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.class-check {
+    position: relative;
+}
+
+.class-check input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #4caf50;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+}
+
+.class-check input[type="checkbox"]:checked {
+    background-color: #4caf50;
+}
+
+.class-check input[type="checkbox"]:checked + label::after {
+    content: '\2713';
+    position: absolute;
+    top: 0;
+    left: 6px;
+    color: white;
+    font-size: 14px;
+}
+
+.class-info h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.class-info p {
+    font-size: 14px;
+    color: #666;
+}
+
+.event-card {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+}
+
+.event-card p {
+    color: #888;
+    font-size: 14px;
+}
+
+/* Quick Action Styles */
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.action-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: none;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn i {
+    color: #4caf50;
+    font-size: 16px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+    
+    .classes-section, .events-section, .quick-action {
+        grid-column: 1;
+    }
+    
+    .quick-action {
+        grid-row: 5;
+    }
+}

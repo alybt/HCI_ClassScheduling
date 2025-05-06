@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Room Management - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/rooms.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="assets/img/logo.png" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </a>
+                <a href="rooms.html" class="nav-link active" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Room Management</h1>
+                <div class="header-right">
+                    <div class="search-container">
+                        <input type="text" placeholder="Search rooms...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="rooms-container">
+                <!-- Tabs for different views -->
+                <div class="view-tabs">
+                    <button class="tab-btn active" data-view="list">List View</button>
+                    <button class="tab-btn" data-view="grid">Grid View</button>
+                    <button class="tab-btn" data-view="map">Map View</button>
+                </div>
+
+                <!-- List View -->
+                <div class="view-content active" id="list-view">
+                    <div class="toolbar">
+                        <button class="btn-primary" id="add-room-btn"><i class="fas fa-plus"></i> Add Room</button>
+                        <div class="filter-group">
+                            <select id="building-filter">
+                                <option value="all">All Buildings</option>
+                                <option value="ccs">CCS Building</option>
+                                <option value="old-hs">Old High School</option>
+                            </select>
+                            <select id="type-filter">
+                                <option value="all">All Types</option>
+                                <option value="lecture">Lecture Room</option>
+                                <option value="lab">Laboratory</option>
+                                <option value="auditorium">Auditorium</option>
+                            </select>
+                            <select id="status-filter">
+                                <option value="all">All Status</option>
+                                <option value="available">Available</option>
+                                <option value="occupied">Occupied</option>
+                                <option value="maintenance">Maintenance</option>
+                            </select>
+                        </div>
+                        <button class="btn-export"><i class="fas fa-download"></i> Export</button>
+                    </div>
+
+                    <div class="room-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Room ID</th>
+                                    <th>Room Name</th>
+                                    <th>Building</th>
+                                    <th>Type</th>
+                                    <th>Capacity</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>R-001</td>
+                                    <td>
+                                        <div class="room-info">
+                                            <div class="room-icon"><i class="fas fa-chalkboard"></i></div>
+                                            <div>
+                                                <strong>LR 1</strong>
+                                                <span>Floor 1</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>CCS Building</td>
+                                    <td>Lecture Room</td>
+                                    <td>40</td>
+                                    <td><span class="status-badge available">Available</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>R-002</td>
+                                    <td>
+                                        <div class="room-info">
+                                            <div class="room-icon"><i class="fas fa-chalkboard"></i></div>
+                                            <div>
+                                                <strong>LR 2</strong>
+                                                <span>Floor 1</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>CCS Building</td>
+                                    <td>Lecture Room</td>
+                                    <td>35</td>
+                                    <td><span class="status-badge occupied">Occupied</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>R-003</td>
+                                    <td>
+                                        <div class="room-info">
+                                            <div class="room-icon"><i class="fas fa-desktop"></i></div>
+                                            <div>
+                                                <strong>Lab 1</strong>
+                                                <span>Floor 2</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>CCS Building</td>
+                                    <td>Laboratory</td>
+                                    <td>30</td>
+                                    <td><span class="status-badge available">Available</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>R-004</td>
+                                    <td>
+                                        <div class="room-info">
+                                            <div class="room-icon"><i class="fas fa-desktop"></i></div>
+                                            <div>
+                                                <strong>Lab 2</strong>
+                                                <span>Floor 2</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>CCS Building</td>
+                                    <td>Laboratory</td>
+                                    <td>30</td>
+                                    <td><span class="status-badge maintenance">Maintenance</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>R-005</td>
+                                    <td>
+                                        <div class="room-info">
+                                            <div class="room-icon"><i class="fas fa-users"></i></div>
+                                            <div>
+                                                <strong>Auditorium</strong>
+                                                <span>Ground Floor</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>Old High School</td>
+                                    <td>Auditorium</td>
+                                    <td>150</td>
+                                    <td><span class="status-badge available">Available</span></td>
+                                    <td>
+                                        <div class="action-buttons">
+                                            <button class="btn-view" title="View Details"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-edit" title="Edit"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-schedule" title="View Schedule"><i class="fas fa-calendar-alt"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination">
+                        <button class="btn-prev"><i class="fas fa-chevron-left"></i></button>
+                        <div class="page-numbers">
+                            <button class="active">1</button>
+                            <button>2</button>
+                        </div>
+                        <button class="btn-next"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Grid View -->
+                <div class="view-content" id="grid-view">
+                    <div class="toolbar">
+                        <button class="btn-primary" id="add-room-grid-btn"><i class="fas fa-plus"></i> Add Room</button>
+                        <div class="filter-group">
+                            <select id="building-filter-grid">
+                                <option value="all">All Buildings</option>
+                                <option value="ccs">CCS Building</option>
+                                <option value="old-hs">Old High School</option>
+                            </select>
+                            <select id="floor-filter-grid">
+                                <option value="all">All Floors</option>
+                                <option value="ground">Ground Floor</option>
+                                <option value="1">Floor 1</option>
+                                <option value="2">Floor 2</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="room-grid">
+                        <div class="room-card available">
+                            <div class="room-card-header">
+                                <h3>LR 1</h3>
+                                <span class="status-badge available">Available</span>
+                            </div>
+                            <div class="room-card-body">
+                                <p><i class="fas fa-building"></i> CCS Building, Floor 1</p>
+                                <p><i class="fas fa-chalkboard"></i> Lecture Room</p>
+                                <p><i class="fas fa-users"></i> Capacity: 40</p>
+                                <p><i class="fas fa-plug"></i> Facilities: Projector, AC, Whiteboard</p>
+                            </div>
+                            <div class="room-card-footer">
+                                <button class="btn-view"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn-schedule"><i class="fas fa-calendar-alt"></i> Schedule</button>
+                            </div>
+                        </div>
+
+                        <div class="room-card occupied">
+                            <div class="room-card-header">
+                                <h3>LR 2</h3>
+                                <span class="status-badge occupied">Occupied</span>
+                            </div>
+                            <div class="room-card-body">
+                                <p><i class="fas fa-building"></i> CCS Building, Floor 1</p>
+                                <p><i class="fas fa-chalkboard"></i> Lecture Room</p>
+                                <p><i class="fas fa-users"></i> Capacity: 35</p>
+                                <p><i class="fas fa-plug"></i> Facilities: Projector, AC, Whiteboard</p>
+                            </div>
+                            <div class="room-card-footer">
+                                <button class="btn-view"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn-schedule"><i class="fas fa-calendar-alt"></i> Schedule</button>
+                            </div>
+                        </div>
+
+                        <div class="room-card available">
+                            <div class="room-card-header">
+                                <h3>Lab 1</h3>
+                                <span class="status-badge available">Available</span>
+                            </div>
+                            <div class="room-card-body">
+                                <p><i class="fas fa-building"></i> CCS Building, Floor 2</p>
+                                <p><i class="fas fa-desktop"></i> Laboratory</p>
+                                <p><i class="fas fa-users"></i> Capacity: 30</p>
+                                <p><i class="fas fa-plug"></i> Facilities: Computers, Projector, AC</p>
+                            </div>
+                            <div class="room-card-footer">
+                                <button class="btn-view"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn-schedule"><i class="fas fa-calendar-alt"></i> Schedule</button>
+                            </div>
+                        </div>
+
+                        <div class="room-card maintenance">
+                            <div class="room-card-header">
+                                <h3>Lab 2</h3>
+                                <span class="status-badge maintenance">Maintenance</span>
+                            </div>
+                            <div class="room-card-body">
+                                <p><i class="fas fa-building"></i> CCS Building, Floor 2</p>
+                                <p><i class="fas fa-desktop"></i> Laboratory</p>
+                                <p><i class="fas fa-users"></i> Capacity: 30</p>
+                                <p><i class="fas fa-plug"></i> Facilities: Computers, Projector, AC</p>
+                            </div>
+                            <div class="room-card-footer">
+                                <button class="btn-view"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn-schedule"><i class="fas fa-calendar-alt"></i> Schedule</button>
+                            </div>
+                        </div>
+
+                        <div class="room-card available">
+                            <div class="room-card-header">
+                                <h3>Auditorium</h3>
+                                <span class="status-badge available">Available</span>
+                            </div>
+                            <div class="room-card-body">
+                                <p><i class="fas fa-building"></i> Old High School, Ground Floor</p>
+                                <p><i class="fas fa-users"></i> Auditorium</p>
+                                <p><i class="fas fa-users"></i> Capacity: 150</p>
+                                <p><i class="fas fa-plug"></i> Facilities: Stage, Sound System, Projector</p>
+                            </div>
+                            <div class="room-card-footer">
+                                <button class="btn-view"><i class="fas fa-eye"></i> View</button>
+                                <button class="btn-schedule"><i class="fas fa-calendar-alt"></i> Schedule</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map View -->
+                <div class="view-content" id="map-view">
+                    <div class="toolbar">
+                        <div class="building-selector">
+                            <button class="building-btn active" data-building="ccs">CCS Building</button>
+                            <button class="building-btn" data-building="old-hs">Old High School</button>
+                        </div>
+                        <div class="floor-selector">
+                            <button class="floor-btn" data-floor="ground">Ground Floor</button>
+                            <button class="floor-btn active" data-floor="1">Floor 1</button>
+                            <button class="floor-btn" data-floor="2">Floor 2</button>
+                        </div>
+                    </div>
+
+                    <div class="building-map">
+                        <div class="map-container">
+                            <!-- CCS Building Floor 1 Map -->
+                            <div class="map-svg" id="ccs-floor1-map">
+                                <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg">
+                                    <!-- Building outline -->
+                                    <rect x="100" y="100" width="600" height="400" fill="#f5f5f5" stroke="#333" stroke-width="2"/>
+                                    
+                                    <!-- Corridor -->
+                                    <rect x="100" y="250" width="600" height="100" fill="#e0e0e0" stroke="#333" stroke-width="1"/>
+                                    
+                                    <!-- Rooms -->
+                                    <g class="room" data-room="LR1" data-status="available">
+                                        <rect x="120" y="120" width="150" height="110" fill="#e8f5e9" stroke="#333" stroke-width="1"/>
+                                        <text x="195" y="175" text-anchor="middle" font-size="16">LR 1</text>
+                                    </g>
+                                    
+                                    <g class="room" data-room="LR2" data-status="occupied">
+                                        <rect x="290" y="120" width="150" height="110" fill="#ffebee" stroke="#333" stroke-width="1"/>
+                                        <text x="365" y="175" text-anchor="middle" font-size="16">LR 2</text>
+                                    </g>
+                                    
+                                    <g class="room" data-room="LR3" data-status="available">
+                                        <rect x="460" y="120" width="150" height="110" fill="#e8f5e9" stroke="#333" stroke-width="1"/>
+                                        <text x="535" y="175" text-anchor="middle" font-size="16">LR 3</text>
+                                    </g>
+                                    
+                                    <g class="room" data-room="LR4" data-status="available">
+                                        <rect x="120" y="370" width="150" height="110" fill="#e8f5e9" stroke="#333" stroke-width="1"/>
+                                        <text x="195" y="425" text-anchor="middle" font-size="16">LR 4</text>
+                                    </g>
+                                    
+                                    <g class="room" data-room="LR5" data-status="available">
+                                        <rect x="290" y="370" width="150" height="110" fill="#e8f5e9" stroke="#333" stroke-width="1"/>
+                                        <text x="365" y="425" text-anchor="middle" font-size="16">LR 5</text>
+                                    </g>
+                                    
+                                    <g class="room" data-room="Faculty" data-status="occupied">
+                                        <rect x="460" y="370" width="150" height="110" fill="#ffebee" stroke="#333" stroke-width="1"/>
+                                        <text x="535" y="425" text-anchor="middle" font-size="16">Faculty Room</text>
+                                    </g>
+                                    
+                                    <!-- Stairs -->
+                                    <g class="stairs">
+                                        <rect x="630" y="120" width="50" height="110" fill="#d1c4e9" stroke="#333" stroke-width="1"/>
+                                        <text x="655" y="175" text-anchor="middle" font-size="14">Stairs</text>
+                                    </g>
+                                </svg>
+                            </div>
+                            
+                            <!-- Other floor maps would be here but hidden -->
+                        </div>
+                        
+                        <div class="map-legend">
+                            <div class="legend-item">
+                                <div class="legend-color available"></div>
+                                <span>Available</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color occupied"></div>
+                                <span>Occupied</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color maintenance"></div>
+                                <span>Maintenance</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Room Modal -->
+    <div class="modal" id="room-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Add New Room</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="room-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="room-id">Room ID</label>
+                            <input type="text" id="room-id" placeholder="Enter room ID">
+                        </div>
+                        <div class="form-group">
+                            <label for="room-status">Status</label>
+                            <select id="room-status">
+                                <option value="available">Available</option>
+                                <option value="occupied">Occupied</option>
+                                <option value="maintenance">Maintenance</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="room-name">Room Name</label>
+                            <input type="text" id="room-name" placeholder="Enter room name">
+                        </div>
+                        <div class="form-group">
+                            <label for="room-type">Room Type</label>
+                            <select id="room-type">
+                                <option value="lecture">Lecture Room</option>
+                                <option value="lab">Laboratory</option>
+                                <option value="auditorium">Auditorium</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="room-building">Building</label>
+                            <select id="room-building">
+                                <option value="ccs">CCS Building</option>
+                                <option value="old-hs">Old High School</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="room-floor">Floor</label>
+                            <select id="room-floor">
+                                <option value="ground">Ground Floor</option>
+                                <option value="1">Floor 1</option>
+                                <option value="2">Floor 2</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="room-capacity">Capacity</label>
+                            <input type="number" id="room-capacity" min="1" max="200" value="30">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Facilities</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" value="projector"> Projector</label>
+                            <label><input type="checkbox" value="ac"> Air Conditioning</label>
+                            <label><input type="checkbox" value="whiteboard"> Whiteboard</label>
+                            <label><input type="checkbox" value="computers"> Computers</label>
+                            <label><input type="checkbox" value="sound"> Sound System</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="room-notes">Notes</label>
+                        <textarea id="room-notes" placeholder="Enter additional notes about the room"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-room">Cancel</button>
+                <button class="btn-primary" id="save-room">Save Room</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Room Details Modal -->
+    <div class="modal" id="room-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Room Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="room-details">
+                    <div class="room-details-header">
+                        <div class="room-icon-large">
+                            <i class="fas fa-chalkboard"></i>
+                        </div>
+                        <div class="room-details-info">
+                            <h3 id="detail-room-name">LR 1</h3>
+                            <p id="detail-room-location">CCS Building, Floor 1</p>
+                            <p id="detail-room-type">Lecture Room</p>
+                            <span class="status-badge available" id="detail-room-status">Available</span>
+                        </div>
+                    </div>
+                    <div class="room-details-content">
+                        <div class="detail-section">
+                            <h4>Room Information</h4>
+                            <div class="detail-item">
+                                <span class="detail-label">Room ID:</span>
+                                <span class="detail-value" id="detail-room-id">R-001</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Capacity:</span>
+                                <span class="detail-value" id="detail-room-capacity">40 students</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Facilities:</span>
+                                <span class="detail-value" id="detail-room-facilities">Projector, AC, Whiteboard</span>
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Current Schedule</h4>
+                            <div class="schedule-grid" id="detail-room-schedule">
+                                <!-- Schedule will be populated by JavaScript -->
+                            </div>
+                        </div>
+                        <div class="detail-section">
+                            <h4>Upcoming Classes</h4>
+                            <table class="detail-table">
+                                <thead>
+                                    <tr>
+                                        <th>Course</th>
+                                        <th>Instructor</th>
+                                        <th>Schedule</th>
+                                        <th>Students</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="detail-room-classes">
+                                    <tr>
+                                        <td>CS 201 - Data Structures</td>
+                                        <td>Prof. John Doe</td>
+                                        <td>MWF 10:00 AM - 11:30 AM</td>
+                                        <td>35/40</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CS 301 - Database Systems</td>
+                                        <td>Prof. Jane Smith</td>
+                                        <td>TTh 1:00 PM - 3:00 PM</td>
+                                        <td>28/40</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="close-details">Close</button>
+                <button class="btn-primary" id="edit-from-details">Edit Room</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/rooms.js"></script>
+</body>
+</html>

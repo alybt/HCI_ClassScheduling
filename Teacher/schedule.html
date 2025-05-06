@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Schedule - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/sidebar.css">
+    <link rel="stylesheet" href="assets/css/schedule.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>My Courses</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Course Reservations</span>
+                </a>
+                <a href="schedule.html" class="nav-link active" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>My Schedule</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/teacher-avatar.png" alt="Teacher Avatar">
+                </div>
+                <div class="user-info">
+                    <h3 id="teacher-name">Dr. Robert Johnson</h3>
+                    <p>Professor</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>My Teaching Schedule</h1>
+                <div class="header-right">
+                    <div class="date-display" id="current-date">May 7, 2025</div>
+                    <select id="semester-select">
+                        <option value="1st">1st Semester (Aug-Dec)</option>
+                        <option value="2nd">2nd Semester (Jan-May)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="schedule-container">
+                <div class="schedule-controls">
+                    <div class="view-toggle">
+                        <button class="view-btn active" data-view="weekly">Weekly View</button>
+                        <button class="view-btn" data-view="list">List View</button>
+                    </div>
+                    <div class="week-navigation">
+                        <button id="prev-week" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                        <span id="week-display">May 5 - May 11, 2025</span>
+                        <button id="next-week" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                    </div>
+                </div>
+
+                <!-- Weekly View -->
+                <div class="schedule-view active" id="weekly-view">
+                    <div class="timetable">
+                        <div class="timetable-header">
+                            <div class="time-column">Time</div>
+                            <div class="day-column">Monday</div>
+                            <div class="day-column">Tuesday</div>
+                            <div class="day-column">Wednesday</div>
+                            <div class="day-column">Thursday</div>
+                            <div class="day-column">Friday</div>
+                            <div class="day-column">Saturday</div>
+                        </div>
+                        <div class="timetable-body">
+                            <div class="time-slots">
+                                <div class="time-slot">7:00 AM</div>
+                                <div class="time-slot">8:00 AM</div>
+                                <div class="time-slot">9:00 AM</div>
+                                <div class="time-slot">10:00 AM</div>
+                                <div class="time-slot">11:00 AM</div>
+                                <div class="time-slot">12:00 PM</div>
+                                <div class="time-slot">1:00 PM</div>
+                                <div class="time-slot">2:00 PM</div>
+                                <div class="time-slot">3:00 PM</div>
+                                <div class="time-slot">4:00 PM</div>
+                                <div class="time-slot">5:00 PM</div>
+                                <div class="time-slot">6:00 PM</div>
+                                <div class="time-slot">7:00 PM</div>
+                            </div>
+                            <div class="schedule-grid" id="schedule-grid">
+                                <!-- Schedule items will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- List View -->
+                <div class="schedule-view" id="list-view">
+                    <div class="day-tabs">
+                        <button class="day-tab active" data-day="monday">Monday</button>
+                        <button class="day-tab" data-day="tuesday">Tuesday</button>
+                        <button class="day-tab" data-day="wednesday">Wednesday</button>
+                        <button class="day-tab" data-day="thursday">Thursday</button>
+                        <button class="day-tab" data-day="friday">Friday</button>
+                        <button class="day-tab" data-day="saturday">Saturday</button>
+                    </div>
+                    <div class="day-schedules">
+                        <div class="day-schedule active" id="monday-schedule">
+                            <div class="schedule-list" id="monday-list">
+                                <!-- Monday schedule items will be dynamically added here -->
+                            </div>
+                        </div>
+                        <div class="day-schedule" id="tuesday-schedule">
+                            <div class="schedule-list" id="tuesday-list">
+                                <!-- Tuesday schedule items will be dynamically added here -->
+                            </div>
+                        </div>
+                        <div class="day-schedule" id="wednesday-schedule">
+                            <div class="schedule-list" id="wednesday-list">
+                                <!-- Wednesday schedule items will be dynamically added here -->
+                            </div>
+                        </div>
+                        <div class="day-schedule" id="thursday-schedule">
+                            <div class="schedule-list" id="thursday-list">
+                                <!-- Thursday schedule items will be dynamically added here -->
+                            </div>
+                        </div>
+                        <div class="day-schedule" id="friday-schedule">
+                            <div class="schedule-list" id="friday-list">
+                                <!-- Friday schedule items will be dynamically added here -->
+                            </div>
+                        </div>
+                        <div class="day-schedule" id="saturday-schedule">
+                            <div class="schedule-list" id="saturday-list">
+                                <!-- Saturday schedule items will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Details Modal -->
+    <div class="modal" id="class-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-class-title">Class Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="class-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Course Code:</div>
+                        <div class="detail-value" id="modal-course-code"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Course Title:</div>
+                        <div class="detail-value" id="modal-course-name"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Schedule:</div>
+                        <div class="detail-value" id="modal-schedule"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Room:</div>
+                        <div class="detail-value" id="modal-room"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Students:</div>
+                        <div class="detail-value" id="modal-students"></div>
+                    </div>
+                </div>
+
+                <div class="student-list-section">
+                    <h3>Enrolled Students</h3>
+                    <div class="student-list" id="modal-student-list">
+                        <!-- Student list will be dynamically added here -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="view-course-btn">View Course Details</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/schedule.js"></script>
+    <script src="assets/js/teacher-data.js"></script>
+    <!-- Authentication Script -->
+    <script src="../assets/js/auth.js"></script>
+    <!-- Logout Script -->
+    <script src="../assets/js/logout.js"></script>
+</body>
+</html>

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings - Student Portal</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="../Admin/assets/css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="schedule.html" class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>My Schedule</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>My Courses</span>
+                </a>
+                <a href="grades.html" class="nav-link" data-page="grades">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Grades</span>
+                </a>
+                <a href="profile.html" class="nav-link active" data-page="profile">
+                    <i class="fas fa-user-cog"></i>
+                    <span>Profile Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/student-avatar.png" alt="Student Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Jane Smith</h3>
+                    <p>Computer Science</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Profile Settings</h1>
+                <div class="header-right">
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">1</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-container">
+                <div class="profile-header">
+                    <div class="profile-avatar-container">
+                        <div class="profile-avatar">
+                            <img src="assets/img/student-avatar.png" alt="Student Avatar" id="profile-avatar-img">
+                            <div class="avatar-overlay">
+                                <i class="fas fa-camera"></i>
+                                <span>Change</span>
+                            </div>
+                            <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="profile-title">
+                        <h2>Jane Smith</h2>
+                        <p>BS Computer Science, 3rd Year</p>
+                        <span class="profile-id">ID: 2023-0001</span>
+                    </div>
+                </div>
+
+                <div class="profile-tabs">
+                    <button class="tab-btn active" data-tab="personal">Personal Information</button>
+                    <button class="tab-btn" data-tab="academic">Academic Profile</button>
+                    <button class="tab-btn" data-tab="security">Security</button>
+                    <button class="tab-btn" data-tab="preferences">Preferences</button>
+                </div>
+
+                <div class="profile-content">
+                    <!-- Personal Information Tab -->
+                    <div class="tab-content active" id="personal-tab">
+                        <form id="personal-form">
+                            <div class="form-group">
+                                <label for="full-name">Full Name</label>
+                                <input type="text" id="full-name" value="Jane Smith">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="email">Email Address</label>
+                                    <input type="email" id="email" value="jane.smith@student.myccs.edu">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Phone Number</label>
+                                    <input type="tel" id="phone" value="+1 (555) 987-6543">
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="dob">Date of Birth</label>
+                                    <input type="date" id="dob" value="2002-05-15">
+                                </div>
+                                <div class="form-group">
+                                    <label for="gender">Gender</label>
+                                    <select id="gender">
+                                        <option value="female" selected>Female</option>
+                                        <option value="male">Male</option>
+                                        <option value="non-binary">Non-binary</option>
+                                        <option value="prefer-not">Prefer not to say</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Address</label>
+                                <textarea id="address" rows="3">123 College Ave, Apt 4B
+University City, CA 90210</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="emergency-contact">Emergency Contact</label>
+                                <input type="text" id="emergency-contact" value="Robert Smith (Father) - +1 (555) 123-4567">
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary">Cancel</button>
+                                <button type="submit" class="btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Academic Profile Tab -->
+                    <div class="tab-content" id="academic-tab">
+                        <form id="academic-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="program">Program</label>
+                                    <select id="program" disabled>
+                                        <option value="bscs" selected>BS Computer Science</option>
+                                        <option value="bsit">BS Information Technology</option>
+                                        <option value="bsis">BS Information Systems</option>
+                                    </select>
+                                    <small class="form-note">Contact the registrar to change your program</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="year-level">Year Level</label>
+                                    <select id="year-level" disabled>
+                                        <option value="1">1st Year</option>
+                                        <option value="2">2nd Year</option>
+                                        <option value="3" selected>3rd Year</option>
+                                        <option value="4">4th Year</option>
+                                    </select>
+                                    <small class="form-note">Year level is updated automatically</small>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="admission-year">Admission Year</label>
+                                    <input type="text" id="admission-year" value="2023" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="expected-graduation">Expected Graduation</label>
+                                    <input type="text" id="expected-graduation" value="2027" disabled>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="academic-status">Academic Status</label>
+                                <input type="text" id="academic-status" value="Good Standing" disabled>
+                            </div>
+                            <div class="form-group">
+                                <label for="advisor">Academic Advisor</label>
+                                <input type="text" id="advisor" value="Prof. John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="interests">Academic Interests</label>
+                                <textarea id="interests" rows="3">Artificial Intelligence, Web Development, Data Science</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="extracurricular">Extracurricular Activities</label>
+                                <textarea id="extracurricular" rows="3">Coding Club, Student Council, Robotics Team</textarea>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary">Cancel</button>
+                                <button type="submit" class="btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Security Tab -->
+                    <div class="tab-content" id="security-tab">
+                        <form id="security-form">
+                            <div class="form-group">
+                                <label for="current-password">Current Password</label>
+                                <input type="password" id="current-password">
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="new-password">New Password</label>
+                                    <input type="password" id="new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirm Password</label>
+                                    <input type="password" id="confirm-password">
+                                </div>
+                            </div>
+                            <div class="password-requirements">
+                                <h4>Password Requirements:</h4>
+                                <ul>
+                                    <li>At least 8 characters long</li>
+                                    <li>Contains at least one uppercase letter</li>
+                                    <li>Contains at least one number</li>
+                                    <li>Contains at least one special character</li>
+                                </ul>
+                            </div>
+                            <div class="form-group">
+                                <label>Two-Factor Authentication</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="two-factor" class="toggle-input">
+                                    <label for="two-factor" class="toggle-label"></label>
+                                    <span class="toggle-text">Enable two-factor authentication</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Privacy Settings</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="public-profile" class="toggle-input" checked>
+                                    <label for="public-profile" class="toggle-label"></label>
+                                    <span class="toggle-text">Make my profile visible to other students</span>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary">Cancel</button>
+                                <button type="submit" class="btn-primary">Update Password</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Preferences Tab -->
+                    <div class="tab-content" id="preferences-tab">
+                        <form id="preferences-form">
+                            <div class="form-group">
+                                <label>Theme Preference</label>
+                                <div class="theme-options">
+                                    <div class="theme-option">
+                                        <input type="radio" name="theme" id="theme-light" checked>
+                                        <label for="theme-light">
+                                            <div class="theme-preview light-theme"></div>
+                                            <span>Light</span>
+                                        </label>
+                                    </div>
+                                    <div class="theme-option">
+                                        <input type="radio" name="theme" id="theme-dark">
+                                        <label for="theme-dark">
+                                            <div class="theme-preview dark-theme"></div>
+                                            <span>Dark</span>
+                                        </label>
+                                    </div>
+                                    <div class="theme-option">
+                                        <input type="radio" name="theme" id="theme-system">
+                                        <label for="theme-system">
+                                            <div class="theme-preview system-theme"></div>
+                                            <span>System</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Dashboard Default View</label>
+                                <select id="dashboard-view">
+                                    <option value="schedule" selected>Schedule</option>
+                                    <option value="courses">Courses</option>
+                                    <option value="grades">Grades</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Notification Preferences</label>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Class Reminders</h4>
+                                        <p>Receive notifications before classes</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="class-reminders" class="toggle-input" checked>
+                                        <label for="class-reminders" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Assignment Deadlines</h4>
+                                        <p>Receive notifications for upcoming deadlines</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="assignment-reminders" class="toggle-input" checked>
+                                        <label for="assignment-reminders" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                                <div class="notification-option">
+                                    <div>
+                                        <h4>Grade Updates</h4>
+                                        <p>Receive notifications when grades are posted</p>
+                                    </div>
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="grade-updates" class="toggle-input" checked>
+                                        <label for="grade-updates" class="toggle-label"></label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-actions">
+                                <button type="button" class="btn-secondary">Reset to Default</button>
+                                <button type="submit" class="btn-primary">Save Preferences</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="../Admin/assets/js/profile.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/logout.js"></script>
+</body>
+</html>
