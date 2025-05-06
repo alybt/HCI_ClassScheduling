@@ -11,16 +11,24 @@ document.addEventListener('DOMContentLoaded', function() {
     const firstSemesterCourses = document.getElementById('first-semester-courses');
     const secondSemesterCourses = document.getElementById('second-semester-courses');
     const courseDetailsModal = document.getElementById('course-details-modal');
-    const closeModalBtn = document.querySelector('.close-modal');
-    
-    // Set default semester to 2nd semester (since it's May 2025)
-    semesterSelect.value = '2nd';
     
     // Initialize the semester tabs
     initializeSemesterTabs();
     
     // Load courses
     loadCourses();
+    
+    // Get URL parameters to check if we need to open a specific course
+    const urlParams = new URLSearchParams(window.location.search);
+    const courseParam = urlParams.get('course');
+    if (courseParam) {
+        // Find the course and open its details
+        const allCourses = [...firstSemesterCoursesData, ...secondSemesterCoursesData];
+        const course = allCourses.find(c => c.courseCode === courseParam);
+        if (course) {
+            setTimeout(() => showCourseDetails(course), 500);
+        }
+    }
     
     // Event listener for semester select
     semesterSelect.addEventListener('change', function() {
@@ -34,34 +42,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Close modal when clicking the close button
-    closeModalBtn.addEventListener('click', function() {
-        courseDetailsModal.style.display = 'none';
-    });
-    
-    // Close modal when clicking outside the modal content
-    window.addEventListener('click', function(e) {
-        if (e.target === courseDetailsModal) {
-            courseDetailsModal.style.display = 'none';
-        }
-    });
-    
     /**
      * Initialize semester tabs
      */
     function initializeSemesterTabs() {
-        // Set 2nd semester tab as active by default
+        // Get current semester from semester select
+        const currentSemester = semesterSelect.value;
+        
+        // Set current semester tab as active by default
         semesterTabs.forEach(tab => {
-            if (tab.getAttribute('data-semester') === '2nd') {
+            if (tab.getAttribute('data-semester') === currentSemester) {
                 tab.classList.add('active');
             } else {
                 tab.classList.remove('active');
             }
         });
         
-        // Set 2nd semester content as active by default
+        // Set current semester content as active by default
         semesterContents.forEach(content => {
-            if (content.id === '2nd-semester') {
+            if (content.id === `${currentSemester}-semester`) {
                 content.classList.add('active');
             } else {
                 content.classList.remove('active');
@@ -100,117 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
         firstSemesterCourses.innerHTML = '';
         secondSemesterCourses.innerHTML = '';
         
-        // 1st semester courses data
-        const firstSemesterCoursesData = [
-            {
-                courseCode: 'CC 100',
-                courseName: 'INTRODUCING TO COMPUTING',
-                schedule: 'MWF 9:00 AM - 10:30 AM',
-                room: 'LR 3',
-                students: 35,
-                type: 'Lecture'
-            },
-            {
-                courseCode: 'CC 100',
-                courseName: 'INTRODUCING TO COMPUTING (LAB)',
-                schedule: 'TTh 1:00 PM - 3:00 PM',
-                room: 'CL 1',
-                students: 35,
-                type: 'Laboratory'
-            },
-            {
-                courseCode: 'DS 111',
-                courseName: 'DISCRETE STRUCTURES 1',
-                schedule: 'MWF 10:30 AM - 12:00 PM',
-                room: 'LR 5',
-                students: 32,
-                type: 'Lecture'
-            },
-            {
-                courseCode: 'CC 101',
-                courseName: 'COMPUTER PROGRAMMING',
-                schedule: 'TTh 9:00 AM - 10:30 AM',
-                room: 'LR 4',
-                students: 30,
-                type: 'Lecture'
-            },
-            {
-                courseCode: 'CC 101',
-                courseName: 'COMPUTER PROGRAMMING (LAB)',
-                schedule: 'TTh 3:30 PM - 5:30 PM',
-                room: 'CL 2',
-                students: 30,
-                type: 'Laboratory'
-            }
-        ];
-        
-        // 2nd semester courses data
-        const secondSemesterCoursesData = [
-            {
-                courseCode: 'CC 102',
-                courseName: 'COMPUTER PROGRAMMING 2',
-                schedule: 'MWF 9:00 AM - 10:30 AM',
-                room: 'LR 3',
-                students: 33,
-                type: 'Lecture'
-            },
-            {
-                courseCode: 'CC 102',
-                courseName: 'COMPUTER PROGRAMMING 2 (LAB)',
-                schedule: 'TTh 1:00 PM - 3:00 PM',
-                room: 'CL 1',
-                students: 33,
-                type: 'Laboratory'
-            },
-            {
-                courseCode: 'WD 111',
-                courseName: 'WEB DEVELOPMENT 1',
-                schedule: 'MWF 10:30 AM - 12:00 PM',
-                room: 'LR 5',
-                students: 28,
-                type: 'Lecture'
-            },
-            {
-                courseCode: 'WD 111',
-                courseName: 'WEB DEVELOPMENT 1 (LAB)',
-                schedule: 'TTh 3:30 PM - 5:30 PM',
-                room: 'CL 2',
-                students: 28,
-                type: 'Laboratory'
-            },
-            {
-                courseCode: 'HCI 116',
-                courseName: 'HUMAN COMPUTER INTERACTION',
-                schedule: 'TTh 9:00 AM - 10:30 AM',
-                room: 'LR 4',
-                students: 25,
-                type: 'Lecture'
-            },
-            {
-                courseCode: 'DS 118',
-                courseName: 'DISCRETE STRUCTURES 2',
-                schedule: 'MWF 1:00 PM - 2:30 PM',
-                room: 'LR 6',
-                students: 30,
-                type: 'Lecture'
-            },
-            {
-                courseCode: 'OOP 112',
-                courseName: 'OBJECT ORIENTED PROGRAMMING',
-                schedule: 'TTh 10:30 AM - 12:00 PM',
-                room: 'LR 2',
-                students: 26,
-                type: 'Lecture'
-            },
-            {
-                courseCode: 'OOP 112',
-                courseName: 'OBJECT ORIENTED PROGRAMMING (LAB)',
-                schedule: 'WF 3:30 PM - 5:30 PM',
-                room: 'CL 3',
-                students: 26,
-                type: 'Laboratory'
-            }
-        ];
+        // Course data is now loaded from teacher-data.js
         
         // Create course cards for 1st semester
         firstSemesterCoursesData.forEach(course => {

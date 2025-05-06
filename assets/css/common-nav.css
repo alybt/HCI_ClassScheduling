@@ -1,0 +1,218 @@
+/* Common Navigation Styles for All User Types - Based on Admin Dashboard */
+
+/* Base sidebar styles */
+.sidebar {
+    width: 250px;
+    background-color: #0e2a1c;
+    color: white;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 100;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Remove all borders and lines */
+.sidebar .nav-menu,
+.sidebar .user-profile,
+.sidebar .logo,
+.sidebar .nav-link {
+    border: none;
+    border-bottom: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+/* Logo section styling */
+.sidebar .logo {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    background-color: #0a2014;
+    height: 60px;
+}
+
+.sidebar .logo-img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.sidebar .logo h2 {
+    color: white;
+    font-size: 18px;
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Navigation menu styling */
+.sidebar .nav-menu {
+    padding: 0;
+    margin: 0;
+    flex: 1;
+}
+
+.sidebar .nav-link {
+    padding: 12px 20px;
+    margin: 0;
+    border-radius: 0;
+    display: flex;
+    align-items: center;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    position: relative;
+    border-left: 4px solid transparent;
+}
+
+.sidebar .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.sidebar .nav-link.active {
+    background-color: #4caf50;
+    color: white;
+    border-left: 4px solid #2e7d32;
+}
+
+.sidebar .nav-link i {
+    font-size: 18px;
+    width: 24px;
+    text-align: center;
+    margin-right: 15px;
+    background: none;
+    height: auto;
+    display: inline;
+    border-radius: 0;
+}
+
+.sidebar .nav-link span {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* User profile section */
+.sidebar .user-profile {
+    padding: 15px 20px;
+    display: flex;
+    align-items: center;
+    background-color: #0a2014;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sidebar .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 10px;
+}
+
+.sidebar .user-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.sidebar .user-info {
+    flex: 1;
+}
+
+.sidebar .user-info h3 {
+    font-size: 14px;
+    margin: 0;
+    color: white;
+    font-weight: 500;
+}
+
+.sidebar .user-info p {
+    font-size: 12px;
+    margin: 0;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.sidebar .logout-btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: white;
+    text-decoration: none;
+}
+
+/* Main content adjustment */
+.container .main-content {
+    margin-left: 250px;
+    width: calc(100% - 250px);
+    transition: margin-left 0.3s ease, width 0.3s ease;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .sidebar .logo h2,
+    .sidebar .nav-link span,
+    .sidebar .user-info {
+        display: none;
+    }
+    
+    .container .main-content {
+        margin-left: 70px;
+        width: calc(100% - 70px);
+    }
+}
+
+@media (max-width: 576px) {
+    .sidebar {
+        width: 0;
+    }
+    
+    .sidebar.active {
+        width: 250px;
+    }
+    
+    .container .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Fix for any potential conflicts */
+.sidebar a.nav-link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.sidebar a.nav-link:hover,
+.sidebar a.nav-link.active {
+    color: white;
+}
+
+/* Ensure proper spacing for content */
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Fix for any potential z-index issues */
+.sidebar {
+    z-index: 1000;
+}
+
+/* Ensure proper font rendering */
+.sidebar * {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}

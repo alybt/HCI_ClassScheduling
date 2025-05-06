@@ -1,14 +1,16 @@
 /**
  * Student Dashboard JavaScript
- * Handles the main functionality for the student dashboard
+ * Handles common functionality across all student pages
  */
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the dashboard
-    initializeDashboard();
-    
-    // Set up event listeners
-    setupEventListeners();
+    // Set current date in the header if date display exists
+    const currentDateDisplay = document.getElementById('current-date');
+    if (currentDateDisplay) {
+        const now = new Date();
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        currentDateDisplay.textContent = now.toLocaleDateString('en-US', options);
+    }
     
     // Set default semester to 2nd semester (since it's May 2025)
     const semesterSelect = document.getElementById('semester-select');
@@ -20,10 +22,38 @@ document.addEventListener('DOMContentLoaded', function() {
         if (firstSemOption) {
             firstSemOption.disabled = true;
         }
+        
+        // Trigger change event to update any dependent components
+        const event = new Event('change');
+        semesterSelect.dispatchEvent(event);
     }
     
-    // Update the current date
-    updateCurrentDate();
+    // Initialize sidebar navigation
+    initializeSidebar();
+    
+    // Initialize modals
+    initializeModals();
+    
+    // Initialize dashboard if on dashboard page
+    if (window.location.pathname.includes('index.html') || window.location.pathname.endsWith('/')) {
+        initializeDashboard();
+    }
+    
+    // Handle logout button
+    const logoutBtn = document.querySelector('.logout-btn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            logout();
+        });
+    }
+    
+    // Set student name if element exists
+    const userNameElement = document.getElementById('user-name');
+    if (userNameElement) {
+        const studentName = sessionStorage.getItem('studentName') || 'John Smith';
+        userNameElement.textContent = studentName;
+    }
 });
 
 /**
@@ -89,15 +119,71 @@ function updateDashboardStats(studentData) {
 }
 
 /**
- * Update the current date display
+ * Initialize sidebar navigation
  */
-function updateCurrentDate() {
-    const dateElement = document.getElementById('current-date');
-    if (dateElement) {
-        const now = new Date();
-        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-        dateElement.textContent = now.toLocaleDateString('en-US', options);
+function initializeSidebar() {
+    // Handle mobile sidebar toggle if it exists
+    const sidebarToggle = document.querySelector('.sidebar-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+    
+    if (sidebarToggle && sidebar && mainContent) {
+        sidebarToggle.addEventListener('click', function() {
+            sidebar.classList.toggle('active');
+            mainContent.classList.toggle('sidebar-active');
+        });
     }
+    
+    // Highlight current page in navigation
+    const currentPage = window.location.pathname.split('/').pop();
+    const navLinks = document.querySelectorAll('.nav-link');
+    
+    navLinks.forEach(link => {
+        const linkPage = link.getAttribute('href');
+        if (linkPage === currentPage || 
+            (currentPage === '' && linkPage === 'index.html')) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+}
+
+/**
+ * Initialize all modals on the page
+ */
+function initializeModals() {
+    const modals = document.querySelectorAll('.modal');
+    const closeButtons = document.querySelectorAll('.close-modal');
+    
+    // Close modal when clicking the close button
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+    
+    // Close modal when clicking outside the modal content
+    window.addEventListener('click', function(e) {
+        modals.forEach(modal => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    });
+}
+
+/**
+ * Logout function
+ */
+function logout() {
+    // Clear session storage
+    sessionStorage.clear();
+    // Redirect to login page
+    window.location.href = '../index.html';
 }
 
 /**

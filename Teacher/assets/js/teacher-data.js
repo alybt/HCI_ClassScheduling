@@ -441,22 +441,122 @@ function getStudentsInCourse(courseCode) {
     return students.slice(0, courses[courseCode].enrolled);
 }
 
+// First semester courses data for courses.js
+const firstSemesterCoursesData = [
+    {
+        courseCode: 'CC 100',
+        courseName: 'INTRODUCING TO COMPUTING',
+        schedule: 'MWF 9:00 AM - 10:30 AM',
+        room: 'LR 3',
+        students: 35,
+        type: 'Lecture'
+    },
+    {
+        courseCode: 'CC 100',
+        courseName: 'INTRODUCING TO COMPUTING (LAB)',
+        schedule: 'TTh 1:00 PM - 3:00 PM',
+        room: 'CL 1',
+        students: 35,
+        type: 'Laboratory'
+    },
+    {
+        courseCode: 'DS 111',
+        courseName: 'DISCRETE STRUCTURES 1',
+        schedule: 'MWF 10:30 AM - 12:00 PM',
+        room: 'LR 5',
+        students: 32,
+        type: 'Lecture'
+    },
+    {
+        courseCode: 'CC 101',
+        courseName: 'COMPUTER PROGRAMMING',
+        schedule: 'TTh 9:00 AM - 10:30 AM',
+        room: 'LR 4',
+        students: 30,
+        type: 'Lecture'
+    },
+    {
+        courseCode: 'CC 101',
+        courseName: 'COMPUTER PROGRAMMING (LAB)',
+        schedule: 'TTh 3:30 PM - 5:30 PM',
+        room: 'CL 2',
+        students: 30,
+        type: 'Laboratory'
+    }
+];
+
+// Second semester courses data for courses.js
+const secondSemesterCoursesData = [
+    {
+        courseCode: 'CC 102',
+        courseName: 'COMPUTER PROGRAMMING 2',
+        schedule: 'MWF 9:00 AM - 10:30 AM',
+        room: 'LR 3',
+        students: 33,
+        type: 'Lecture'
+    },
+    {
+        courseCode: 'CC 102',
+        courseName: 'COMPUTER PROGRAMMING 2 (LAB)',
+        schedule: 'TTh 1:00 PM - 3:00 PM',
+        room: 'CL 1',
+        students: 33,
+        type: 'Laboratory'
+    },
+    {
+        courseCode: 'WD 111',
+        courseName: 'WEB DEVELOPMENT 1',
+        schedule: 'MWF 10:30 AM - 12:00 PM',
+        room: 'LR 5',
+        students: 28,
+        type: 'Lecture'
+    },
+    {
+        courseCode: 'WD 111',
+        courseName: 'WEB DEVELOPMENT 1 (LAB)',
+        schedule: 'TTh 3:30 PM - 5:30 PM',
+        room: 'CL 2',
+        students: 28,
+        type: 'Laboratory'
+    },
+    {
+        courseCode: 'HCI 116',
+        courseName: 'HUMAN COMPUTER INTERACTION',
+        schedule: 'TTh 9:00 AM - 10:30 AM',
+        room: 'LR 4',
+        students: 25,
+        type: 'Lecture'
+    },
+    {
+        courseCode: 'DS 118',
+        courseName: 'DISCRETE STRUCTURES 2',
+        schedule: 'MWF 1:00 PM - 2:30 PM',
+        room: 'LR 6',
+        students: 30,
+        type: 'Lecture'
+    },
+    {
+        courseCode: 'OOP 112',
+        courseName: 'OBJECT ORIENTED PROGRAMMING',
+        schedule: 'TTh 10:30 AM - 12:00 PM',
+        room: 'LR 2',
+        students: 26,
+        type: 'Lecture'
+    },
+    {
+        courseCode: 'OOP 112',
+        courseName: 'OBJECT ORIENTED PROGRAMMING (LAB)',
+        schedule: 'WF 3:30 PM - 5:30 PM',
+        room: 'CL 3',
+        students: 26,
+        type: 'Laboratory'
+    }
+];
+
 // Initialize the teacher interface
 document.addEventListener('DOMContentLoaded', function() {
+    // Store teacher data in session storage for access across pages
     const currentTeacher = getCurrentTeacher();
-    
-    // Set teacher name in the sidebar
-    const teacherNameElement = document.getElementById('teacher-name');
-    if (teacherNameElement) {
-        teacherNameElement.textContent = currentTeacher.name;
-    }
-    
-    // Initialize semester select
-    const semesterSelect = document.getElementById('semester-select');
-    if (semesterSelect) {
-        semesterSelect.addEventListener('change', function() {
-            // In a real application, this would update the displayed data
-            console.log('Semester changed to:', this.value);
-        });
-    }
+    sessionStorage.setItem('teacherName', currentTeacher.name);
+    sessionStorage.setItem('teacherId', currentTeacher.id);
 });
