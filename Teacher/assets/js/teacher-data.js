@@ -455,7 +455,7 @@ const firstSemesterCoursesData = [
         courseCode: 'CC 100',
         courseName: 'INTRODUCING TO COMPUTING (LAB)',
         schedule: 'TTh 1:00 PM - 3:00 PM',
-        room: 'CL 1',
+        room: 'LR 1',
         students: 35,
         type: 'Laboratory'
     },
@@ -479,7 +479,7 @@ const firstSemesterCoursesData = [
         courseCode: 'CC 101',
         courseName: 'COMPUTER PROGRAMMING (LAB)',
         schedule: 'TTh 3:30 PM - 5:30 PM',
-        room: 'CL 2',
+        room: 'LR 2',
         students: 30,
         type: 'Laboratory'
     }
@@ -499,7 +499,7 @@ const secondSemesterCoursesData = [
         courseCode: 'CC 102',
         courseName: 'COMPUTER PROGRAMMING 2 (LAB)',
         schedule: 'TTh 1:00 PM - 3:00 PM',
-        room: 'CL 1',
+        room: 'LR 1',
         students: 33,
         type: 'Laboratory'
     },
@@ -515,7 +515,7 @@ const secondSemesterCoursesData = [
         courseCode: 'WD 111',
         courseName: 'WEB DEVELOPMENT 1 (LAB)',
         schedule: 'TTh 3:30 PM - 5:30 PM',
-        room: 'CL 2',
+        room: 'LR 2',
         students: 28,
         type: 'Laboratory'
     },
@@ -531,7 +531,7 @@ const secondSemesterCoursesData = [
         courseCode: 'DS 118',
         courseName: 'DISCRETE STRUCTURES 2',
         schedule: 'MWF 1:00 PM - 2:30 PM',
-        room: 'LR 6',
+        room: 'LR 3',
         students: 30,
         type: 'Lecture'
     },
@@ -547,7 +547,7 @@ const secondSemesterCoursesData = [
         courseCode: 'OOP 112',
         courseName: 'OBJECT ORIENTED PROGRAMMING (LAB)',
         schedule: 'WF 3:30 PM - 5:30 PM',
-        room: 'CL 3',
+        room: 'LR 3',
         students: 26,
         type: 'Laboratory'
     }

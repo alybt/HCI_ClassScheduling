@@ -168,7 +168,7 @@ tbody tr:hover {
 
 .teacher-info strong {
     font-weight: 600;
-    color: #333;
+    color: #000;
     display: block;
     line-height: 1.4;
     font-size: 15px;
@@ -177,7 +177,7 @@ tbody tr:hover {
 
 .teacher-info span {
     font-size: 13px;
-    color: #777;
+    color: #000;
     display: block;
     line-height: 1.4;
 }
@@ -340,13 +340,13 @@ tbody tr:hover {
 .teacher-profile-info h3 {
     margin: 0 0 5px 0;
     font-size: 24px;
-    color: #333;
+    color: #000;
     font-weight: 600;
 }
 
 .teacher-profile-info p {
     margin: 0 0 8px 0;
-    color: #666;
+    color: #000;
     font-size: 15px;
 }
 
@@ -367,7 +367,7 @@ tbody tr:hover {
 .detail-section h4 {
     margin: 0 0 15px 0;
     font-size: 18px;
-    color: #333;
+    color: #000;
     padding-bottom: 10px;
     border-bottom: 1px solid #eaeaea;
     font-weight: 600;
@@ -382,13 +382,13 @@ tbody tr:hover {
 .detail-label {
     width: 120px;
     font-weight: 500;
-    color: #555;
+    color: #000;
     flex-shrink: 0;
 }
 
 .detail-value {
     flex: 1;
-    color: #333;
+    color: #000;
 }
 
 /* Schedule Grid */

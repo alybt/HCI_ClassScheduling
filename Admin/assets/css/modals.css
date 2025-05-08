@@ -190,12 +190,12 @@
 .detail-label {
     width: 120px;
     font-weight: 500;
-    color: #555;
+    color: #000;
 }
 
 .detail-value {
     flex: 1;
-    color: #333;
+    color: #000;
 }
 
 /* Schedule Styles */

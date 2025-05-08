@@ -308,6 +308,7 @@
 
 .modal-content {
     background-color: white;
+    color: #333;
     border-radius: 10px;
     width: 90%;
     max-width: 600px;
@@ -354,20 +355,20 @@
 .detail-label {
     width: 120px;
     font-weight: 600;
-    color: #555;
+    color: #000;
     font-size: 14px;
 }
 
 .detail-value {
     flex: 1;
-    color: #333;
+    color: black;
     font-size: 14px;
 }
 
 .student-list-section h3 {
     font-size: 16px;
     margin: 0 0 15px 0;
-    color: #333;
+    color: #000;
     border-bottom: 1px solid #eee;
     padding-bottom: 10px;
 }
@@ -432,6 +433,10 @@
 
 .btn-primary:hover {
     background-color: #388e3c;
+}
+
+.course-details{
+    color: #333;
 }
 
 /* Responsive Styles */

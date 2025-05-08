@@ -94,7 +94,7 @@ th {
     padding: 12px 15px;
     text-align: left;
     font-weight: 600;
-    color: #333;
+    color: #000;
     border-bottom: 2px solid #ddd;
     white-space: nowrap;
 }
@@ -102,7 +102,7 @@ th {
 td {
     padding: 12px 15px;
     border-bottom: 1px solid #eee;
-    color: #555;
+    color: #000;
     vertical-align: top;
     white-space: normal;
     word-wrap: break-word;
@@ -138,14 +138,14 @@ tbody tr:hover {
 
 .student-info strong {
     font-weight: 600;
-    color: #333;
+    color: #000;
     display: block;
     line-height: 1.3;
 }
 
 .student-info span {
     font-size: 13px;
-    color: #777;
+    color: #000;
     display: block;
     line-height: 1.3;
 }
