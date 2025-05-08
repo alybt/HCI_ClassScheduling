@@ -1,1 +1,3 @@
-# HCI_ClassScheduling
+HCI_ClassScheduling
+
+This is for Project Purposes :)) 
