@@ -1,0 +1,320 @@
+/* Dashboard Styles */
+
+/* Dashboard Container */
+.dashboard-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Section Styling */
+.overview-section,
+.activity-section,
+.room-section,
+.approvals-section {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.section-header h2 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-dark);
+}
+
+.date-display {
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.view-all {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.view-all:hover {
+    text-decoration: underline;
+}
+
+/* Stats Cards */
+.stats-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    background-color: var(--bg-light);
+    border-radius: 8px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    background-color: var(--primary-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 24px;
+}
+
+.stat-info {
+    flex: 1;
+}
+
+.stat-info h3 {
+    margin: 0 0 5px 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.stat-info p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Activity List */
+.activity-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-light);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    font-size: 18px;
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-details h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: var(--text-dark);
+}
+
+.activity-details p {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.activity-time {
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+/* Room Status */
+.room-status.room-grid,
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.room-card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s;
+    border-left: 4px solid transparent;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+}
+
+.room-card h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: var(--text-dark);
+}
+
+.room-card p {
+    margin: 0 0 10px 0;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+.room-status {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.room-card.available {
+    border-left-color: var(--success-color);
+}
+
+.room-card.occupied {
+    border-left-color: var(--danger-color);
+}
+
+.room-card.maintenance {
+    border-left-color: var(--warning-color);
+}
+
+/* Pending Approvals */
+.approvals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.approval-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 15px;
+    background-color: var(--bg-light);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    transition: background-color 0.3s;
+}
+
+.approval-details {
+    flex: 1;
+}
+
+.approval-details h3 {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: var(--text-dark);
+}
+
+.approval-details p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.approval-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.btn-approve, .btn-reject {
+    width: 36px;
+    height: 36px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.btn-approve {
+    background-color: var(--success-light);
+    color: var(--success-color);
+}
+
+.btn-approve:hover {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.btn-reject {
+    background-color: var(--danger-light);
+    color: var(--danger-color);
+}
+
+.btn-reject:hover {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+.btn-approve:disabled, .btn-reject:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 992px) {
+    .dashboard-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .stats-cards {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .room-status-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .stats-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .room-status-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .approval-item {
+        flex-direction: column;
+    }
+    
+    .approval-actions {
+        margin-top: 15px;
+    }
+}
