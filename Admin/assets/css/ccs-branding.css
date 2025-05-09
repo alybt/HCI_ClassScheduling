@@ -1,0 +1,165 @@
+/* CCS Branding Styles */
+
+:root {
+    /* CCS Brand Colors */
+    --ccs-dark-green: #1e3a2b;
+    --ccs-light-green: #4caf50;
+    --ccs-accent: #8bc34a;
+    --ccs-light-bg: #f5f5f5;
+    --ccs-text-dark: #333333;
+    --ccs-text-light: #ffffff;
+}
+
+/* CCS Logo Styling */
+.logo {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-bottom: 5px;
+}
+
+.logo-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background-color: white;
+    padding: 2px;
+    transition: transform 0.3s ease;
+}
+
+.logo:hover .logo-img {
+    transform: scale(1.1);
+}
+
+.logo h2 {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* CCS-themed activity icons */
+.activity-icon {
+    background-color: var(--ccs-light-green);
+    color: white;
+}
+
+.activity-icon.conflict {
+    background-color: var(--alert-color);
+}
+
+.activity-icon.reschedule {
+    background-color: var(--warning-color);
+}
+
+.activity-icon.not-set {
+    background-color: var(--text-light);
+}
+
+/* CCS-themed stat cards */
+.stat-card {
+    border-left: 4px solid var(--ccs-light-green);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.stat-icon {
+    background-color: rgba(76, 175, 80, 0.1);
+    color: var(--ccs-light-green);
+}
+
+/* Improve section headers with CCS branding */
+.section-header {
+    border-bottom: 2px solid var(--ccs-light-green);
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    color: var(--ccs-dark-green);
+    font-weight: 600;
+    position: relative;
+}
+
+.section-header h2::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background-color: var(--ccs-light-green);
+}
+
+/* Enhance room cards with CCS branding */
+.room-card {
+    border-left: 4px solid var(--ccs-light-green);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.room-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Enhance buttons with CCS branding */
+.btn-primary, .btn, button, .search-container button, .toggle-btn.active {
+    background-color: var(--ccs-dark-green);
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover, .btn:hover, button:hover, .search-container button:hover {
+    background-color: var(--ccs-light-green);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(30, 58, 43, 0.3);
+}
+
+/* Exception for secondary buttons */
+.btn-secondary {
+    background-color: #f5f5f5;
+    color: var(--ccs-dark-green);
+    border: 1px solid var(--ccs-dark-green);
+}
+
+.btn-secondary:hover {
+    background-color: #e0e0e0;
+    color: var(--ccs-dark-green);
+}
+
+/* Scrollbar styling for main content only */
+.main-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.main-content::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.main-content::-webkit-scrollbar-thumb {
+    background: var(--ccs-light-green);
+    border-radius: 4px;
+}
+
+.main-content::-webkit-scrollbar-thumb:hover {
+    background: var(--ccs-dark-green);
+}
+
+/* Hide scrollbar for sidebar */
+.sidebar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.sidebar::-webkit-scrollbar {
+    display: none; /* Chrome, Safari and Opera */
+}

@@ -6,10 +6,11 @@
     <title>Admin Dashboard - Class Scheduling System</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/chat.css">
-    <link rel="stylesheet" href="assets/css/nav-enhanced.css">
     <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
     <link rel="stylesheet" href="assets/css/dashboard.css">
     <link rel="stylesheet" href="assets/css/breadcrumbs.css">
+    <link rel="stylesheet" href="assets/css/ccs-branding.css">
+    <link rel="stylesheet" href="assets/css/profile-dropdown.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -58,7 +59,7 @@
                     <span>Settings</span>
                 </a>
             </nav>
-            <div class="user-profile">
+            <div class="user-profile" id="open-profile-modal">
                 <div class="user-avatar">
                     <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
                 </div>
@@ -309,9 +310,94 @@
         </div>
     </div>
 
+    <!-- Profile Edit Modal -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-modal-content">
+            <div class="profile-modal-header">
+                <h2><i class="fas fa-user-edit"></i> Edit Profile</h2>
+                <button class="close-profile-modal" id="close-profile-modal">&times;</button>
+            </div>
+            <div class="profile-avatar-upload">
+                <div class="current-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Current Avatar">
+                </div>
+                <button class="avatar-upload-btn">
+                    <i class="fas fa-upload"></i> Change Avatar
+                </button>
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-name">Name</label>
+                <input type="text" id="profile-name" value="Admin User">
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-email">Email</label>
+                <input type="email" id="profile-email" value="admin@myccs.edu">
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-password">New Password</label>
+                <input type="password" id="profile-password" placeholder="Leave blank to keep current password">
+            </div>
+            <div class="profile-modal-footer">
+                <button class="cancel-profile-btn" id="cancel-profile-btn">Cancel</button>
+                <button class="save-profile-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
     <script src="assets/js/main.js"></script>
     <script src="assets/js/dashboard.js"></script>
     <script src="assets/js/chat.js"></script>
+    
+    <script>
+        // Profile modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileModal = document.getElementById('profile-modal');
+            const userProfile = document.getElementById('open-profile-modal');
+            const closeProfileModal = document.getElementById('close-profile-modal');
+            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            // Open modal functions
+            function openModal() {
+                profileModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+            
+            // Close modal function
+            function closeModal() {
+                profileModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            if (userProfile) {
+                userProfile.addEventListener('click', function(e) {
+                    // Don't open modal if logout button was clicked
+                    if (!e.target.closest('.logout-btn')) {
+                        e.preventDefault();
+                        openModal();
+                    }
+                });
+            }
+            
+            // Prevent logout button from triggering modal
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            if (closeProfileModal) closeProfileModal.addEventListener('click', closeModal);
+            if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === profileModal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
     <script src="assets/js/nav-enhanced.js"></script>
     <script src="../assets/js/auth.js"></script>
     <script src="../assets/js/logout.js"></script>

@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/settings.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="assets/css/ccs-branding.css">
+    <link rel="stylesheet" href="assets/css/profile-dropdown.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link active" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile" id="open-profile-modal">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>System Settings</h1>
+                <div class="header-right">
+                    <div class="search-container">
+                        <input type="text" placeholder="Search settings...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge">3</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-header with save button -->
+            <div class="sub-header">
+                <p>Manage your system preferences and account settings</p>
+                <button class="btn-save-settings" id="save-all-settings">
+                    <i class="fas fa-save"></i>
+                    Save All Changes
+                </button>
+            </div>
+
+            <div class="settings-container">
+                <!-- Account Settings Section -->
+                <div class="settings-grid">
+                    <div class="settings-section-header">
+                        <i class="fas fa-user-cog"></i> Account Settings
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Admin Name</div>
+                        <div class="settings-input">
+                            <input type="text" id="admin-name" value="Admin User">
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Email Address</div>
+                        <div class="settings-input">
+                            <input type="email" id="admin-email" value="admin@myccs.edu">
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Change Password</div>
+                        <div class="settings-input">
+                            <input type="password" id="admin-password" placeholder="Enter new password">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- System Preferences Section -->
+                <div class="settings-grid">
+                    <div class="settings-section-header">
+                        <i class="fas fa-sliders-h"></i> System Preferences
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Dark Mode</div>
+                        <div class="settings-input">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="dark-mode" checked>
+                                <label for="dark-mode">Enable Dark Mode</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Auto Logout</div>
+                        <div class="settings-input">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="auto-logout" checked>
+                                <label for="auto-logout">Auto Logout after 30 minutes</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Timezone</div>
+                        <div class="settings-input">
+                            <select id="timezone">
+                                <option value="UTC+8">Philippines (UTC+8)</option>
+                                <option value="UTC+0">UTC</option>
+                                <option value="UTC-8">Pacific Time</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Notification Settings Section -->
+                <div class="settings-grid" style="margin-top: 30px;">
+                    <div class="settings-section-header">
+                        <i class="fas fa-bell"></i> Notification Settings
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Email Notifications</div>
+                        <div class="settings-input">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="email-notif" checked>
+                                <label for="email-notif">Receive email notifications</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">System Notifications</div>
+                        <div class="settings-input">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="system-notif" checked>
+                                <label for="system-notif">Show system notifications</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Schedule Conflict Alerts</div>
+                        <div class="settings-input">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="schedule-alerts">
+                                <label for="schedule-alerts">Receive schedule conflict alerts</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Security Settings Section -->
+                <div class="settings-grid" style="margin-top: 30px;">
+                    <div class="settings-section-header">
+                        <i class="fas fa-shield-alt"></i> Security Settings
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Two-Factor Authentication</div>
+                        <div class="settings-input">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="two-factor" checked>
+                                <label for="two-factor">Enable two-factor authentication</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Login Alerts</div>
+                        <div class="settings-input">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="login-alerts">
+                                <label for="login-alerts">Receive login alerts</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Session Timeout</div>
+                        <div class="settings-input">
+                            <select id="session-timeout">
+                                <option value="30">30 minutes</option>
+                                <option value="60">1 hour</option>
+                                <option value="120">2 hours</option>
+                            </select>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                
+                <!-- Backup & Restore Section -->
+                <div class="settings-grid" style="margin-top: 30px;">
+                    <div class="settings-section-header">
+                        <i class="fas fa-database"></i> Backup & Restore
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Last Backup</div>
+                        <div class="settings-input">
+                            Today at 09:15 (Total Size: 2.3 GB)
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Automatic Backup</div>
+                        <div class="settings-input">
+                            <div class="toggle-switch">
+                                <input type="checkbox" id="auto-backup" checked>
+                                <label for="auto-backup">Automatic Daily Backup</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Backup Actions</div>
+                        <div class="settings-input">
+                            <div class="btn-container">
+                                <button class="btn-save-settings">
+                                    <i class="fas fa-cloud-upload-alt"></i>
+                                    Backup Now
+                                </button>
+                                <button class="btn-save-settings" style="margin-left: 10px;">
+                                    <i class="fas fa-cloud-download-alt"></i>
+                                    Restore
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- System Log Section -->
+                <div class="settings-grid" style="margin-top: 30px;">
+                    <div class="settings-section-header">
+                        <i class="fas fa-history"></i> System Log
+                        <button class="btn-refresh-log" style="margin-left: auto; background: transparent; color: white; box-shadow: none;">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Today at 09:15</div>
+                        <div class="settings-input">
+                            <div class="action">System backup completed successfully</div>
+                            <div class="user"><i class="fas fa-robot"></i> System</div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Today at 08:30</div>
+                        <div class="settings-input">
+                            <div class="action">Security settings updated</div>
+                            <div class="user"><i class="fas fa-user"></i> Admin User</div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label">Today at 08:00</div>
+                        <div class="settings-input">
+                            <div class="action">Database optimization completed</div>
+                            <div class="user"><i class="fas fa-robot"></i> System</div>
+                        </div>
+                    </div>
+                    
+                    <div class="settings-row">
+                        <div class="settings-label" style="border-top: 1px solid #ddd;"></div>
+                        <div class="settings-input" style="border-top: 1px solid #ddd;">
+                            <button class="btn-view-all-logs">
+                                <i class="fas fa-external-link-alt"></i>
+                                View All Logs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-footer">
+                    <button class="btn-save-settings">
+                        <i class="fas fa-save"></i>
+                        Save All Changes
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-modal-content">
+            <div class="profile-modal-header">
+                <h2><i class="fas fa-user-edit"></i> Edit Profile</h2>
+                <button class="close-profile-modal" id="close-profile-modal">&times;</button>
+            </div>
+            <div class="profile-avatar-upload">
+                <div class="current-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Current Avatar">
+                </div>
+                <button class="avatar-upload-btn">
+                    <i class="fas fa-upload"></i> Change Avatar
+                </button>
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-name">Name</label>
+                <input type="text" id="profile-name" value="Admin User">
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-email">Email</label>
+                <input type="email" id="profile-email" value="admin@myccs.edu">
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-password">New Password</label>
+                <input type="password" id="profile-password" placeholder="Leave blank to keep current password">
+            </div>
+            <div class="profile-modal-footer">
+                <button class="cancel-profile-btn" id="cancel-profile-btn">Cancel</button>
+                <button class="save-profile-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/nav-enhanced.js"></script>
+    
+    <script>
+        // Profile modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileModal = document.getElementById('profile-modal');
+            const userProfile = document.getElementById('open-profile-modal');
+            const closeProfileModal = document.getElementById('close-profile-modal');
+            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            // Open modal functions
+            function openModal() {
+                profileModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+            
+            // Close modal function
+            function closeModal() {
+                profileModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            if (userProfile) {
+                userProfile.addEventListener('click', function(e) {
+                    // Don't open modal if logout button was clicked
+                    if (!e.target.closest('.logout-btn')) {
+                        e.preventDefault();
+                        openModal();
+                    }
+                });
+            }
+            
+            // Prevent logout button from triggering modal
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            if (closeProfileModal) closeProfileModal.addEventListener('click', closeModal);
+            if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === profileModal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+    <script>
+        // Add event listeners for settings interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Save settings button
+            const saveButtons = document.querySelectorAll('.btn-save-settings');
+            saveButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Show save confirmation
+                    showNotification('Settings saved successfully!');
+                });
+            });
+
+            // Toggle switches
+            const toggleSwitches = document.querySelectorAll('.toggle-switch input[type="checkbox"]');
+            toggleSwitches.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    // Show toggle confirmation
+                    showNotification(`${this.parentElement.querySelector('label').textContent} ${this.checked ? 'enabled' : 'disabled'}`);
+                });
+            });
+
+            // Notification function
+            function showNotification(message) {
+                // Implementation would go here
+                console.log('Notification:', message);
+            }
+        });
+    </script>
+</body>
+</html>

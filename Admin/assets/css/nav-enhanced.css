@@ -10,6 +10,34 @@
     --transition-speed: 0.3s;
 }
 
+/* Navigation Menu Fixes */
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-menu .nav-link {
+    text-decoration: none;
+    position: relative;
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    transition: background-color var(--transition-speed);
+    border: none;
+    outline: none;
+}
+
+.nav-menu .nav-link::before,
+.nav-menu .nav-link::after {
+    display: none;
+}
+
+.nav-menu .nav-link.active {
+    background-color: var(--active-bg);
+    border: none;
+}
+
 /* Sidebar Enhancement */
 .sidebar {
     background: linear-gradient(to bottom, var(--primary-dark), var(--primary-color));

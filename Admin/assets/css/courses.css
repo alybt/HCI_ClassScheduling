@@ -1,5 +1,14 @@
 /* Courses Management Page Styles */
 
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--bg-light);
+    box-sizing: border-box;
+}
+
 /* Main Container */
 .courses-container {
     padding: 20px;
@@ -87,13 +96,13 @@
     background-color: var(--primary-light);
     color: var(--text-dark);
     text-align: left;
-    padding: 12px 15px;
+    padding: 8px 12px;  /* Reduced padding */
     font-weight: 600;
     border-bottom: 2px solid var(--border-color);
 }
 
 .course-table td {
-    padding: 12px 15px;
+    padding: 8px 12px;  /* Reduced padding */
     border-bottom: 1px solid var(--border-color);
     color: var(--text-dark);
 }
@@ -110,18 +119,19 @@
 .course-info {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;  /* Reduced gap */
 }
 
 .course-info div {
     display: flex;
     flex-direction: column;
+    gap: 2px;  /* Added small gap between elements */
 }
 
 .course-info span {
     font-size: 12px;
     color: var(--text-muted);
-    margin-top: 3px;
+    margin-top: 0;  /* Removed top margin */
 }
 
 .course-icon {

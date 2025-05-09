@@ -79,91 +79,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
-    // Mobile sidebar toggle
-    const toggleSidebar = document.createElement('button');
-    toggleSidebar.classList.add('sidebar-toggle');
-    toggleSidebar.innerHTML = '<i class="fas fa-bars"></i>';
-    document.querySelector('.header').prepend(toggleSidebar);
-    
-    toggleSidebar.addEventListener('click', function() {
-        const sidebar = document.querySelector('.sidebar');
-        sidebar.classList.toggle('expanded');
-        
-        // Update toggle icon
-        const icon = this.querySelector('i');
-        if (sidebar.classList.contains('expanded')) {
-            icon.classList.remove('fa-bars');
-            icon.classList.add('fa-times');
-        } else {
-            icon.classList.remove('fa-times');
-            icon.classList.add('fa-bars');
-        }
-    });
-    
-    // Add breadcrumbs based on current page
-    createBreadcrumbs();
-    
     // Track user navigation patterns for analytics
     trackNavigation();
 });
 
-/**
- * Creates breadcrumb navigation based on current page
- */
-function createBreadcrumbs() {
-    const currentPage = window.location.pathname.split('/').pop();
-    const header = document.querySelector('.header');
-    
-    if (!header) return;
-    
-    // Create breadcrumbs container
-    const breadcrumbs = document.createElement('div');
-    breadcrumbs.classList.add('breadcrumbs');
-    
-    // Add home/dashboard link
-    const homeLink = document.createElement('a');
-    homeLink.href = 'index.html';
-    homeLink.textContent = 'Dashboard';
-    breadcrumbs.appendChild(homeLink);
-    
-    // Add separator
-    const separator = document.createElement('span');
-    separator.classList.add('breadcrumb-separator');
-    separator.innerHTML = '<i class="fas fa-chevron-right"></i>';
-    breadcrumbs.appendChild(separator);
-    
-    // Add current page
-    const currentPageName = getCurrentPageName(currentPage);
-    const currentPageSpan = document.createElement('span');
-    currentPageSpan.classList.add('current-page');
-    currentPageSpan.textContent = currentPageName;
-    breadcrumbs.appendChild(currentPageSpan);
-    
-    // Insert breadcrumbs after header title
-    const headerTitle = header.querySelector('h1');
-    if (headerTitle) {
-        headerTitle.after(breadcrumbs);
-    }
-}
 
-/**
- * Gets a user-friendly name for the current page
- */
-function getCurrentPageName(page) {
-    const pageMap = {
-        'index.html': 'Dashboard',
-        'students.html': 'Student Database',
-        'teachers.html': 'Teacher Database',
-        'courses.html': 'Course Management',
-        'rooms.html': 'Room Management',
-        'reservations.html': 'Reservations',
-        'monitoring.html': 'Monitoring',
-        'reports.html': 'Reports',
-        'settings.html': 'Settings'
-    };
-    
-    return pageMap[page] || 'Current Page';
-}
 
 /**
  * Tracks user navigation patterns for analytics
@@ -185,46 +105,3 @@ function trackNavigation() {
         console.log('Time spent on page:', timeSpent.toFixed(2), 'seconds');
     });
 }
-
-/**
- * Adds a visual tooltip guide for new users
- * This would be shown only for first-time users in a real app
- */
-function showNavigationGuide() {
-    // Check if user has seen the guide before
-    const hasSeenGuide = localStorage.getItem('hasSeenNavGuide');
-    
-    if (!hasSeenGuide) {
-        // Create guide overlay
-        const guide = document.createElement('div');
-        guide.classList.add('nav-guide-overlay');
-        guide.innerHTML = `
-            <div class="guide-content">
-                <h3>Welcome to the Admin Panel</h3>
-                <p>Here's a quick guide to help you navigate:</p>
-                <ul>
-                    <li>Use the sidebar to access different sections</li>
-                    <li>The notification bell shows important alerts</li>
-                    <li>Your profile and logout button are at the bottom</li>
-                </ul>
-                <button class="btn-primary guide-close">Got it!</button>
-            </div>
-        `;
-        
-        document.body.appendChild(guide);
-        
-        // Close guide and save preference
-        guide.querySelector('.guide-close').addEventListener('click', function() {
-            guide.style.opacity = '0';
-            setTimeout(() => {
-                guide.remove();
-            }, 300);
-            
-            // Save that user has seen the guide
-            localStorage.setItem('hasSeenNavGuide', 'true');
-        });
-    }
-}
-
-// Call the guide function with a slight delay
-setTimeout(showNavigationGuide, 1000);

@@ -1,3 +1,27 @@
+/* Settings Page Styles */
+:root {
+    --primary-color: #1e3a2b; /* CCS dark green */
+    --primary-light: #4caf50; /* CCS light green */
+    --primary-hover: #2d573f;
+    --secondary-color: #f5f5f5; /* Light background */
+    --danger-color: #dc3545;
+    --success-color: #28a745;
+    --warning-color: #ffc107;
+    --info-color: #17a2b8;
+    --text-color: #333;
+    --text-light: #666;
+    --text-muted: #888;
+    --border-radius: 8px;
+    --box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+    --card-bg: #ffffff;
+    --border-color: #e0e0e0;
+    --hover-color: #f5f5f5;
+    --switch-active: #4caf50;
+    --switch-inactive: #ccc;
+}
+
+
 /* Student Database Styles */
 
 .student-container {
@@ -33,7 +57,7 @@
 }
 
 .btn-primary {
-    background-color: #4CAF50;
+    background-color: #1e3a2b;
     color: white;
     border: none;
     padding: 8px 16px;
@@ -241,6 +265,23 @@ tbody tr:hover {
 
 .pagination a:hover:not(.active) {
     background-color: #f5f5f5;
+}
+
+.btn-primary {
+    background-color: #1e3a2b;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #1e3a2b;
 }
 
 /* Responsive Adjustments */
