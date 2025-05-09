@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Map - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/map.css">
+    <link rel="stylesheet" href="../Admin/assets/css/nav-enhanced.css">
+    <link rel="stylesheet" href="assets/css/chat.css">
+    <link rel="stylesheet" href="../assets/css/common-nav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>My Courses</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Course Reservations</span>
+                </a>
+                <a href="schedule.html" class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>My Schedule</span>
+                </a>
+                <a href="map.html" class="nav-link active" data-page="map">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>College Map</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/teacher-avatar.png" alt="Teacher Avatar">
+                </div>
+                <div class="user-info">
+                    <h3 id="teacher-name">Dr. Robert Johnson</h3>
+                    <p>Professor</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>College Map</h1>
+                <div class="header-right">
+                    <select id="building-select">
+                        <option value="all">All Buildings</option>
+                        <option value="ccs">CCS Building (Main)</option>
+                        <option value="highschool">Old High School Building</option>
+                    </select>
+                    <div class="search-container">
+                        <input type="text" id="room-search" placeholder="Search for a room...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-sidebar">
+                    <div class="building-list">
+                        <h3>Buildings</h3>
+                        <ul>
+                            <li class="building-item active" data-building="ccs">
+                                <i class="fas fa-building"></i>
+                                <span>CCS Building (Main)</span>
+                            </li>
+                            <li class="building-item" data-building="highschool">
+                                <i class="fas fa-school"></i>
+                                <span>Old High School Building</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="floor-selector">
+                        <h3>Floors</h3>
+                        <div class="floor-buttons">
+                            <button class="floor-btn active" data-floor="1">1st Floor</button>
+                            <button class="floor-btn" data-floor="2">2nd Floor</button>
+                            <button class="floor-btn" data-floor="3">3rd Floor</button>
+                        </div>
+                    </div>
+                    <div class="room-list">
+                        <h3>Rooms</h3>
+                        <div class="room-filter">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="available">Available</button>
+                            <button class="filter-btn" data-filter="occupied">Occupied</button>
+                        </div>
+                        <ul id="rooms">
+                            <!-- Room items will be dynamically added here -->
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="map-view">
+                    <div class="map-controls">
+                        <button id="zoom-in"><i class="fas fa-plus"></i></button>
+                        <button id="zoom-out"><i class="fas fa-minus"></i></button>
+                        <button id="reset-view"><i class="fas fa-sync-alt"></i></button>
+                    </div>
+                    <div class="map-canvas">
+                        <div class="map-wrapper">
+                            <!-- SVG Maps -->
+                            <div class="building-maps">
+                                <!-- CCS Building 1st Floor -->
+                                <svg width="800" height="600" viewBox="0 0 800 600" id="ccs-map-1" class="building-map active">
+                                    <!-- Building Outline -->
+                                    <rect x="100" y="100" width="600" height="400" fill="#f5f5f5" stroke="#333" stroke-width="2" />
+                                    
+                                    <!-- Corridors -->
+                                    <rect x="300" y="100" width="50" height="400" fill="#e0e0e0" />
+                                    
+                                    <!-- Staircase -->
+                                    <rect x="100" y="100" width="50" height="100" fill="#d1c4e9" stroke="#333" />
+                                    <text x="125" y="150" text-anchor="middle" fill="#333">STAIR</text>
+                                    
+                                    <!-- Rooms -->
+                                    <g class="room" id="room-lab1" data-room-id="lab1">
+                                        <rect x="150" y="100" width="150" height="150" fill="#a5d6a7" stroke="#333" />
+                                        <text x="225" y="175" text-anchor="middle" fill="#333">LAB 1</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-lab2" data-room-id="lab2">
+                                        <rect x="150" y="250" width="150" height="150" fill="#ef9a9a" stroke="#333" />
+                                        <text x="225" y="325" text-anchor="middle" fill="#333">LAB 2</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-faculty1" data-room-id="faculty1">
+                                        <rect x="150" y="400" width="150" height="100" fill="#ef9a9a" stroke="#333" />
+                                        <text x="225" y="450" text-anchor="middle" fill="#333">FACULTY</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-csdept" data-room-id="csdept">
+                                        <rect x="350" y="100" width="200" height="200" fill="#ef9a9a" stroke="#333" />
+                                        <text x="450" y="200" text-anchor="middle" fill="#333">CS DEPT</text>
+                                    </g>
+                                    
+                                    <!-- Legend -->
+                                    <rect x="650" y="10" width="20" height="10" fill="#a5d6a7" />
+                                    <text x="675" y="20" font-size="12" fill="#333">Available</text>
+                                    
+                                    <rect x="650" y="25" width="20" height="10" fill="#ef9a9a" />
+                                    <text x="675" y="35" font-size="12" fill="#333">Occupied</text>
+                                    
+                                    <rect x="650" y="40" width="20" height="10" fill="#ffcc80" />
+                                    <text x="675" y="50" font-size="12" fill="#333">Maintenance</text>
+                                    
+                                    <text x="400" y="50" font-size="16" font-weight="bold" text-anchor="middle" fill="#673ab7">First Floor</text>
+                                </svg>
+                                
+                                <!-- CCS Building 2nd Floor -->
+                                <svg width="800" height="600" viewBox="0 0 800 600" id="ccs-map-2" class="building-map">
+                                    <!-- Building Outline -->
+                                    <rect x="100" y="100" width="600" height="400" fill="#f5f5f5" stroke="#333" stroke-width="2" />
+                                    
+                                    <!-- Corridors -->
+                                    <rect x="300" y="100" width="50" height="400" fill="#e0e0e0" />
+                                    
+                                    <!-- Staircase -->
+                                    <rect x="100" y="100" width="50" height="100" fill="#d1c4e9" stroke="#333" />
+                                    <text x="125" y="150" text-anchor="middle" fill="#333">STAIR</text>
+                                    
+                                    <!-- Rooms -->
+                                    <g class="room" id="room-lr1" data-room-id="lr1">
+                                        <rect x="150" y="100" width="150" height="150" fill="#a5d6a7" stroke="#333" />
+                                        <text x="225" y="175" text-anchor="middle" fill="#333">LR 1</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-lr2" data-room-id="lr2">
+                                        <rect x="150" y="250" width="150" height="150" fill="#a5d6a7" stroke="#333" />
+                                        <text x="225" y="325" text-anchor="middle" fill="#333">LR 2</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-faculty2" data-room-id="faculty2">
+                                        <rect x="150" y="400" width="150" height="100" fill="#ef9a9a" stroke="#333" />
+                                        <text x="225" y="450" text-anchor="middle" fill="#333">FACULTY</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-auditorium" data-room-id="auditorium">
+                                        <rect x="350" y="250" width="350" height="250" fill="#a5d6a7" stroke="#333" />
+                                        <text x="525" y="375" text-anchor="middle" fill="#333">AUDITORIUM</text>
+                                    </g>
+                                    
+                                    <text x="400" y="50" font-size="16" font-weight="bold" text-anchor="middle" fill="#673ab7">Second Floor</text>
+                                </svg>
+                                
+                                <!-- CCS Building 3rd Floor -->
+                                <svg width="800" height="600" viewBox="0 0 800 600" id="ccs-map-3" class="building-map">
+                                    <!-- Building Outline -->
+                                    <rect x="100" y="100" width="600" height="400" fill="#f5f5f5" stroke="#333" stroke-width="2" />
+                                    
+                                    <!-- Staircase -->
+                                    <rect x="100" y="100" width="50" height="100" fill="#d1c4e9" stroke="#333" />
+                                    <text x="125" y="150" text-anchor="middle" fill="#333">STAIR</text>
+                                    
+                                    <!-- Rooms -->
+                                    <g class="room" id="room-lr5" data-room-id="lr5">
+                                        <rect x="150" y="350" width="150" height="150" fill="#a5d6a7" stroke="#333" />
+                                        <text x="225" y="425" text-anchor="middle" fill="#333">LR 5</text>
+                                    </g>
+                                    
+                                    <text x="400" y="50" font-size="16" font-weight="bold" text-anchor="middle" fill="#673ab7">Third Floor</text>
+                                </svg>
+                                
+                                <!-- Old High School Building 2nd Floor -->
+                                <svg width="800" height="600" viewBox="0 0 800 600" id="highschool-map-2" class="building-map">
+                                    <!-- Building Outline -->
+                                    <rect x="100" y="100" width="600" height="400" fill="#f5f5f5" stroke="#333" stroke-width="2" />
+                                    
+                                    <!-- Corridors -->
+                                    <rect x="350" y="100" width="50" height="400" fill="#e0e0e0" />
+                                    
+                                    <!-- Staircase -->
+                                    <rect x="100" y="100" width="50" height="100" fill="#d1c4e9" stroke="#333" />
+                                    <text x="125" y="150" text-anchor="middle" fill="#333">STAIR</text>
+                                    
+                                    <!-- Rooms -->
+                                    <g class="room" id="room-lr3" data-room-id="lr3">
+                                        <rect x="150" y="100" width="200" height="200" fill="#a5d6a7" stroke="#333" />
+                                        <text x="250" y="200" text-anchor="middle" fill="#333">LR 3</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-lr4" data-room-id="lr4">
+                                        <rect x="150" y="300" width="200" height="200" fill="#ef9a9a" stroke="#333" />
+                                        <text x="250" y="400" text-anchor="middle" fill="#333">LR 4</text>
+                                    </g>
+                                    
+                                    <text x="400" y="50" font-size="16" font-weight="bold" text-anchor="middle" fill="#673ab7">Second Floor</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Details Modal -->
+    <div class="modal" id="room-details-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-room-title">Room Details</h2>
+            <div class="room-details">
+                <div class="room-status-large occupied"></div>
+                <p><strong>Status:</strong> <span id="modal-room-status">Occupied</span></p>
+                <p><strong>Current Class:</strong> <span id="modal-room-class">CC 100 Introduction to Computing</span></p>
+                <p><strong>Time:</strong> <span id="modal-room-time">3:00 PM - 5:00 PM</span></p>
+                <p><strong>Instructor:</strong> <span id="modal-room-instructor">Prof. John Doe</span></p>
+                <p><strong>Capacity:</strong> <span id="modal-room-capacity">40 students</span></p>
+                <p><strong>Equipment:</strong> <span id="modal-room-equipment">Projector, Whiteboard, Air Conditioning</span></p>
+            </div>
+            <div class="room-schedule">
+                <h3>Today's Schedule</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Class</th>
+                            <th>Instructor</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>8:00 AM - 11:00 AM</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td>11:00 AM - 1:00 PM</td>
+                            <td>CS 201 Data Structures</td>
+                            <td>Prof. Jane Smith</td>
+                        </tr>
+                        <tr class="current-schedule">
+                            <td>3:00 PM - 5:00 PM</td>
+                            <td>CC 100 Introduction to Computing</td>
+                            <td>You</td>
+                        </tr>
+                        <tr>
+                            <td>5:30 PM - 7:00 PM</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-schedule-room" id="schedule-room">Schedule Class</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/map.js"></script>
+    <script src="assets/js/teacher-data.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/logout.js"></script>
+</body>
+</html>

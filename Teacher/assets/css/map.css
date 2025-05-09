@@ -1,0 +1,351 @@
+/* Map Container */
+.map-container {
+    display: flex;
+    height: calc(100vh - 100px);
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Map Sidebar */
+.map-sidebar {
+    width: 300px;
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+.building-list h3,
+.floor-selector h3,
+.room-list h3 {
+    margin-bottom: 15px;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.building-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.building-item:hover {
+    background-color: #f5f5f5;
+}
+
+.building-item.active {
+    background-color: var(--primary-light);
+    color: var(--primary);
+}
+
+.building-item i {
+    margin-right: 10px;
+    color: inherit;
+}
+
+.floor-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.floor-btn {
+    padding: 8px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.floor-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.floor-btn.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.floor-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+}
+
+/* Room List */
+.room-filter {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-btn {
+    padding: 6px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: white;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.filter-btn:hover {
+    background-color: #f5f5f5;
+}
+
+.filter-btn.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.room-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    margin-bottom: 5px;
+}
+
+.room-item:hover {
+    background-color: #f5f5f5;
+}
+
+.room-status {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.room-status.available {
+    background-color: var(--success-color);
+}
+
+.room-status.occupied {
+    background-color: var(--alert-color);
+}
+
+.room-status.maintenance {
+    background-color: var(--warning-color);
+}
+
+.room-item span {
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.room-info {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-light);
+}
+
+/* Map View */
+.map-view {
+    flex-grow: 1;
+    background-color: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    position: relative;
+    overflow: hidden;
+}
+
+.map-controls {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.map-controls button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.map-controls button:hover {
+    background-color: #f5f5f5;
+}
+
+.map-canvas {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    cursor: grab;
+}
+
+.map-canvas:active {
+    cursor: grabbing;
+}
+
+.map-wrapper {
+    transform-origin: center;
+    transition: transform 0.1s ease;
+}
+
+.building-maps {
+    position: relative;
+}
+
+.building-map {
+    display: none;
+}
+
+.building-map.active {
+    display: block;
+}
+
+.room {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.room:hover {
+    opacity: 0.8;
+}
+
+/* Room Details Modal */
+.room-details {
+    margin-bottom: 20px;
+}
+
+.room-status-large {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+
+.room-status-large.available {
+    background-color: var(--success-color);
+}
+
+.room-status-large.occupied {
+    background-color: var(--alert-color);
+}
+
+.room-status-large.maintenance {
+    background-color: var(--warning-color);
+}
+
+.room-details p {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.room-schedule {
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+}
+
+.room-schedule h3 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: var(--text-color);
+}
+
+.room-schedule table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.room-schedule th, 
+.room-schedule td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    font-size: 14px;
+}
+
+.room-schedule th {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.room-schedule td {
+    color: var(--text-light);
+}
+
+.room-schedule .current-schedule {
+    background-color: rgba(76, 175, 80, 0.1);
+}
+
+.modal-actions {
+    margin-top: 20px;
+    text-align: right;
+}
+
+.btn-schedule-room {
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-schedule-room:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .map-container {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .map-sidebar {
+        width: 100%;
+        max-height: 300px;
+    }
+    
+    .map-view {
+        height: 500px;
+    }
+}
+
+@media (max-width: 768px) {
+    .building-item span,
+    .room-item span {
+        font-size: 12px;
+    }
+    
+    .floor-btn {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+    
+    .filter-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+    
+    .map-controls button {
+        width: 32px;
+        height: 32px;
+    }
+}
