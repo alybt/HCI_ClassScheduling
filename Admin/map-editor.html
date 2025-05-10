@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Map Editor - Admin Dashboard</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/map-editor.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="assets/css/ccs-branding.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>Course Management</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="map-editor.html" class="nav-link active" data-page="map-editor">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>Map Editor</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile" id="open-profile-modal">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>College Map Editor</h1>
+                <div class="header-right">
+                    <select id="building-select">
+                        <option value="ccs">CCS Building (Main)</option>
+                        <option value="highschool">Old High School Building</option>
+                    </select>
+                    <select id="floor-select">
+                        <option value="1">1st Floor</option>
+                        <option value="2">2nd Floor</option>
+                        <option value="3">3rd Floor</option>
+                    </select>
+                    <button class="btn-primary" id="add-building-btn">
+                        <i class="fas fa-plus"></i> Add Building
+                    </button>
+                </div>
+            </div>
+
+            <div class="map-editor-container">
+                <div class="editor-sidebar">
+                    <div class="editor-section">
+                        <h3>Map Elements</h3>
+                        <div class="element-list">
+                            <div class="element-item" draggable="true" data-element="room">
+                                <i class="fas fa-square"></i>
+                                <span>Room</span>
+                            </div>
+                            <div class="element-item" draggable="true" data-element="corridor">
+                                <i class="fas fa-grip-lines"></i>
+                                <span>Corridor</span>
+                            </div>
+                            <div class="element-item" draggable="true" data-element="stairs">
+                                <i class="fas fa-stairs"></i>
+                                <span>Stairs</span>
+                            </div>
+                            <div class="element-item" draggable="true" data-element="door">
+                                <i class="fas fa-door-open"></i>
+                                <span>Door</span>
+                            </div>
+                            <div class="element-item" draggable="true" data-element="text">
+                                <i class="fas fa-font"></i>
+                                <span>Text Label</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <h3>Room List</h3>
+                        <div class="room-search">
+                            <input type="text" placeholder="Search rooms...">
+                            <button><i class="fas fa-search"></i></button>
+                        </div>
+                        <div class="room-list" id="editor-room-list">
+                            <div class="room-item" data-room-id="lab1">
+                                <span>Lab 1</span>
+                                <div class="room-actions">
+                                    <button class="btn-edit" title="Edit Room"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-delete" title="Delete Room"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            <div class="room-item" data-room-id="lab2">
+                                <span>Lab 2</span>
+                                <div class="room-actions">
+                                    <button class="btn-edit" title="Edit Room"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-delete" title="Delete Room"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            <div class="room-item" data-room-id="lr1">
+                                <span>LR 1</span>
+                                <div class="room-actions">
+                                    <button class="btn-edit" title="Edit Room"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-delete" title="Delete Room"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                            <div class="room-item" data-room-id="lr2">
+                                <span>LR 2</span>
+                                <div class="room-actions">
+                                    <button class="btn-edit" title="Edit Room"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-delete" title="Delete Room"><i class="fas fa-trash"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="editor-section">
+                        <h3>Properties</h3>
+                        <div class="properties-panel" id="element-properties">
+                            <div class="property-group">
+                                <label>Element Type</label>
+                                <select id="element-type">
+                                    <option value="room">Room</option>
+                                    <option value="corridor">Corridor</option>
+                                    <option value="stairs">Stairs</option>
+                                    <option value="door">Door</option>
+                                    <option value="text">Text Label</option>
+                                </select>
+                            </div>
+                            <div class="property-group">
+                                <label>Room ID</label>
+                                <input type="text" id="room-id" placeholder="e.g., lab1">
+                            </div>
+                            <div class="property-group">
+                                <label>Room Name</label>
+                                <input type="text" id="room-name" placeholder="e.g., Computer Lab 1">
+                            </div>
+                            <div class="property-group">
+                                <label>Width (px)</label>
+                                <input type="number" id="element-width" value="150">
+                            </div>
+                            <div class="property-group">
+                                <label>Height (px)</label>
+                                <input type="number" id="element-height" value="150">
+                            </div>
+                            <div class="property-group">
+                                <label>X Position (px)</label>
+                                <input type="number" id="element-x" value="0">
+                            </div>
+                            <div class="property-group">
+                                <label>Y Position (px)</label>
+                                <input type="number" id="element-y" value="0">
+                            </div>
+                            <div class="property-group">
+                                <label>Fill Color</label>
+                                <input type="color" id="element-fill" value="#a5d6a7">
+                            </div>
+                            <div class="property-group">
+                                <label>Stroke Color</label>
+                                <input type="color" id="element-stroke" value="#333333">
+                            </div>
+                            <div class="property-group">
+                                <label>Stroke Width</label>
+                                <input type="number" id="element-stroke-width" value="2" min="0" max="10">
+                            </div>
+                            <div class="property-group">
+                                <label>Room Capacity</label>
+                                <input type="number" id="room-capacity" value="30">
+                            </div>
+                            <div class="property-group">
+                                <label>Room Type</label>
+                                <select id="room-type">
+                                    <option value="classroom">Classroom</option>
+                                    <option value="lab">Computer Lab</option>
+                                    <option value="faculty">Faculty Room</option>
+                                    <option value="office">Office</option>
+                                    <option value="auditorium">Auditorium</option>
+                                </select>
+                            </div>
+                            <div class="property-group">
+                                <button class="btn-primary" id="apply-properties">Apply Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="editor-canvas">
+                    <div class="editor-toolbar">
+                        <div class="tool-group">
+                            <button class="tool-btn active" id="select-tool" title="Select Tool">
+                                <i class="fas fa-mouse-pointer"></i>
+                            </button>
+                            <button class="tool-btn" id="draw-tool" title="Draw Tool">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <button class="tool-btn" id="erase-tool" title="Erase Tool">
+                                <i class="fas fa-eraser"></i>
+                            </button>
+                        </div>
+                        <div class="tool-group">
+                            <button class="tool-btn" id="zoom-in" title="Zoom In">
+                                <i class="fas fa-search-plus"></i>
+                            </button>
+                            <button class="tool-btn" id="zoom-out" title="Zoom Out">
+                                <i class="fas fa-search-minus"></i>
+                            </button>
+                            <button class="tool-btn" id="reset-view" title="Reset View">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                        <div class="tool-group">
+                            <button class="tool-btn" id="undo-btn" title="Undo">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                            <button class="tool-btn" id="redo-btn" title="Redo">
+                                <i class="fas fa-redo"></i>
+                            </button>
+                        </div>
+                        <div class="tool-group">
+                            <button class="tool-btn" id="grid-toggle" title="Toggle Grid">
+                                <i class="fas fa-border-all"></i>
+                            </button>
+                            <button class="tool-btn" id="snap-toggle" title="Toggle Snap to Grid">
+                                <i class="fas fa-magnet"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="canvas-wrapper">
+                        <div class="canvas-grid" id="editor-grid"></div>
+                        <svg id="editor-canvas" width="1200" height="800" viewBox="0 0 1200 800">
+                            <!-- Building Outline -->
+                            <rect x="100" y="100" width="1000" height="600" fill="#f5f5f5" stroke="#333" stroke-width="2" />
+                            
+                            <!-- Corridors -->
+                            <rect x="500" y="100" width="50" height="600" fill="#e0e0e0" stroke="#333" stroke-width="1" />
+                            <rect x="100" y="350" width="1000" height="50" fill="#e0e0e0" stroke="#333" stroke-width="1" />
+                            
+                            <!-- Staircase -->
+                            <g class="map-element" data-element-type="stairs" data-element-id="stairs1">
+                                <rect x="100" y="100" width="100" height="100" fill="#d1c4e9" stroke="#333" stroke-width="2" />
+                                <text x="150" y="150" text-anchor="middle" fill="#333">STAIRS</text>
+                            </g>
+                            
+                            <!-- Rooms -->
+                            <g class="map-element" data-element-type="room" data-element-id="lab1" data-room-id="lab1">
+                                <rect x="200" y="100" width="300" height="250" fill="#a5d6a7" stroke="#333" stroke-width="2" />
+                                <text x="350" y="225" text-anchor="middle" fill="#333" font-size="16">LAB 1</text>
+                            </g>
+                            
+                            <g class="map-element" data-element-type="room" data-element-id="lab2" data-room-id="lab2">
+                                <rect x="200" y="400" width="300" height="300" fill="#a5d6a7" stroke="#333" stroke-width="2" />
+                                <text x="350" y="550" text-anchor="middle" fill="#333" font-size="16">LAB 2</text>
+                            </g>
+                            
+                            <g class="map-element" data-element-type="room" data-element-id="lr1" data-room-id="lr1">
+                                <rect x="550" y="100" width="250" height="250" fill="#a5d6a7" stroke="#333" stroke-width="2" />
+                                <text x="675" y="225" text-anchor="middle" fill="#333" font-size="16">LR 1</text>
+                            </g>
+                            
+                            <g class="map-element" data-element-type="room" data-element-id="lr2" data-room-id="lr2">
+                                <rect x="800" y="100" width="300" height="250" fill="#a5d6a7" stroke="#333" stroke-width="2" />
+                                <text x="950" y="225" text-anchor="middle" fill="#333" font-size="16">LR 2</text>
+                            </g>
+                            
+                            <g class="map-element" data-element-type="room" data-element-id="faculty" data-room-id="faculty">
+                                <rect x="550" y="400" width="550" height="300" fill="#a5d6a7" stroke="#333" stroke-width="2" />
+                                <text x="825" y="550" text-anchor="middle" fill="#333" font-size="16">FACULTY ROOM</text>
+                            </g>
+                        </svg>
+                    </div>
+                    
+                    <div class="editor-actions">
+                        <button class="btn-primary" id="save-map-btn">
+                            <i class="fas fa-save"></i> Save Map
+                        </button>
+                        <button class="btn-secondary" id="preview-map-btn">
+                            <i class="fas fa-eye"></i> Preview Map
+                        </button>
+                        <button class="btn-secondary" id="export-map-btn">
+                            <i class="fas fa-file-export"></i> Export Map
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Building Modal -->
+    <div class="modal" id="add-building-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-building"></i> Add New Building</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="building-id">Building ID</label>
+                    <input type="text" id="building-id" placeholder="e.g., science_bldg">
+                </div>
+                <div class="form-group">
+                    <label for="building-name">Building Name</label>
+                    <input type="text" id="building-name" placeholder="e.g., Science Building">
+                </div>
+                <div class="form-group">
+                    <label for="building-floors">Number of Floors</label>
+                    <input type="number" id="building-floors" min="1" max="10" value="3">
+                </div>
+                <div class="form-group">
+                    <label for="building-icon">Building Icon</label>
+                    <select id="building-icon">
+                        <option value="building">Building</option>
+                        <option value="school">School</option>
+                        <option value="university">University</option>
+                        <option value="landmark">Landmark</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-building-btn">Cancel</button>
+                <button class="btn-primary" id="create-building-btn">Create Building</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Details Modal -->
+    <div class="modal" id="room-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-door-open"></i> Room Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="detail-room-id">Room ID</label>
+                    <input type="text" id="detail-room-id" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="detail-room-name">Room Name</label>
+                    <input type="text" id="detail-room-name">
+                </div>
+                <div class="form-group">
+                    <label for="detail-room-type">Room Type</label>
+                    <select id="detail-room-type">
+                        <option value="classroom">Classroom</option>
+                        <option value="lab">Computer Lab</option>
+                        <option value="faculty">Faculty Room</option>
+                        <option value="office">Office</option>
+                        <option value="auditorium">Auditorium</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="detail-room-capacity">Capacity</label>
+                    <input type="number" id="detail-room-capacity" min="1" value="30">
+                </div>
+                <div class="form-group">
+                    <label for="detail-room-facilities">Facilities</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" value="projector"> Projector</label>
+                        <label><input type="checkbox" value="computers"> Computers</label>
+                        <label><input type="checkbox" value="whiteboard"> Whiteboard</label>
+                        <label><input type="checkbox" value="aircon"> Air Conditioning</label>
+                        <label><input type="checkbox" value="internet"> Internet</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="detail-room-notes">Notes</label>
+                    <textarea id="detail-room-notes" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-room-btn">Cancel</button>
+                <button class="btn-primary" id="save-room-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Modal -->
+    <div class="modal" id="preview-modal">
+        <div class="modal-content preview-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-eye"></i> Map Preview</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body preview-body">
+                <div class="preview-wrapper">
+                    <!-- Preview content will be inserted here -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="close-preview-btn">Close Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div class="profile-modal" id="profile-modal">
+        <div class="profile-modal-content">
+            <div class="profile-modal-header">
+                <h2><i class="fas fa-user-edit"></i> Edit Profile</h2>
+                <button class="close-profile-modal" id="close-profile-modal">&times;</button>
+            </div>
+            <div class="profile-avatar-upload">
+                <div class="current-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Current Avatar">
+                </div>
+                <button class="avatar-upload-btn">
+                    <i class="fas fa-upload"></i> Change Avatar
+                </button>
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-name">Name</label>
+                <input type="text" id="profile-name" value="Admin User">
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-email">Email</label>
+                <input type="email" id="profile-email" value="admin@myccs.edu">
+            </div>
+            <div class="profile-form-group">
+                <label for="profile-password">New Password</label>
+                <input type="password" id="profile-password" placeholder="Leave blank to keep current password">
+            </div>
+            <div class="profile-modal-footer">
+                <button class="cancel-profile-btn" id="cancel-profile-btn">Cancel</button>
+                <button class="save-profile-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/nav-enhanced.js"></script>
+    
+    <script>
+        // Profile modal functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileModal = document.getElementById('profile-modal');
+            const userProfile = document.getElementById('open-profile-modal');
+            const closeProfileModal = document.getElementById('close-profile-modal');
+            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+            const logoutBtn = document.querySelector('.logout-btn');
+            
+            // Open modal functions
+            function openModal() {
+                profileModal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Prevent scrolling
+            }
+            
+            // Close modal function
+            function closeModal() {
+                profileModal.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+            
+            // Event listeners
+            if (userProfile) {
+                userProfile.addEventListener('click', function(e) {
+                    // Don't open modal if logout button was clicked
+                    if (!e.target.closest('.logout-btn')) {
+                        e.preventDefault();
+                        openModal();
+                    }
+                });
+            }
+            
+            // Prevent logout button from triggering modal
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            if (closeProfileModal) closeProfileModal.addEventListener('click', closeModal);
+            if (cancelProfileBtn) cancelProfileBtn.addEventListener('click', closeModal);
+            
+            // Close modal when clicking outside
+            window.addEventListener('click', function(e) {
+                if (e.target === profileModal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+    
+    <script src="assets/js/map-editor.js"></script>
+</body>
+</html>

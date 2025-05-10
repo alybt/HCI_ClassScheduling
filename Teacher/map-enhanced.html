@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced College Map - Teacher View</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/map-enhanced.css">
+    <link rel="stylesheet" href="../Admin/assets/css/nav-enhanced.css">
+    <link rel="stylesheet" href="assets/css/chat.css">
+    <link rel="stylesheet" href="../assets/css/common-nav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>My Courses</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Course Reservations</span>
+                </a>
+                <a href="schedule.html" class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>My Schedule</span>
+                </a>
+                <a href="map-enhanced.html" class="nav-link active" data-page="map">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>College Map</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/teacher-avatar.png" alt="Teacher Avatar">
+                </div>
+                <div class="user-info">
+                    <h3 id="teacher-name">Dr. Robert Johnson</h3>
+                    <p>Professor</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>College Map</h1>
+                <div class="header-right">
+                    <select id="building-select">
+                        <option value="all">All Buildings</option>
+                        <option value="ccs">CCS Building (Main)</option>
+                        <option value="highschool">Old High School Building</option>
+                    </select>
+                    <div class="search-container">
+                        <input type="text" id="room-search" placeholder="Search for a room...">
+                        <button id="search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="map-container">
+                <div class="map-sidebar">
+                    <div class="teacher-actions">
+                        <button class="action-btn" id="reserve-room-btn">
+                            <i class="fas fa-calendar-plus"></i> Reserve Room
+                        </button>
+                        <button class="action-btn" id="report-issue-btn">
+                            <i class="fas fa-exclamation-triangle"></i> Report Issue
+                        </button>
+                    </div>
+                    
+                    <div class="building-list">
+                        <h3>Buildings</h3>
+                        <ul>
+                            <li class="building-item active" data-building="ccs">
+                                <i class="fas fa-building"></i>
+                                <span>CCS Building (Main)</span>
+                            </li>
+                            <li class="building-item" data-building="highschool">
+                                <i class="fas fa-school"></i>
+                                <span>Old High School Building</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="floor-selector">
+                        <h3>Floors</h3>
+                        <div class="floor-buttons">
+                            <button class="floor-btn active" data-floor="1">1st Floor</button>
+                            <button class="floor-btn" data-floor="2">2nd Floor</button>
+                            <button class="floor-btn" data-floor="3">3rd Floor</button>
+                        </div>
+                    </div>
+                    
+                    <div class="room-list">
+                        <h3>Rooms</h3>
+                        <div class="room-filter">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="available">Available</button>
+                            <button class="filter-btn" data-filter="occupied">Occupied</button>
+                            <button class="filter-btn" data-filter="my-classes">My Classes</button>
+                        </div>
+                        <ul id="rooms">
+                            <!-- Room items will be dynamically added here -->
+                            <li class="room-item available" data-room="lab1">
+                                <div class="room-status available"></div>
+                                <span>Lab 1</span>
+                                <span class="room-info">Available</span>
+                            </li>
+                            <li class="room-item occupied my-class" data-room="lab2">
+                                <div class="room-status occupied"></div>
+                                <span>Lab 2</span>
+                                <span class="room-info">Your class: CC 101 until 3:00 PM</span>
+                            </li>
+                            <li class="room-item occupied" data-room="faculty1">
+                                <div class="room-status occupied"></div>
+                                <span>Faculty Office</span>
+                                <span class="room-info">Office Hours</span>
+                            </li>
+                            <li class="room-item maintenance" data-room="lr1">
+                                <div class="room-status maintenance"></div>
+                                <span>LR 1</span>
+                                <span class="room-info">Under Maintenance</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="upcoming-classes">
+                        <h3>My Upcoming Classes</h3>
+                        <div class="class-list">
+                            <div class="class-item">
+                                <div class="class-time">10:30 AM - 12:00 PM</div>
+                                <div class="class-details">
+                                    <div class="class-name">CC 101: Introduction to Computing</div>
+                                    <div class="class-location">Lab 2, CCS Building</div>
+                                </div>
+                            </div>
+                            <div class="class-item">
+                                <div class="class-time">1:30 PM - 3:00 PM</div>
+                                <div class="class-details">
+                                    <div class="class-name">CC 104: Data Structures</div>
+                                    <div class="class-location">LR 2, CCS Building</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-view">
+                    <div class="map-controls">
+                        <button id="zoom-in"><i class="fas fa-plus"></i></button>
+                        <button id="zoom-out"><i class="fas fa-minus"></i></button>
+                        <button id="reset-view"><i class="fas fa-sync-alt"></i></button>
+                        <button id="toggle-classes"><i class="fas fa-graduation-cap"></i></button>
+                        <button id="toggle-availability"><i class="fas fa-door-open"></i></button>
+                    </div>
+                    
+                    <div class="map-canvas">
+                        <div class="map-wrapper">
+                            <!-- SVG Maps -->
+                            <div class="building-maps">
+                                <!-- CCS Building 1st Floor -->
+                                <svg width="800" height="600" viewBox="0 0 800 600" id="ccs-map-1" class="building-map active">
+                                    <!-- Building Outline -->
+                                    <rect x="100" y="100" width="600" height="400" fill="#f5f5f5" stroke="#333" stroke-width="2" />
+                                    
+                                    <!-- Corridors -->
+                                    <rect x="300" y="100" width="50" height="400" fill="#e0e0e0" />
+                                    
+                                    <!-- Staircase -->
+                                    <rect x="100" y="100" width="50" height="100" fill="#d1c4e9" stroke="#333" />
+                                    <text x="125" y="150" text-anchor="middle" fill="#333">STAIR</text>
+                                    
+                                    <!-- Rooms -->
+                                    <g class="room" id="room-lab1" data-room-id="lab1" data-status="available" data-capacity="30" data-facilities="computers,projector,aircon">
+                                        <rect x="150" y="100" width="150" height="150" fill="#a5d6a7" stroke="#333" />
+                                        <text x="225" y="175" text-anchor="middle" fill="#333">LAB 1</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-lab2" data-room-id="lab2" data-status="occupied" data-class="CC 101" data-teacher="Dr. Robert Johnson" data-time="10:30 AM - 12:00 PM" data-capacity="30" data-facilities="computers,projector,aircon">
+                                        <rect x="150" y="250" width="150" height="150" fill="#ef9a9a" stroke="#333" />
+                                        <text x="225" y="325" text-anchor="middle" fill="#333">LAB 2</text>
+                                        <text x="225" y="345" text-anchor="middle" fill="#333" font-size="10">Your Class</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-faculty1" data-room-id="faculty1" data-status="occupied" data-capacity="10" data-facilities="aircon">
+                                        <rect x="150" y="400" width="150" height="100" fill="#ef9a9a" stroke="#333" />
+                                        <text x="225" y="450" text-anchor="middle" fill="#333">FACULTY</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-csdept" data-room-id="csdept" data-status="occupied" data-capacity="20" data-facilities="aircon,internet">
+                                        <rect x="350" y="100" width="200" height="200" fill="#ef9a9a" stroke="#333" />
+                                        <text x="450" y="200" text-anchor="middle" fill="#333">CS DEPT</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-lr1" data-room-id="lr1" data-status="maintenance" data-capacity="40" data-facilities="projector,whiteboard,aircon">
+                                        <rect x="350" y="300" width="200" height="200" fill="#ffcc80" stroke="#333" />
+                                        <text x="450" y="400" text-anchor="middle" fill="#333">LR 1</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-lr2" data-room-id="lr2" data-status="available" data-capacity="40" data-facilities="projector,whiteboard,aircon">
+                                        <rect x="550" y="100" width="150" height="150" fill="#a5d6a7" stroke="#333" />
+                                        <text x="625" y="175" text-anchor="middle" fill="#333">LR 2</text>
+                                    </g>
+                                    
+                                    <!-- Legend -->
+                                    <rect x="650" y="10" width="20" height="10" fill="#a5d6a7" />
+                                    <text x="675" y="20" font-size="12" fill="#333">Available</text>
+                                    
+                                    <rect x="650" y="25" width="20" height="10" fill="#ef9a9a" />
+                                    <text x="675" y="35" font-size="12" fill="#333">Occupied</text>
+                                    
+                                    <rect x="650" y="40" width="20" height="10" fill="#ffcc80" />
+                                    <text x="675" y="50" font-size="12" fill="#333">Maintenance</text>
+                                    
+                                    <rect x="650" y="55" width="20" height="10" fill="#ef9a9a" stroke="#673ab7" stroke-width="2" />
+                                    <text x="675" y="65" font-size="12" fill="#333">Your Class</text>
+                                    
+                                    <text x="400" y="50" font-size="16" font-weight="bold" text-anchor="middle" fill="#673ab7">First Floor</text>
+                                </svg>
+                                
+                                <!-- CCS Building 2nd Floor -->
+                                <svg width="800" height="600" viewBox="0 0 800 600" id="ccs-map-2" class="building-map">
+                                    <!-- Building Outline -->
+                                    <rect x="100" y="100" width="600" height="400" fill="#f5f5f5" stroke="#333" stroke-width="2" />
+                                    
+                                    <!-- Corridors -->
+                                    <rect x="300" y="100" width="50" height="400" fill="#e0e0e0" />
+                                    
+                                    <!-- Staircase -->
+                                    <rect x="100" y="100" width="50" height="100" fill="#d1c4e9" stroke="#333" />
+                                    <text x="125" y="150" text-anchor="middle" fill="#333">STAIR</text>
+                                    
+                                    <!-- Rooms -->
+                                    <g class="room" id="room-lr3" data-room-id="lr3" data-status="available" data-capacity="40" data-facilities="projector,whiteboard,aircon">
+                                        <rect x="150" y="100" width="150" height="150" fill="#a5d6a7" stroke="#333" />
+                                        <text x="225" y="175" text-anchor="middle" fill="#333">LR 3</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-lr4" data-room-id="lr4" data-status="occupied" data-class="CC 104" data-teacher="Dr. Robert Johnson" data-time="1:30 PM - 3:00 PM" data-capacity="40" data-facilities="projector,whiteboard,aircon">
+                                        <rect x="150" y="250" width="150" height="150" fill="#ef9a9a" stroke="#333" />
+                                        <text x="225" y="325" text-anchor="middle" fill="#333">LR 4</text>
+                                        <text x="225" y="345" text-anchor="middle" fill="#333" font-size="10">Your Class</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-faculty2" data-room-id="faculty2" data-status="occupied" data-capacity="10" data-facilities="aircon">
+                                        <rect x="150" y="400" width="150" height="100" fill="#ef9a9a" stroke="#333" />
+                                        <text x="225" y="450" text-anchor="middle" fill="#333">FACULTY</text>
+                                    </g>
+                                    
+                                    <g class="room" id="room-auditorium" data-room-id="auditorium" data-status="available" data-capacity="200" data-facilities="projector,aircon,sound">
+                                        <rect x="350" y="250" width="350" height="250" fill="#a5d6a7" stroke="#333" />
+                                        <text x="525" y="375" text-anchor="middle" fill="#333">AUDITORIUM</text>
+                                    </g>
+                                    
+                                    <text x="400" y="50" font-size="16" font-weight="bold" text-anchor="middle" fill="#673ab7">Second Floor</text>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="map-info-panel">
+                        <div class="info-header">
+                            <h3>Room Information</h3>
+                            <button class="close-info-panel"><i class="fas fa-times"></i></button>
+                        </div>
+                        <div class="info-content">
+                            <div class="info-section">
+                                <h4 id="info-room-name">Lab 2</h4>
+                                <div class="room-status-badge occupied">Occupied</div>
+                            </div>
+                            <div class="info-section">
+                                <h5>Current Class</h5>
+                                <p id="info-current-class">CC 101: Introduction to Computing</p>
+                                <p id="info-class-time">10:30 AM - 12:00 PM</p>
+                                <p id="info-teacher">Dr. Robert Johnson (You)</p>
+                            </div>
+                            <div class="info-section">
+                                <h5>Room Details</h5>
+                                <p><i class="fas fa-users"></i> <span id="info-capacity">30</span> seats</p>
+                                <div class="facility-list" id="info-facilities">
+                                    <span class="facility"><i class="fas fa-desktop"></i> Computers</span>
+                                    <span class="facility"><i class="fas fa-projector"></i> Projector</span>
+                                    <span class="facility"><i class="fas fa-snowflake"></i> Air Conditioning</span>
+                                </div>
+                            </div>
+                            <div class="info-section">
+                                <h5>Schedule Today</h5>
+                                <div class="schedule-timeline" id="info-schedule">
+                                    <div class="timeline-item">
+                                        <div class="timeline-time">8:00 AM - 10:00 AM</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">Available</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item active">
+                                        <div class="timeline-time">10:30 AM - 12:00 PM</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">CC 101: Introduction to Computing</div>
+                                            <div class="timeline-subtitle">Dr. Robert Johnson</div>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-item">
+                                        <div class="timeline-time">1:00 PM - 5:00 PM</div>
+                                        <div class="timeline-content">
+                                            <div class="timeline-title">Available</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="info-actions">
+                                <button class="action-btn" id="reserve-this-room">
+                                    <i class="fas fa-calendar-plus"></i> Reserve
+                                </button>
+                                <button class="action-btn" id="report-room-issue">
+                                    <i class="fas fa-exclamation-triangle"></i> Report Issue
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Details Modal -->
+    <div class="modal" id="room-details-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2 id="modal-room-name">Lab 2</h2>
+                <div class="room-status-badge occupied">Occupied</div>
+            </div>
+            <div class="modal-body">
+                <div class="modal-section">
+                    <h3>Current Status</h3>
+                    <p id="modal-current-class">CC 101: Introduction to Computing</p>
+                    <p id="modal-class-time">10:30 AM - 12:00 PM</p>
+                    <p id="modal-teacher">Dr. Robert Johnson (You)</p>
+                </div>
+                <div class="modal-section">
+                    <h3>Room Details</h3>
+                    <p><i class="fas fa-users"></i> <span id="modal-capacity">30</span> seats</p>
+                    <div class="facility-list" id="modal-facilities">
+                        <span class="facility"><i class="fas fa-desktop"></i> Computers</span>
+                        <span class="facility"><i class="fas fa-projector"></i> Projector</span>
+                        <span class="facility"><i class="fas fa-snowflake"></i> Air Conditioning</span>
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <h3>Today's Schedule</h3>
+                    <div class="schedule-timeline" id="modal-schedule">
+                        <!-- Schedule will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-primary" id="modal-reserve-btn">
+                    <i class="fas fa-calendar-plus"></i> Reserve Room
+                </button>
+                <button class="btn-secondary" id="modal-report-btn">
+                    <i class="fas fa-exclamation-triangle"></i> Report Issue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Reservation Modal -->
+    <div class="modal" id="reservation-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2><i class="fas fa-calendar-plus"></i> Reserve Room</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="reservation-room">Room</label>
+                    <select id="reservation-room">
+                        <option value="">Select a room</option>
+                        <option value="lab1">Lab 1</option>
+                        <option value="lr2">LR 2</option>
+                        <option value="lr3">LR 3</option>
+                        <option value="auditorium">Auditorium</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reservation-course">Course</label>
+                    <select id="reservation-course">
+                        <option value="">Select a course</option>
+                        <option value="cc101">CC 101: Introduction to Computing</option>
+                        <option value="cc104">CC 104: Data Structures</option>
+                        <option value="cc110">CC 110: Web Development</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reservation-date">Date</label>
+                    <input type="date" id="reservation-date">
+                </div>
+                <div class="form-group time-range">
+                    <div class="time-input">
+                        <label for="reservation-start">Start Time</label>
+                        <input type="time" id="reservation-start">
+                    </div>
+                    <div class="time-input">
+                        <label for="reservation-end">End Time</label>
+                        <input type="time" id="reservation-end">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="reservation-recurring">Recurring</label>
+                    <select id="reservation-recurring">
+                        <option value="none">None (One-time)</option>
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="biweekly">Bi-weekly</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="reservation-notes">Notes</label>
+                    <textarea id="reservation-notes" rows="3" placeholder="Any special requirements or notes"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-reservation-btn">Cancel</button>
+                <button class="btn-primary" id="submit-reservation-btn">Submit Reservation</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Issue Modal -->
+    <div class="modal" id="report-modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2><i class="fas fa-exclamation-triangle"></i> Report Room Issue</h2>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="issue-room">Room</label>
+                    <select id="issue-room">
+                        <option value="">Select a room</option>
+                        <option value="lab1">Lab 1</option>
+                        <option value="lab2">Lab 2</option>
+                        <option value="lr2">LR 2</option>
+                        <option value="lr3">LR 3</option>
+                        <option value="auditorium">Auditorium</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="issue-type">Issue Type</label>
+                    <select id="issue-type">
+                        <option value="">Select issue type</option>
+                        <option value="equipment">Equipment Problem</option>
+                        <option value="facilities">Facilities Issue</option>
+                        <option value="maintenance">Maintenance Required</option>
+                        <option value="cleanliness">Cleanliness Issue</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="issue-priority">Priority</label>
+                    <select id="issue-priority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                        <option value="urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="issue-description">Description</label>
+                    <textarea id="issue-description" rows="5" placeholder="Please describe the issue in detail"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Attach Photo (Optional)</label>
+                    <div class="file-upload">
+                        <input type="file" id="issue-photo" accept="image/*">
+                        <label for="issue-photo" class="file-upload-btn">
+                            <i class="fas fa-camera"></i> Take Photo or Upload
+                        </label>
+                    </div>
+                    <div class="photo-preview" id="photo-preview"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="cancel-report-btn">Cancel</button>
+                <button class="btn-primary" id="submit-report-btn">Submit Report</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/map-enhanced.js"></script>
+</body>
+</html>
