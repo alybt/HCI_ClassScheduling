@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Schedule Manager - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/schedule-manager.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="assets/css/ccs-branding.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="curriculum-manager.html" class="nav-link" data-page="curriculum-manager">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Curriculum Manager</span>
+                </a>
+                <a href="schedule-manager.html" class="nav-link active" data-page="schedule-manager">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Schedule Manager</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile" id="open-profile-modal">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Schedule Manager</h1>
+                <div class="header-right">
+                    <div class="view-toggle">
+                        <button class="toggle-btn active" data-view="weekly">Weekly</button>
+                        <button class="toggle-btn" data-view="daily">Daily</button>
+                        <button class="toggle-btn" data-view="monthly">Monthly</button>
+                    </div>
+                    <select id="semester-select">
+                        <option value="1">1st Semester (Aug-Dec)</option>
+                        <option value="2">2nd Semester (Jan-May)</option>
+                        <option value="3">Summer (Jun-Jul)</option>
+                    </select>
+                    <button id="generate-schedule-btn" class="btn-primary">
+                        <i class="fas fa-magic"></i> Generate Schedule
+                    </button>
+                </div>
+            </div>
+
+            <div class="schedule-container">
+                <!-- Sidebar for filters and constraints -->
+                <div class="schedule-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Filters</h3>
+                        <div class="filter-group">
+                            <label for="program-filter">Program:</label>
+                            <select id="program-filter">
+                                <option value="all">All Programs</option>
+                                <!-- Programs will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="year-filter">Year Level:</label>
+                            <select id="year-filter">
+                                <option value="all">All Years</option>
+                                <option value="1">First Year</option>
+                                <option value="2">Second Year</option>
+                                <option value="3">Third Year</option>
+                                <option value="4">Fourth Year</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="teacher-filter">Teacher:</label>
+                            <select id="teacher-filter">
+                                <option value="all">All Teachers</option>
+                                <!-- Teachers will be populated dynamically -->
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="room-filter">Room:</label>
+                            <select id="room-filter">
+                                <option value="all">All Rooms</option>
+                                <!-- Rooms will be populated dynamically -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Scheduling Constraints</h3>
+                        <div class="constraint-group">
+                            <label for="max-hours-per-day">Max Hours Per Day:</label>
+                            <input type="number" id="max-hours-per-day" min="1" max="12" value="8">
+                        </div>
+                        <div class="constraint-group">
+                            <label for="lunch-break">Lunch Break:</label>
+                            <select id="lunch-break">
+                                <option value="11:00-12:00">11:00 AM - 12:00 PM</option>
+                                <option value="12:00-13:00" selected>12:00 PM - 1:00 PM</option>
+                                <option value="13:00-14:00">1:00 PM - 2:00 PM</option>
+                            </select>
+                        </div>
+                        <div class="constraint-group">
+                            <label for="avoid-evening">Avoid Evening Classes:</label>
+                            <input type="checkbox" id="avoid-evening">
+                        </div>
+                        <div class="constraint-group">
+                            <label for="consecutive-labs">Allow Consecutive Labs:</label>
+                            <input type="checkbox" id="consecutive-labs" checked>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-section">
+                        <h3>Unassigned Courses</h3>
+                        <div class="unassigned-list" id="unassigned-courses">
+                            <!-- Unassigned courses will be populated dynamically -->
+                            <div class="empty-state">
+                                <i class="fas fa-check-circle"></i>
+                                <p>All courses have been scheduled</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main schedule content -->
+                <div class="schedule-content">
+                    <!-- Weekly View (Default) -->
+                    <div class="schedule-view weekly-view active" id="weekly-view">
+                        <div class="schedule-header">
+                            <div class="week-navigation">
+                                <button id="prev-week" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                                <span id="week-display">May 5 - May 11, 2025</span>
+                                <button id="next-week" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="timetable">
+                            <div class="timetable-header">
+                                <div class="time-column">Time</div>
+                                <div class="day-column">Monday</div>
+                                <div class="day-column">Tuesday</div>
+                                <div class="day-column">Wednesday</div>
+                                <div class="day-column">Thursday</div>
+                                <div class="day-column">Friday</div>
+                                <div class="day-column">Saturday</div>
+                            </div>
+                            <div class="timetable-body">
+                                <div class="time-slots">
+                                    <div class="time-slot">7:00 AM</div>
+                                    <div class="time-slot">8:00 AM</div>
+                                    <div class="time-slot">9:00 AM</div>
+                                    <div class="time-slot">10:00 AM</div>
+                                    <div class="time-slot">11:00 AM</div>
+                                    <div class="time-slot">12:00 PM</div>
+                                    <div class="time-slot">1:00 PM</div>
+                                    <div class="time-slot">2:00 PM</div>
+                                    <div class="time-slot">3:00 PM</div>
+                                    <div class="time-slot">4:00 PM</div>
+                                    <div class="time-slot">5:00 PM</div>
+                                    <div class="time-slot">6:00 PM</div>
+                                    <div class="time-slot">7:00 PM</div>
+                                </div>
+                                <div class="schedule-grid" id="weekly-schedule-grid">
+                                    <!-- Schedule items will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Daily View -->
+                    <div class="schedule-view daily-view" id="daily-view">
+                        <div class="schedule-header">
+                            <div class="day-navigation">
+                                <button id="prev-day" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                                <span id="day-display">Monday, May 5, 2025</span>
+                                <button id="next-day" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="daily-timetable">
+                            <div class="daily-schedule" id="daily-schedule">
+                                <!-- Daily schedule items will be dynamically added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Monthly View -->
+                    <div class="schedule-view monthly-view" id="monthly-view">
+                        <div class="schedule-header">
+                            <div class="month-navigation">
+                                <button id="prev-month" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                                <span id="month-display">May 2025</span>
+                                <button id="next-month" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="monthly-calendar" id="monthly-calendar">
+                            <!-- Monthly calendar will be dynamically generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Class Details Modal -->
+    <div class="modal" id="class-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-class-title">Class Details</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="class-details">
+                    <div class="detail-row">
+                        <div class="detail-label">Course Code:</div>
+                        <div class="detail-value" id="modal-course-code"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Course Title:</div>
+                        <div class="detail-value" id="modal-course-name"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Type:</div>
+                        <div class="detail-value" id="modal-course-type"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Teacher:</div>
+                        <div class="detail-value" id="modal-teacher"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Schedule:</div>
+                        <div class="detail-value" id="modal-schedule"></div>
+                    </div>
+                    <div class="detail-row">
+                        <div class="detail-label">Room:</div>
+                        <div class="detail-value" id="modal-room"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Close</button>
+                <button class="btn-primary" id="edit-schedule-btn">Edit Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Schedule Generation Modal -->
+    <div class="modal" id="generate-schedule-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-magic"></i> Generate Schedule</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Generate a new schedule based on the current courses, teachers, and rooms. This will:</p>
+                <ul>
+                    <li>Automatically assign time slots to courses</li>
+                    <li>Avoid scheduling conflicts for teachers and rooms</li>
+                    <li>Apply the constraints specified in the sidebar</li>
+                </ul>
+                <div class="warning-box">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>Warning: This will replace any existing schedule for the selected semester. Make sure to back up your current schedule if needed.</p>
+                </div>
+                <div class="form-group">
+                    <label for="generation-algorithm">Algorithm:</label>
+                    <select id="generation-algorithm">
+                        <option value="optimized">Optimized (Recommended)</option>
+                        <option value="balanced">Balanced</option>
+                        <option value="compact">Compact</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Cancel</button>
+                <button class="btn-primary" id="confirm-generate-btn">Generate Schedule</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Manual Schedule Edit Modal -->
+    <div class="modal" id="edit-schedule-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-edit"></i> Edit Class Schedule</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="edit-schedule-form">
+                    <div class="form-group">
+                        <label for="edit-course">Course:</label>
+                        <input type="text" id="edit-course" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-teacher">Teacher:</label>
+                        <select id="edit-teacher">
+                            <!-- Teachers will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-room">Room:</label>
+                        <select id="edit-room">
+                            <!-- Rooms will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-day">Day:</label>
+                        <select id="edit-day">
+                            <option value="monday">Monday</option>
+                            <option value="tuesday">Tuesday</option>
+                            <option value="wednesday">Wednesday</option>
+                            <option value="thursday">Thursday</option>
+                            <option value="friday">Friday</option>
+                            <option value="saturday">Saturday</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-start-time">Start Time:</label>
+                        <select id="edit-start-time">
+                            <option value="7:00">7:00 AM</option>
+                            <option value="8:00">8:00 AM</option>
+                            <option value="9:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="19:00">7:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-end-time">End Time:</label>
+                        <select id="edit-end-time">
+                            <option value="8:00">8:00 AM</option>
+                            <option value="9:00">9:00 AM</option>
+                            <option value="10:00">10:00 AM</option>
+                            <option value="11:00">11:00 AM</option>
+                            <option value="12:00">12:00 PM</option>
+                            <option value="13:00">1:00 PM</option>
+                            <option value="14:00">2:00 PM</option>
+                            <option value="15:00">3:00 PM</option>
+                            <option value="16:00">4:00 PM</option>
+                            <option value="17:00">5:00 PM</option>
+                            <option value="18:00">6:00 PM</option>
+                            <option value="19:00">7:00 PM</option>
+                            <option value="20:00">8:00 PM</option>
+                        </select>
+                    </div>
+                    <div class="conflict-warning" id="schedule-conflict-warning" style="display: none;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Warning: This schedule conflicts with existing classes for the selected teacher or room.</p>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Cancel</button>
+                <button class="btn-primary" id="save-schedule-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/nav-enhanced.js"></script>
+    <script src="assets/js/schedule-manager.js"></script>
+</body>
+</html>

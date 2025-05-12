@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curriculum Manager - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/curriculum-manager.css">
+    <link rel="stylesheet" href="assets/css/responsive-dashboard.css">
+    <link rel="stylesheet" href="assets/css/ccs-branding.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="monitoring.html" class="nav-link" data-page="monitoring">
+                    <i class="fas fa-desktop"></i>
+                    <span>Monitoring</span>
+                </a>
+                <a href="reservations.html" class="nav-link" data-page="reservations">
+                    <i class="fas fa-calendar-check"></i>
+                    <span>Manage Reservations</span>
+                </a>
+                <a href="teachers.html" class="nav-link" data-page="teachers">
+                    <i class="fas fa-chalkboard-teacher"></i>
+                    <span>Teacher Database</span>
+                </a>
+                <a href="students.html" class="nav-link" data-page="students">
+                    <i class="fas fa-user-graduate"></i>
+                    <span>Student Database</span>
+                </a>
+                <a href="curriculum-manager.html" class="nav-link active" data-page="curriculum-manager">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Curriculum Manager</span>
+                </a>
+                <a href="rooms.html" class="nav-link" data-page="rooms">
+                    <i class="fas fa-door-open"></i>
+                    <span>Room Management</span>
+                </a>
+                <a href="reports.html" class="nav-link" data-page="reports">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="settings.html" class="nav-link" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+            <div class="user-profile" id="open-profile-modal">
+                <div class="user-avatar">
+                    <img src="assets/img/admin-avatar.png" alt="Admin Avatar">
+                </div>
+                <div class="user-info">
+                    <h3>Admin User</h3>
+                    <p>Administrator</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1>Curriculum Manager</h1>
+                <div class="header-right">
+                    <div class="search-container">
+                        <input type="text" id="search-input" placeholder="Search curricula, programs, or subjects...">
+                        <button id="search-button"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="curriculum-dashboard">
+                <!-- Left Panel: Curriculum List -->
+                <div class="curriculum-list-panel">
+                    <div class="panel-header">
+                        <h2>Curricula</h2>
+                        <button id="add-curriculum-btn" class="btn-primary">
+                            <i class="fas fa-plus"></i> New Curriculum
+                        </button>
+                    </div>
+                    <div class="curriculum-list" id="curriculum-list">
+                        <!-- Curriculum items will be added here dynamically -->
+                        <div class="empty-state">
+                            <i class="fas fa-graduation-cap"></i>
+                            <p>No curricula found. Click the "New Curriculum" button to create one.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Middle Panel: Programs List -->
+                <div class="programs-panel">
+                    <div class="panel-header">
+                        <h2>Programs</h2>
+                        <button id="add-program-btn" class="btn-primary" disabled>
+                            <i class="fas fa-plus"></i> Add Program
+                        </button>
+                    </div>
+                    <div class="programs-list" id="programs-list">
+                        <!-- Program items will be added here dynamically -->
+                        <div class="empty-state">
+                            <i class="fas fa-book"></i>
+                            <p>Select a curriculum to view its programs or add a new program.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Panel: Subjects List -->
+                <div class="subjects-panel">
+                    <div class="panel-header">
+                        <h2>Subjects</h2>
+                        <button id="add-subject-btn" class="btn-primary" disabled>
+                            <i class="fas fa-plus"></i> Add Subject
+                        </button>
+                    </div>
+                    <div class="subjects-list" id="subjects-list">
+                        <!-- Subject items will be added here dynamically -->
+                        <div class="empty-state">
+                            <i class="fas fa-book-open"></i>
+                            <p>Select a program to view its subjects or add a new subject.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Curriculum Modal -->
+    <div class="modal" id="curriculum-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-graduation-cap"></i> Add New Curriculum</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="curriculum-form">
+                    <div class="form-group">
+                        <label for="curriculum-name">Curriculum Name</label>
+                        <input type="text" id="curriculum-name" placeholder="e.g., Computer Science Curriculum 2025" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="curriculum-code">Curriculum Code</label>
+                        <input type="text" id="curriculum-code" placeholder="e.g., CS-2025" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="curriculum-year">Academic Year</label>
+                        <input type="text" id="curriculum-year" placeholder="e.g., 2025-2026" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="curriculum-description">Description</label>
+                        <textarea id="curriculum-description" rows="3" placeholder="Brief description of the curriculum"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="curriculum-status">Status</label>
+                        <select id="curriculum-status" required>
+                            <option value="active">Active</option>
+                            <option value="draft">Draft</option>
+                            <option value="archived">Archived</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Cancel</button>
+                <button class="btn-primary" id="save-curriculum">Save Curriculum</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Program Modal -->
+    <div class="modal" id="program-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book"></i> Add New Program</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="program-form">
+                    <div class="form-group">
+                        <label for="program-name">Program Name</label>
+                        <input type="text" id="program-name" placeholder="e.g., Bachelor of Science in Computer Science" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="program-code">Program Code</label>
+                        <input type="text" id="program-code" placeholder="e.g., BSCS" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="program-years">Program Duration (Years)</label>
+                        <select id="program-years" required>
+                            <option value="2">2 Years</option>
+                            <option value="4" selected>4 Years</option>
+                            <option value="5">5 Years</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="program-department">Department</label>
+                        <input type="text" id="program-department" placeholder="e.g., College of Computer Studies" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="program-description">Description</label>
+                        <textarea id="program-description" rows="3" placeholder="Brief description of the program"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Cancel</button>
+                <button class="btn-primary" id="save-program">Save Program</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Subject Modal -->
+    <div class="modal" id="subject-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book-open"></i> Add New Course</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="subject-form">
+                    <div class="form-group">
+                        <label for="subject-code">Course Code</label>
+                        <input type="text" id="subject-code" placeholder="e.g., PHYS101" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject-name">Course Name</label>
+                        <input type="text" id="subject-name" placeholder="e.g., Introduction to Physics" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject-description">Description</label>
+                        <textarea id="subject-description" rows="3" placeholder="Course objectives and content"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Course Type</label>
+                        <select id="course-type" required>
+                            <option value="lecture-only">Lecture Only</option>
+                            <option value="lab-only">Lab Only</option>
+                            <option value="both">Both (Lecture + Lab)</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="lecture-hours-group">
+                        <label for="lecture-hours">Lecture Hours per Week</label>
+                        <input type="number" id="lecture-hours" min="1" max="6" value="3" required>
+                    </div>
+                    <div class="form-group" id="lab-hours-group">
+                        <label for="lab-hours">Lab Hours per Week</label>
+                        <input type="number" id="lab-hours" min="1" max="6" value="2">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject-credits">Credits</label>
+                        <input type="number" id="subject-credits" min="1" max="6" value="3" required>
+                        <small>Total academic credits for this course</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject-semester">Semester</label>
+                        <select id="subject-semester" required>
+                            <option value="1">First Semester</option>
+                            <option value="2">Second Semester</option>
+                            <option value="3">Summer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject-year">Year Level</label>
+                        <select id="subject-year" required>
+                            <option value="1">First Year</option>
+                            <option value="2">Second Year</option>
+                            <option value="3">Third Year</option>
+                            <option value="4">Fourth Year</option>
+                            <option value="5">Fifth Year</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject-prerequisites">Prerequisites (Optional)</label>
+                        <select id="subject-prerequisites" multiple>
+                            <!-- Will be populated dynamically based on available subjects -->
+                        </select>
+                        <small>Hold Ctrl/Cmd to select multiple subjects</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Cancel</button>
+                <button class="btn-primary" id="save-subject">Save Course</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subject Details Modal -->
+    <div class="modal" id="subject-details-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-book-open"></i> <span id="subject-detail-title">Subject Details</span></h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="subject-details-content" id="subject-details-content">
+                    <!-- Will be populated dynamically -->
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Close</button>
+                <button class="btn-primary" id="edit-subject-btn">Edit Subject</button>
+                <button class="btn-danger" id="delete-subject-btn">Delete Subject</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification" style="display: none;"></div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/nav-enhanced.js"></script>
+    <script src="assets/js/curriculum-manager.js"></script>
+    
+    <!-- Teacher Assignment Modal -->
+    <div class="modal" id="teacher-assignment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-chalkboard-teacher"></i> Assign Teacher</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="teacher-assignment-form">
+                    <div class="form-group">
+                        <label for="course-to-assign">Course</label>
+                        <input type="text" id="course-to-assign" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="teacher-select">Select Teacher</label>
+                        <select id="teacher-select" required>
+                            <!-- Will be populated dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Current Workload</label>
+                        <div id="teacher-workload" class="info-box">
+                            <p>Select a teacher to view their current workload</p>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary close-modal">Cancel</button>
+                <button class="btn-primary" id="save-assignment">Assign Teacher</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

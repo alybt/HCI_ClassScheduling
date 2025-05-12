@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Availability Management - Class Scheduling System</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="assets/css/availability.css">
+    <link rel="stylesheet" href="../Admin/assets/css/nav-enhanced.css">
+    <link rel="stylesheet" href="../assets/css/common-nav.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="logo">
+                <img src="../assets/img/logoCCS.jpg" alt="CCS Logo" class="logo-img">
+                <h2>myCCS</h2>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html" class="nav-link" data-page="dashboard">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="courses.html" class="nav-link" data-page="courses">
+                    <i class="fas fa-book"></i>
+                    <span>My Courses</span>
+                </a>
+                <a href="availability.html" class="nav-link active" data-page="availability">
+                    <i class="fas fa-clock"></i>
+                    <span>My Availability</span>
+                </a>
+                <a href="schedule.html" class="nav-link" data-page="schedule">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>My Schedule</span>
+                </a>
+                <a href="map.html" class="nav-link" data-page="map">
+                    <i class="fas fa-map-marked-alt"></i>
+                    <span>College Map</span>
+                </a>
+            </nav>
+            <div class="user-profile">
+                <div class="user-avatar">
+                    <img src="assets/img/teacher-avatar.png" alt="Teacher Avatar">
+                </div>
+                <div class="user-info">
+                    <h3 id="teacher-name">Dr. Robert Johnson</h3>
+                    <p>Professor</p>
+                </div>
+                <a href="#" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1>Availability Management</h1>
+                <div class="header-right">
+                    <div class="date-display" id="current-date">May 12, 2025</div>
+                    <select id="semester-select">
+                        <option value="1st">1st Semester (Aug-Dec)</option>
+                        <option value="2nd">2nd Semester (Jan-May)</option>
+                    </select>
+                    <button id="save-availability-btn" class="btn-primary">
+                        <i class="fas fa-save"></i> Save Availability
+                    </button>
+                </div>
+            </div>
+
+            <div class="availability-container">
+                <div class="availability-sidebar">
+                    <div class="sidebar-section">
+                        <h3>Instructions</h3>
+                        <p>Please indicate your teaching availability for the selected semester. This information will be used by the administration to create your teaching schedule.</p>
+                        <p>For each day, select the time slots when you are available to teach. You can also add specific notes or preferences.</p>
+                        <p>Your current workload: <span id="current-workload">12</span> hours/week</p>
+                        <p>Maximum workload: <span id="max-workload">15</span> hours/week</p>
+                    </div>
+                    
+                    <div class="sidebar-section">
+                        <h3>Preferences</h3>
+                        <div class="preference-group">
+                            <label for="preferred-days">Preferred Days:</label>
+                            <div class="checkbox-group">
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pref-monday" checked>
+                                    <label for="pref-monday">Monday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pref-tuesday" checked>
+                                    <label for="pref-tuesday">Tuesday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pref-wednesday" checked>
+                                    <label for="pref-wednesday">Wednesday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pref-thursday" checked>
+                                    <label for="pref-thursday">Thursday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pref-friday" checked>
+                                    <label for="pref-friday">Friday</label>
+                                </div>
+                                <div class="checkbox-item">
+                                    <input type="checkbox" id="pref-saturday">
+                                    <label for="pref-saturday">Saturday</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="preference-group">
+                            <label for="max-hours-per-day">Maximum Hours Per Day:</label>
+                            <input type="number" id="max-hours-per-day" min="1" max="10" value="6">
+                        </div>
+                        <div class="preference-group">
+                            <label for="preferred-time">Preferred Time of Day:</label>
+                            <select id="preferred-time">
+                                <option value="morning">Morning (7 AM - 12 PM)</option>
+                                <option value="afternoon" selected>Afternoon (12 PM - 5 PM)</option>
+                                <option value="evening">Evening (5 PM - 9 PM)</option>
+                                <option value="any">No Preference</option>
+                            </select>
+                        </div>
+                        <div class="preference-group">
+                            <label for="additional-notes">Additional Notes:</label>
+                            <textarea id="additional-notes" rows="4" placeholder="Enter any additional preferences or constraints..."></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="availability-content">
+                    <div class="day-tabs">
+                        <button class="day-tab active" data-day="monday">Monday</button>
+                        <button class="day-tab" data-day="tuesday">Tuesday</button>
+                        <button class="day-tab" data-day="wednesday">Wednesday</button>
+                        <button class="day-tab" data-day="thursday">Thursday</button>
+                        <button class="day-tab" data-day="friday">Friday</button>
+                        <button class="day-tab" data-day="saturday">Saturday</button>
+                    </div>
+
+                    <div class="day-availability">
+                        <div class="day-schedule active" id="monday-schedule">
+                            <div class="time-slots">
+                                <div class="time-slot-header">
+                                    <div class="time-label">Time</div>
+                                    <div class="availability-label">Available</div>
+                                    <div class="preferred-label">Preferred</div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">7:00 AM - 8:00 AM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-7-available" class="available-checkbox">
+                                        <label for="monday-7-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-7-preferred" class="preferred-checkbox">
+                                        <label for="monday-7-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">8:00 AM - 9:00 AM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-8-available" class="available-checkbox" checked>
+                                        <label for="monday-8-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-8-preferred" class="preferred-checkbox" checked>
+                                        <label for="monday-8-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">9:00 AM - 10:00 AM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-9-available" class="available-checkbox" checked>
+                                        <label for="monday-9-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-9-preferred" class="preferred-checkbox" checked>
+                                        <label for="monday-9-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">10:00 AM - 11:00 AM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-10-available" class="available-checkbox" checked>
+                                        <label for="monday-10-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-10-preferred" class="preferred-checkbox">
+                                        <label for="monday-10-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">11:00 AM - 12:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-11-available" class="available-checkbox" checked>
+                                        <label for="monday-11-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-11-preferred" class="preferred-checkbox">
+                                        <label for="monday-11-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot lunch-break">
+                                    <div class="time-label">12:00 PM - 1:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-12-available" class="available-checkbox">
+                                        <label for="monday-12-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-12-preferred" class="preferred-checkbox">
+                                        <label for="monday-12-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">1:00 PM - 2:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-13-available" class="available-checkbox" checked>
+                                        <label for="monday-13-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-13-preferred" class="preferred-checkbox" checked>
+                                        <label for="monday-13-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">2:00 PM - 3:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-14-available" class="available-checkbox" checked>
+                                        <label for="monday-14-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-14-preferred" class="preferred-checkbox" checked>
+                                        <label for="monday-14-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">3:00 PM - 4:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-15-available" class="available-checkbox" checked>
+                                        <label for="monday-15-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-15-preferred" class="preferred-checkbox" checked>
+                                        <label for="monday-15-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">4:00 PM - 5:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-16-available" class="available-checkbox" checked>
+                                        <label for="monday-16-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-16-preferred" class="preferred-checkbox">
+                                        <label for="monday-16-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">5:00 PM - 6:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-17-available" class="available-checkbox">
+                                        <label for="monday-17-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-17-preferred" class="preferred-checkbox">
+                                        <label for="monday-17-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">6:00 PM - 7:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-18-available" class="available-checkbox">
+                                        <label for="monday-18-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-18-preferred" class="preferred-checkbox">
+                                        <label for="monday-18-preferred"></label>
+                                    </div>
+                                </div>
+                                <div class="time-slot">
+                                    <div class="time-label">7:00 PM - 8:00 PM</div>
+                                    <div class="availability-toggle">
+                                        <input type="checkbox" id="monday-19-available" class="available-checkbox">
+                                        <label for="monday-19-available"></label>
+                                    </div>
+                                    <div class="preferred-toggle">
+                                        <input type="checkbox" id="monday-19-preferred" class="preferred-checkbox">
+                                        <label for="monday-19-preferred"></label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Other days will be populated dynamically with JavaScript -->
+                        <div class="day-schedule" id="tuesday-schedule"></div>
+                        <div class="day-schedule" id="wednesday-schedule"></div>
+                        <div class="day-schedule" id="thursday-schedule"></div>
+                        <div class="day-schedule" id="friday-schedule"></div>
+                        <div class="day-schedule" id="saturday-schedule"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div class="notification" id="success-notification">
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <p>Your availability has been saved successfully!</p>
+        </div>
+    </div>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/availability.js"></script>
+    <script src="../assets/js/auth.js"></script>
+    <script src="../assets/js/logout.js"></script>
+</body>
+</html>

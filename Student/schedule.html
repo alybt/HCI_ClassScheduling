@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>myCCS - Class Schedule</title>
+    <title>My Schedule - Class Scheduling System</title>
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/schedule.css">
     <link rel="stylesheet" href="../Admin/assets/css/nav-enhanced.css">
@@ -48,11 +48,13 @@
 
         <div class="main-content">
             <div class="header">
-                <h1>Class Schedule</h1>
+                <h1>My Class Schedule</h1>
                 <div class="header-right">
+                    <div class="date-display" id="current-date">May 12, 2025</div>
                     <select id="semester-select">
-                        <option value="1st">1st Semester (Aug-Dec)</option>
-                        <option value="2nd">2nd Semester (Jan-May)</option>
+                        <option value="1">1st Semester (Aug-Dec)</option>
+                        <option value="2">2nd Semester (Jan-May)</option>
+                        <option value="3">Summer (Jun-Jul)</option>
                     </select>
                     <div class="view-toggle">
                         <button class="toggle-btn active" data-view="daily">Daily</button>
@@ -103,15 +105,38 @@
                 <div class="schedule-content">
                     <!-- Daily View (Default) -->
                     <div class="schedule-view daily-view active" id="daily-view">
-                        <h2 class="view-date">Tuesday, January 5, 2025</h2>
-                        <div class="daily-schedule">
+                        <div class="schedule-header">
+                            <div class="day-navigation">
+                                <button id="prev-day" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                                <span id="day-display">Monday, May 12, 2025</span>
+                                <button id="next-day" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="daily-schedule" id="daily-schedule">
+                            <div class="time-slot">
+                                <div class="time-label">7:00 AM</div>
+                                <div class="class-block"></div>
+                            </div>
                             <div class="time-slot">
                                 <div class="time-label">8:00 AM</div>
                                 <div class="class-block"></div>
                             </div>
                             <div class="time-slot">
                                 <div class="time-label">9:00 AM</div>
-                                <div class="class-block"></div>
+                                <div class="class-block has-class lecture-class">
+                                    <div class="class-details">
+                                        <div class="class-header">
+                                            <h3>CS101: Introduction to Computing</h3>
+                                            <span class="class-type">Lecture</span>
+                                        </div>
+                                        <div class="class-info">
+                                            <p><i class="fas fa-user"></i> Dr. Smith</p>
+                                            <p><i class="fas fa-door-open"></i> Room: LR 1</p>
+                                            <p><i class="fas fa-clock"></i> 9:00 AM - 12:00 PM</p>
+                                            <p><i class="fas fa-graduation-cap"></i> 3 credits</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="time-slot">
                                 <div class="time-label">10:00 AM</div>
@@ -123,18 +148,29 @@
                             </div>
                             <div class="time-slot">
                                 <div class="time-label">12:00 PM</div>
-                                <div class="class-block has-class">
-                                    <div class="class-details">
-                                        <h3>CC 101</h3>
-                                        <p>Introduction to Computing</p>
-                                        <p>Room: 104 ADTECH</p>
-                                        <p>12:00 PM - 3:00 PM</p>
+                                <div class="class-block lunch-break">
+                                    <div class="break-indicator">
+                                        <i class="fas fa-utensils"></i>
+                                        <span>Lunch Break</span>
                                     </div>
                                 </div>
                             </div>
                             <div class="time-slot">
                                 <div class="time-label">1:00 PM</div>
-                                <div class="class-block"></div>
+                                <div class="class-block has-class lab-class">
+                                    <div class="class-details">
+                                        <div class="class-header">
+                                            <h3>PHYS101: Physics for Computing</h3>
+                                            <span class="class-type">Laboratory</span>
+                                        </div>
+                                        <div class="class-info">
+                                            <p><i class="fas fa-user"></i> Prof. Johnson</p>
+                                            <p><i class="fas fa-door-open"></i> Room: Lab 1</p>
+                                            <p><i class="fas fa-clock"></i> 1:00 PM - 3:00 PM</p>
+                                            <p><i class="fas fa-graduation-cap"></i> 4 credits (with lecture)</p>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="time-slot">
                                 <div class="time-label">2:00 PM</div>
@@ -142,29 +178,28 @@
                             </div>
                             <div class="time-slot">
                                 <div class="time-label">3:00 PM</div>
-                                <div class="class-block has-class">
-                                    <div class="class-details">
-                                        <h3>CC 100</h3>
-                                        <p>Introduction to Computing</p>
-                                        <p>Room: 104 ADTECH</p>
-                                        <p>3:00 PM - 5:00 PM</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="time-slot">
-                                <div class="time-label">4:00 PM</div>
                                 <div class="class-block"></div>
                             </div>
                             <div class="time-slot">
-                                <div class="time-label">5:00 PM</div>
-                                <div class="class-block has-class">
+                                <div class="time-label">4:00 PM</div>
+                                <div class="class-block has-class lecture-class">
                                     <div class="class-details">
-                                        <h3>CC 100</h3>
-                                        <p>Introduction to Computing</p>
-                                        <p>Room: 104 ADTECH</p>
-                                        <p>5:30 PM - 7:00 PM</p>
+                                        <div class="class-header">
+                                            <h3>CS102: Computer Programming 1</h3>
+                                            <span class="class-type">Lecture</span>
+                                        </div>
+                                        <div class="class-info">
+                                            <p><i class="fas fa-user"></i> Dr. Smith</p>
+                                            <p><i class="fas fa-door-open"></i> Room: LR 2</p>
+                                            <p><i class="fas fa-clock"></i> 4:00 PM - 6:00 PM</p>
+                                            <p><i class="fas fa-graduation-cap"></i> 4 credits (with lab)</p>
+                                        </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="time-slot">
+                                <div class="time-label">5:00 PM</div>
+                                <div class="class-block"></div>
                             </div>
                             <div class="time-slot">
                                 <div class="time-label">6:00 PM</div>
@@ -179,26 +214,69 @@
 
                     <!-- Weekly View -->
                     <div class="schedule-view weekly-view" id="weekly-view">
-                        <h2 class="view-date">January 3 - January 9, 2025</h2>
-                        <div class="weekly-schedule">
-                            <div class="weekly-header">
-                                <div class="day-header"></div>
-                                <div class="day-header">SUN<br>3</div>
-                                <div class="day-header">MON<br>4</div>
-                                <div class="day-header current-day">TUE<br>5</div>
-                                <div class="day-header">WED<br>6</div>
-                                <div class="day-header">THU<br>7</div>
-                                <div class="day-header">FRI<br>8</div>
-                                <div class="day-header">SAT<br>9</div>
+                        <div class="schedule-header">
+                            <div class="week-navigation">
+                                <button id="prev-week" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                                <span id="week-display">May 12 - May 18, 2025</span>
+                                <button id="next-week" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
                             </div>
-                            <div class="weekly-body">
-                                <div class="time-labels">
-                                    <div class="time-label">8:00 AM</div>
-                                    <div class="time-label">9:00 AM</div>
-                                    <div class="time-label">10:00 AM</div>
-                                    <div class="time-label">11:00 AM</div>
-                                    <div class="time-label">12:00 PM</div>
-                                    <div class="time-label">1:00 PM</div>
+                        </div>
+                        <div class="timetable">
+                            <div class="timetable-header">
+                                <div class="time-column">Time</div>
+                                <div class="day-column">Monday</div>
+                                <div class="day-column">Tuesday</div>
+                                <div class="day-column">Wednesday</div>
+                                <div class="day-column">Thursday</div>
+                                <div class="day-column">Friday</div>
+                                <div class="day-column">Saturday</div>
+                            </div>
+                            <div class="timetable-body">
+                                <div class="time-slots">
+                                    <div class="time-slot">7:00 AM</div>
+                                    <div class="time-slot">8:00 AM</div>
+                                    <div class="time-slot">9:00 AM</div>
+                                    <div class="time-slot">10:00 AM</div>
+                                    <div class="time-slot">11:00 AM</div>
+                                    <div class="time-slot">12:00 PM</div>
+                                    <div class="time-slot">1:00 PM</div>
+                                    <div class="time-slot">2:00 PM</div>
+                                    <div class="time-slot">3:00 PM</div>
+                                    <div class="time-slot">4:00 PM</div>
+                                    <div class="time-slot">5:00 PM</div>
+                                    <div class="time-slot">6:00 PM</div>
+                                    <div class="time-slot">7:00 PM</div>
+                                </div>
+                                <div class="schedule-grid" id="weekly-schedule-grid">
+                                    <!-- Schedule items will be dynamically added here -->
+                                    <!-- Example schedule items -->
+                                    <div class="schedule-item lecture-class" style="grid-column: 1; grid-row: 3 / span 3;">
+                                        <h4>CS101: Lecture</h4>
+                                        <p>Dr. Smith | LR 1</p>
+                                        <p>9:00 AM - 12:00 PM</p>
+                                    </div>
+                                    <div class="schedule-item lab-class" style="grid-column: 1; grid-row: 7 / span 2;">
+                                        <h4>PHYS101: Lab</h4>
+                                        <p>Prof. Johnson | Lab 1</p>
+                                        <p>1:00 PM - 3:00 PM</p>
+                                    </div>
+                                    <div class="schedule-item lecture-class" style="grid-column: 1; grid-row: 10 / span 2;">
+                                        <h4>CS102: Lecture</h4>
+                                        <p>Dr. Smith | LR 2</p>
+                                        <p>4:00 PM - 6:00 PM</p>
+                                    </div>
+                                    <div class="schedule-item lecture-class" style="grid-column: 3; grid-row: 3 / span 3;">
+                                        <h4>PHYS101: Lecture</h4>
+                                        <p>Prof. Johnson | LR 3</p>
+                                        <p>9:00 AM - 12:00 PM</p>
+                                    </div>
+                                    <div class="schedule-item lab-class" style="grid-column: 5; grid-row: 7 / span 2;">
+                                        <h4>CS102: Lab</h4>
+                                        <p>Dr. Smith | Lab 2</p>
+                                        <p>1:00 PM - 3:00 PM</p>
+                                    </div>
+                                </div>
+                            </div>
                                     <div class="time-label">2:00 PM</div>
                                     <div class="time-label">3:00 PM</div>
                                     <div class="time-label">4:00 PM</div>
@@ -269,9 +347,15 @@
 
                     <!-- Monthly View -->
                     <div class="schedule-view monthly-view" id="monthly-view">
-                        <h2 class="view-date">January 2025</h2>
-                        <div class="monthly-calendar">
-                            <div class="month-header">
+                        <div class="schedule-header">
+                            <div class="month-navigation">
+                                <button id="prev-month" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                                <span id="month-display">May 2025</span>
+                                <button id="next-month" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                        </div>
+                        <div class="monthly-calendar" id="monthly-calendar">
+                            <div class="calendar-header">
                                 <div>SUN</div>
                                 <div>MON</div>
                                 <div>TUE</div>
