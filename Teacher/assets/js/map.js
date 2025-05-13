@@ -157,8 +157,17 @@ document.addEventListener('DOMContentLoaded', function() {
         buildingMaps.forEach(map => {
             map.classList.remove('active');
         });
+
+        // Update building selection UI
+        const buildingItems = document.querySelectorAll('.building-item');
+        buildingItems.forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('data-building') === building) {
+                item.classList.add('active');
+            }
+        });
         
-        // Show the selected building's map (default to 1st floor)
+        // Show the selected building's map and handle floor buttons
         if (building === 'ccs') {
             document.getElementById('ccs-map-1').classList.add('active');
             // Reset floor buttons
@@ -177,9 +186,17 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelector('[data-floor="1"]').disabled = true;
             document.querySelector('[data-floor="3"]').disabled = true;
         }
+
+        // Save current building selection to session storage
+        sessionStorage.setItem('selectedBuilding', building);
         
-        // Update room list based on building and floor
-        updateRoomList(building, document.querySelector('.floor-btn.active').getAttribute('data-floor'));
+        // Get active floor and update room list
+        const activeFloor = document.querySelector('.floor-btn.active').getAttribute('data-floor');
+        updateRoomList(building, activeFloor);
+
+        // Trigger a custom event for building change
+        const event = new CustomEvent('buildingChanged', { detail: { building, floor: activeFloor } });
+        document.dispatchEvent(event);
     }
 
     // Function to update room list based on building and floor
@@ -279,6 +296,18 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Get the currently selected building
         const selectedBuilding = document.querySelector('.building-item.active').getAttribute('data-building');
+        if (!selectedBuilding) {
+            console.error('No building selected');
+            return;
+        }
+
+        // Update floor button UI
+        floorButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-floor') === floor) {
+                btn.classList.add('active');
+            }
+        });
         
         // Hide all building maps
         const buildingMaps = document.querySelectorAll('.building-map');
@@ -295,16 +324,38 @@ document.addEventListener('DOMContentLoaded', function() {
             const map = document.getElementById(mapId);
             if (map) {
                 map.classList.add('active');
+            } else {
+                console.error(`Map not found for floor ${floor}`);
             }
         } else if (selectedBuilding === 'highschool') {
-            // Only 2nd floor is accessible for high school building
+            // Handle high school building floor restrictions
             if (floor === '2') {
                 document.getElementById('highschool-map-2').classList.add('active');
+            } else {
+                console.warn(`Floor ${floor} not accessible in high school building`);
+                return;
             }
+
+            // Update floor button states
+            document.querySelector('[data-floor="1"]').disabled = true;
+            document.querySelector('[data-floor="3"]').disabled = true;
         }
+
+        // Save current floor selection to session storage
+        sessionStorage.setItem('selectedFloor', floor);
         
-        // Update room list
+        // Update room list and dispatch event
         updateRoomList(selectedBuilding, floor);
+
+        // Trigger a custom event for floor change
+        const event = new CustomEvent('floorChanged', { 
+            detail: { 
+                building: selectedBuilding, 
+                floor: floor,
+                timestamp: new Date().toISOString()
+            } 
+        });
+        document.dispatchEvent(event);
     }
 
     // Function to filter rooms

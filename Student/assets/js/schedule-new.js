@@ -110,42 +110,71 @@ function updateMonthlyView(date) {
 
 function setupNavigation(currentDate) {
     // Daily view navigation
-    document.getElementById('prev-day').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() - 1);
-        updateDailyView(currentDate);
-    });
+    const prevDayBtn = document.getElementById('prev-day');
+    const nextDayBtn = document.getElementById('next-day');
     
-    document.getElementById('next-day').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() + 1);
-        updateDailyView(currentDate);
-    });
+    if (prevDayBtn) {
+        prevDayBtn.addEventListener('click', function() {
+            currentDate.setDate(currentDate.getDate() - 1);
+            updateDateDisplay(currentDate);
+            updateDailyView(currentDate);
+        });
+    }
+    
+    if (nextDayBtn) {
+        nextDayBtn.addEventListener('click', function() {
+            currentDate.setDate(currentDate.getDate() + 1);
+            updateDateDisplay(currentDate);
+            updateDailyView(currentDate);
+        });
+    }
     
     // Weekly view navigation
-    document.getElementById('prev-week').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() - 7);
-        updateWeeklyView(currentDate);
-    });
+    const prevWeekBtn = document.getElementById('prev-week');
+    const nextWeekBtn = document.getElementById('next-week');
     
-    document.getElementById('next-week').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() + 7);
-        updateWeeklyView(currentDate);
-    });
+    if (prevWeekBtn) {
+        prevWeekBtn.addEventListener('click', function() {
+            currentDate.setDate(currentDate.getDate() - 7);
+            updateDateDisplay(currentDate);
+            updateWeeklyView(currentDate);
+        });
+    }
+    
+    if (nextWeekBtn) {
+        nextWeekBtn.addEventListener('click', function() {
+            currentDate.setDate(currentDate.getDate() + 7);
+            updateDateDisplay(currentDate);
+            updateWeeklyView(currentDate);
+        });
+    }
     
     // Monthly view navigation
-    document.getElementById('prev-month').addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        updateMonthlyView(currentDate);
-    });
+    const prevMonthBtn = document.getElementById('prev-month');
+    const nextMonthBtn = document.getElementById('next-month');
     
-    document.getElementById('next-month').addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        updateMonthlyView(currentDate);
-    });
+    if (prevMonthBtn) {
+        prevMonthBtn.addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            updateDateDisplay(currentDate);
+            updateMonthlyView(currentDate);
+        });
+    }
+    
+    if (nextMonthBtn) {
+        nextMonthBtn.addEventListener('click', function() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            updateDateDisplay(currentDate);
+            updateMonthlyView(currentDate);
+        });
+    }
 }
 
 function setupClassDetailsModal() {
     // Set up class details modal
     const modal = document.getElementById('class-details-modal');
+    if (!modal) return;
+    
     const closeButtons = document.querySelectorAll('.close-modal');
     
     // Add click event to all class blocks
@@ -188,43 +217,58 @@ function setupClassDetailsModal() {
 
 function openClassDetailsModal(element) {
     const modal = document.getElementById('class-details-modal');
+    if (!modal) return;
     
     // Extract class information based on the element type
-    let courseCode, courseName, courseType, teacher, schedule, room, credits, description;
+    let courseCode = '', courseName = '', courseType = '', teacher = '', schedule = '', room = '', credits = '', description = '';
     
     if (element.classList.contains('class-block')) {
         // Daily view class block
         const header = element.querySelector('.class-header');
         if (header) {
-            const title = header.querySelector('h3').textContent;
-            [courseCode, courseName] = title.split(': ');
-            courseType = header.querySelector('.class-type').textContent;
+            const titleElement = header.querySelector('h3');
+            if (titleElement) {
+                const titleParts = titleElement.textContent.split(': ');
+                courseCode = titleParts[0] || '';
+                courseName = titleParts[1] || '';
+            }
+            
+            const typeElement = header.querySelector('.class-type');
+            if (typeElement) {
+                courseType = typeElement.textContent;
+            }
             
             const info = element.querySelectorAll('.class-info p');
-            teacher = info[0].textContent.replace(/^\s*\S+\s*/, ''); // Remove icon
-            room = info[1].textContent.replace(/^\s*\S+\s*/, '');
-            schedule = info[2].textContent.replace(/^\s*\S+\s*/, '');
-            credits = info[3].textContent.replace(/^\s*\S+\s*/, '');
+            if (info.length > 0) teacher = info[0].textContent.replace(/^\s*\S+\s*/, ''); // Remove icon
+            if (info.length > 1) room = info[1].textContent.replace(/^\s*\S+\s*/, '');
+            if (info.length > 2) schedule = info[2].textContent.replace(/^\s*\S+\s*/, '');
+            if (info.length > 3) credits = info[3].textContent.replace(/^\s*\S+\s*/, '');
             description = 'Detailed course description will be shown here.';
         }
     } else if (element.classList.contains('schedule-item')) {
         // Weekly view schedule item
-        const title = element.querySelector('h4').textContent;
-        [courseCode, courseType] = title.split(': ');
-        courseName = courseCode === 'CS101' ? 'Introduction to Computing' : 
-                    courseCode === 'CS102' ? 'Computer Programming 1' : 
-                    courseCode === 'PHYS101' ? 'Physics for Computing' : 'Course Name';
+        const titleElement = element.querySelector('h4');
+        if (titleElement) {
+            const titleParts = titleElement.textContent.split(': ');
+            courseCode = titleParts[0] || '';
+            courseType = titleParts[1] || '';
+            courseName = courseCode === 'CS101' ? 'Introduction to Computing' : 
+                        courseCode === 'CS102' ? 'Computer Programming 1' : 
+                        courseCode === 'PHYS101' ? 'Physics for Computing' : 'Course Name';
+        }
         
         const info = element.querySelectorAll('p');
-        const teacherRoom = info[0].textContent.split(' | ');
-        teacher = teacherRoom[0];
-        room = teacherRoom[1];
-        schedule = info[1].textContent;
+        if (info.length > 0) {
+            const teacherRoom = info[0].textContent.split(' | ');
+            teacher = teacherRoom[0] || '';
+            room = teacherRoom.length > 1 ? teacherRoom[1] : '';
+        }
+        if (info.length > 1) schedule = info[1].textContent;
         credits = courseCode === 'CS101' ? '3 credits' : '4 credits (with lab)';
         description = 'Detailed course description will be shown here.';
     } else if (element.classList.contains('day-class')) {
         // Monthly view day class
-        courseCode = element.textContent;
+        courseCode = element.textContent || '';
         courseName = courseCode === 'CC 101' ? 'Introduction to Computing' : 'Computer Programming';
         courseType = 'Lecture';
         teacher = 'Dr. Smith';
@@ -235,21 +279,36 @@ function openClassDetailsModal(element) {
     }
     
     // Populate modal with class details
-    document.getElementById('modal-class-title').textContent = courseName;
-    document.getElementById('modal-course-code').textContent = courseCode;
-    document.getElementById('modal-course-name').textContent = courseName;
-    document.getElementById('modal-course-type').textContent = courseType;
-    document.getElementById('modal-teacher').textContent = teacher;
-    document.getElementById('modal-schedule').textContent = schedule;
-    document.getElementById('modal-room').textContent = room;
-    document.getElementById('modal-credits').textContent = credits;
-    document.getElementById('modal-description').textContent = description;
+    const modalElements = {
+        'modal-class-title': courseName,
+        'modal-course-code': courseCode,
+        'modal-course-name': courseName,
+        'modal-course-type': courseType,
+        'modal-teacher': teacher,
+        'modal-schedule': schedule,
+        'modal-room': room,
+        'modal-credits': credits,
+        'modal-description': description
+    };
+    
+    // Update each element if it exists
+    Object.entries(modalElements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        }
+    });
     
     // Show modal
     modal.style.display = 'block';
 }
 
 function loadSemesterData(semesterId) {
+    if (!semesterId) {
+        console.error('No semester ID provided');
+        return;
+    }
+    
     console.log(`Loading data for semester ${semesterId}`);
     
     // In a real application, this would fetch data from a server or local storage
@@ -300,4 +359,12 @@ function loadSemesterData(semesterId) {
     // In a real application, this data would be used to populate the schedule views
     // For now, we'll just log it to the console
     console.log('Semester data loaded:', semesterData);
+    
+    // Update the views with the new data
+    const currentView = document.querySelector('.toggle-btn.active');
+    if (currentView) {
+        const viewType = currentView.getAttribute('data-view');
+        const currentDate = new Date();
+        updateViewDisplay(viewType, currentDate);
+    }
 }

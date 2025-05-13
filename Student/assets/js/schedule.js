@@ -1,146 +1,292 @@
+// Global state management
+const scheduleState = {
+    currentDate: new Date(),
+    currentView: 'daily',
+    currentSemester: null,
+    scheduleData: null,
+    isLoading: false,
+    error: null
+};
+
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize the schedule page
     initSchedulePage();
 });
 
 function initSchedulePage() {
-    // Initialize current date
-    const currentDate = new Date();
-    updateDateDisplay(currentDate);
-    
-    // Set up view toggle buttons
+    try {
+        // Initialize display
+        updateDateDisplay(scheduleState.currentDate);
+        
+        // Set up view toggle buttons
+        initializeViewToggle();
+        
+        // Set up navigation buttons
+        setupNavigation();
+        
+        // Set up class details modal
+        setupClassDetailsModal();
+        
+        // Set up semester select
+        initializeSemesterSelect();
+        
+        // Load initial data
+        const semesterSelect = document.getElementById('semester-select');
+        loadSemesterData(semesterSelect.value);
+    } catch (error) {
+        console.error('Failed to initialize schedule page:', error);
+        showError('Failed to initialize the schedule. Please refresh the page.');
+    }
+}
+
+function initializeViewToggle() {
     const toggleButtons = document.querySelectorAll('.toggle-btn');
     const scheduleViews = document.querySelectorAll('.schedule-view');
     
     toggleButtons.forEach(button => {
         button.addEventListener('click', function() {
-            const viewType = this.getAttribute('data-view');
-            
-            // Update active button
-            toggleButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Show selected view
-            scheduleViews.forEach(view => {
-                if (view.id === viewType + '-view') {
-                    view.classList.add('active');
-                } else {
-                    view.classList.remove('active');
-                }
-            });
-            
-            // Update view-specific displays
-            updateViewDisplay(viewType, currentDate);
+            try {
+                const viewType = this.getAttribute('data-view');
+                scheduleState.currentView = viewType;
+                
+                // Update active button
+                toggleButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Show selected view
+                scheduleViews.forEach(view => {
+                    view.classList.toggle('active', view.id === viewType + '-view');
+                });
+                
+                // Update view-specific displays
+                updateViewDisplay(viewType, scheduleState.currentDate);
+            } catch (error) {
+                console.error('Error switching views:', error);
+                showError('Failed to switch views. Please try again.');
+            }
         });
     });
-    
-    // Set up navigation buttons
-    setupNavigation(currentDate);
-    
-    // Set up class details modal
-    setupClassDetailsModal();
-    
-    // Set up semester select
+}
+
+function initializeSemesterSelect() {
     const semesterSelect = document.getElementById('semester-select');
     semesterSelect.addEventListener('change', function() {
-        loadSemesterData(this.value);
+        try {
+            scheduleState.currentSemester = this.value;
+            loadSemesterData(this.value);
+        } catch (error) {
+            console.error('Error changing semester:', error);
+            showError('Failed to load semester data. Please try again.');
+        }
     });
+}
+
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
     
-    // Load initial data
-    loadSemesterData(semesterSelect.value);
+    const container = document.querySelector('.schedule-container');
+    container.insertBefore(errorDiv, container.firstChild);
+    
+    setTimeout(() => errorDiv.remove(), 5000);
 }
 
 function updateDateDisplay(date) {
-    // Update the current date display
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById('current-date').textContent = date.toLocaleDateString('en-US', options);
+    if (!date || !(date instanceof Date)) {
+        console.error('Invalid date provided to updateDateDisplay');
+        showError('Failed to update date display');
+        return;
+    }
+
+    try {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = date.toLocaleDateString('en-US', options);
+    } catch (error) {
+        console.error('Error updating date display:', error);
+        showError('Failed to update date display');
+    }
 }
 
 function updateViewDisplay(viewType, date) {
-    switch(viewType) {
-        case 'daily':
-            updateDailyView(date);
-            break;
-        case 'weekly':
-            updateWeeklyView(date);
-            break;
-        case 'monthly':
-            updateMonthlyView(date);
-            break;
+    if (!date || !(date instanceof Date)) {
+        console.error('Invalid date provided to updateViewDisplay');
+        showError('Failed to update view display');
+        return;
+    }
+
+    if (!['daily', 'weekly', 'monthly'].includes(viewType)) {
+        console.error(`Invalid view type: ${viewType}`);
+        showError('Failed to update view display');
+        return;
+    }
+
+    try {
+        const viewUpdaters = {
+            daily: updateDailyView,
+            weekly: updateWeeklyView,
+            monthly: updateMonthlyView
+        };
+
+        viewUpdaters[viewType](date);
+
+        // Update state
+        scheduleState.currentDate = date;
+        scheduleState.currentView = viewType;
+    } catch (error) {
+        console.error('Error updating view display:', error);
+        showError('Failed to update schedule view');
     }
 }
 
 function updateDailyView(date) {
-    // Format date for display
-    const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-    document.getElementById('day-display').textContent = date.toLocaleDateString('en-US', options);
-    
-    // In a real application, this would load the schedule data for the selected date
-    // For now, we'll just use the static HTML content
+    try {
+        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        document.getElementById('day-display').textContent = date.toLocaleDateString('en-US', options);
+        
+        const dailySchedule = getDailySchedule(date);
+        const dailyContainer = document.getElementById('daily-schedule');
+        
+        if (!dailySchedule || !dailySchedule.length) {
+            dailyContainer.innerHTML = '<p class="no-classes">No classes scheduled for this day.</p>';
+            return;
+        }
+        
+        renderDailySchedule(dailySchedule);
+    } catch (error) {
+        console.error('Error updating daily view:', error);
+        showError('Failed to update daily schedule');
+    }
 }
 
 function updateWeeklyView(date) {
-    // Calculate the start and end of the week
-    const startOfWeek = new Date(date);
-    startOfWeek.setDate(date.getDate() - date.getDay() + 1); // Monday
-    
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // Sunday
-    
-    // Format dates for display
-    const options = { month: 'long', day: 'numeric' };
-    const startStr = startOfWeek.toLocaleDateString('en-US', options);
-    const endStr = endOfWeek.toLocaleDateString('en-US', options);
-    const yearStr = endOfWeek.getFullYear();
-    
-    document.getElementById('week-display').textContent = `${startStr} - ${endStr}, ${yearStr}`;
-    
-    // In a real application, this would load the schedule data for the selected week
-    // For now, we'll just use the static HTML content
+    try {
+        const startOfWeek = new Date(date);
+        startOfWeek.setDate(date.getDate() - date.getDay() + 1);
+        
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        
+        const options = { month: 'long', day: 'numeric' };
+        const startStr = startOfWeek.toLocaleDateString('en-US', options);
+        const endStr = endOfWeek.toLocaleDateString('en-US', options);
+        const yearStr = endOfWeek.getFullYear();
+        
+        document.getElementById('week-display').textContent = `${startStr} - ${endStr}, ${yearStr}`;
+        
+        const weeklySchedule = getWeeklySchedule(startOfWeek, endOfWeek);
+        if (weeklySchedule && weeklySchedule.length) {
+            renderWeeklySchedule(weeklySchedule);
+        } else {
+            document.getElementById('weekly-schedule').innerHTML = '<p class="no-classes">No classes scheduled for this week.</p>';
+        }
+    } catch (error) {
+        console.error('Error updating weekly view:', error);
+        showError('Failed to update weekly schedule');
+    }
 }
 
 function updateMonthlyView(date) {
-    // Format month for display
-    const options = { month: 'long', year: 'numeric' };
-    document.getElementById('month-display').textContent = date.toLocaleDateString('en-US', options);
-    
-    // In a real application, this would generate the calendar for the selected month
-    // For now, we'll just use the static HTML content
+    try {
+        const options = { month: 'long', year: 'numeric' };
+        document.getElementById('month-display').textContent = date.toLocaleDateString('en-US', options);
+        
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        
+        const monthlySchedule = getMonthlySchedule(firstDay, lastDay);
+        if (monthlySchedule && monthlySchedule.length) {
+            renderMonthlySchedule(monthlySchedule);
+        } else {
+            document.getElementById('monthly-schedule').innerHTML = '<p class="no-classes">No classes scheduled for this month.</p>';
+        }
+    } catch (error) {
+        console.error('Error updating monthly view:', error);
+        showError('Failed to update monthly schedule');
+    }
 }
 
-function setupNavigation(currentDate) {
-    // Daily view navigation
-    document.getElementById('prev-day').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() - 1);
-        updateDailyView(currentDate);
-    });
+function getDailySchedule(date) {
+    if (!scheduleState.scheduleData) return null;
     
-    document.getElementById('next-day').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() + 1);
-        updateDailyView(currentDate);
+    const dateStr = date.toISOString().split('T')[0];
+    return scheduleState.scheduleData.filter(class => {
+        const classDate = new Date(class.schedule).toISOString().split('T')[0];
+        return classDate === dateStr;
     });
+}
+
+function getWeeklySchedule(startDate, endDate) {
+    if (!scheduleState.scheduleData) return [];
     
-    // Weekly view navigation
-    document.getElementById('prev-week').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() - 7);
-        updateWeeklyView(currentDate);
+    return scheduleState.scheduleData.filter(class => {
+        const classDate = new Date(class.schedule);
+        return classDate >= startDate && classDate <= endDate;
     });
+}
+
+function getMonthlySchedule(firstDay, lastDay) {
+    if (!scheduleState.scheduleData) return [];
     
-    document.getElementById('next-week').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() + 7);
-        updateWeeklyView(currentDate);
+    return scheduleState.scheduleData.filter(class => {
+        const classDate = new Date(class.schedule);
+        return classDate >= firstDay && classDate <= lastDay;
     });
-    
-    // Monthly view navigation
-    document.getElementById('prev-month').addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        updateMonthlyView(currentDate);
+}
+
+function renderDailySchedule(schedule) {
+    const container = document.getElementById('daily-schedule');
+    container.innerHTML = schedule.map(class => `
+        <div class="class-block has-class" data-class-id="${class.id}">
+            <div class="class-header">
+                <h3>${class.code}: ${class.name}</h3>
+                <span class="class-type">${class.type}</span>
+            </div>
+            <div class="class-info">
+                <p><i class="fas fa-user"></i> ${class.teacher}</p>
+                <p><i class="fas fa-location-dot"></i> ${class.room}</p>
+                <p><i class="fas fa-clock"></i> ${formatTime(class.schedule)}</p>
+                <p><i class="fas fa-graduation-cap"></i> ${class.credits}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderWeeklySchedule(schedule) {
+    // Implementation for rendering weekly schedule
+    // This would populate the timetable grid with the schedule data
+}
+
+function renderMonthlySchedule(schedule) {
+    // Implementation for rendering monthly schedule
+    // This would populate the calendar grid with the schedule data
+}
+
+function formatTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
     });
-    
-    document.getElementById('next-month').addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        updateMonthlyView(currentDate);
-    });
+}
+
+function setupNavigation() {
+    try {
+        // Daily view navigation
+        document.getElementById('prev-day').addEventListener('click', () => navigateDate('daily', -1));
+        document.getElementById('next-day').addEventListener('click', () => navigateDate('daily', 1));
+        
+        // Weekly view navigation
+        document.getElementById('prev-week').addEventListener('click', () => navigateDate('weekly', -7));
+        document.getElementById('next-week').addEventListener('click', () => navigateDate('weekly', 7));
+        
+        // Monthly view navigation
+        document.getElementById('prev-month').addEventListener('click', () => navigateMonth(-1));
+        document.getElementById('next-month').addEventListener('click', () => navigateMonth(1));
+    } catch (error) {
+        console.error('Error setting up navigation:', error);
+        showError('Failed to set up schedule navigation');
+    }
 }
 
 function setupClassDetailsModal() {
@@ -249,197 +395,264 @@ function openClassDetailsModal(element) {
     modal.style.display = 'block';
 }
 
-function loadSemesterData(semesterId) {
-    console.log(`Loading data for semester ${semesterId}`);
-    
-    // In a real application, this would fetch data from a server or local storage
-    // For now, we'll just simulate loading data
-    
-    // Sample data structure that would be loaded
-    const semesterData = {
-        id: semesterId,
-        name: semesterId === '1' ? '1st Semester (Aug-Dec)' : 
-              semesterId === '2' ? '2nd Semester (Jan-May)' : 'Summer (Jun-Jul)',
-        courses: [
-            {
-                id: 'cs101',
-                code: 'CS101',
-                name: 'Introduction to Computing',
-                type: 'Lecture',
-                teacher: 'Dr. Smith',
-                room: 'LR 1',
-                schedule: 'Monday, 9:00 AM - 12:00 PM',
-                credits: 3,
-                description: 'Basic concepts of computing and computer science.'
-            },
-            {
-                id: 'phys101-lab',
-                code: 'PHYS101',
-                name: 'Physics for Computing',
-                type: 'Laboratory',
-                teacher: 'Prof. Johnson',
-                room: 'Lab 1',
-                schedule: 'Monday, 1:00 PM - 3:00 PM',
-                credits: 4,
-                description: 'Laboratory component of Physics for Computing.'
-            },
-            {
-                id: 'cs102',
-                code: 'CS102',
-                name: 'Computer Programming 1',
-                type: 'Lecture',
-                teacher: 'Dr. Smith',
-                room: 'LR 2',
-                schedule: 'Monday, 4:00 PM - 6:00 PM',
-                credits: 4,
-                description: 'Introduction to programming concepts and problem-solving.'
-            }
-        ]
-    };
-    
-    // In a real application, this data would be used to populate the schedule views
-    // For now, we'll just log it to the console
-    console.log('Semester data loaded:', semesterData);
+async function loadSemesterData(semesterId) {
+    try {
+        scheduleState.isLoading = true;
+        scheduleState.error = null;
+        
+        // Show loading state
+        const container = document.querySelector('.schedule-container');
+        container.classList.add('loading');
+        
+        // In a real application, this would be an API call
+        // Simulating API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        const semesterData = {
+            id: semesterId,
+            name: getSemesterName(semesterId),
+            courses: generateSampleCourses(semesterId)
+        };
+        
+        // Process and store the data
+        scheduleState.currentSemester = semesterId;
+        scheduleState.scheduleData = processSemesterData(semesterData.courses);
+        
+        // Update the current view
+        updateViewDisplay(scheduleState.currentView, scheduleState.currentDate);
+        
+    } catch (error) {
+        console.error('Error loading semester data:', error);
+        scheduleState.error = 'Failed to load semester data';
+        showError('Failed to load semester data. Please try again.');
+    } finally {
+        scheduleState.isLoading = false;
+        document.querySelector('.schedule-container').classList.remove('loading');
+    }
 }
 
 function initSchedulePage() {
-    // Initialize current date
-    const currentDate = new Date();
-    updateDateDisplay(currentDate);
-    
-    // Set up view toggle buttons
-    const toggleButtons = document.querySelectorAll('.toggle-btn');
-    const scheduleViews = document.querySelectorAll('.schedule-view');
-    
-    toggleButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const viewType = this.getAttribute('data-view');
-            
-            // Update active button
-            toggleButtons.forEach(btn => btn.classList.remove('active'));
-            this.classList.add('active');
-            
-            // Show selected view
-            scheduleViews.forEach(view => {
-                if (view.id === viewType + '-view') {
-                    view.classList.add('active');
-                } else {
-                    view.classList.remove('active');
-                }
-            });
-            
-            // Update view-specific displays
-            updateViewDisplay(viewType, currentDate);
-        });
-    });
-    
-    // Set up navigation buttons
-    setupNavigation(currentDate);
-    
-    // Set up class details modal
-    setupClassDetailsModal();
-    
-    // Set up semester select
-    const semesterSelect = document.getElementById('semester-select');
-    semesterSelect.addEventListener('change', function() {
-        loadSemesterData(this.value);
-    });
-    
-    // Load initial data
-    loadSemesterData(semesterSelect.value);
+    try {
+        // Initialize display
+        updateDateDisplay(scheduleState.currentDate);
+        
+        // Set up view toggle buttons
+        initializeViewToggle();
+        
+        // Set up navigation buttons
+        setupNavigation();
+        
+        // Set up class details modal
+        setupClassDetailsModal();
+        
+        // Set up semester select
+        initializeSemesterSelect();
+        
+        // Load initial data
+        const semesterSelect = document.getElementById('semester-select');
+        loadSemesterData(semesterSelect.value);
+    } catch (error) {
+        console.error('Failed to initialize schedule page:', error);
+        showError('Failed to initialize the schedule. Please refresh the page.');
+    }
 }
 
 function updateDateDisplay(date) {
-    // Update the current date display
-    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    document.getElementById('current-date').textContent = date.toLocaleDateString('en-US', options);
+    if (!date || !(date instanceof Date)) {
+        console.error('Invalid date provided to updateDateDisplay');
+        showError('Failed to update date display');
+        return;
+    }
+
+    try {
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('current-date').textContent = date.toLocaleDateString('en-US', options);
+    } catch (error) {
+        console.error('Error updating date display:', error);
+        showError('Failed to update date display');
+    }
 }
 
 function updateViewDisplay(viewType, date) {
-    switch(viewType) {
-        case 'daily':
-            updateDailyView(date);
-            break;
-        case 'weekly':
-            updateWeeklyView(date);
-            break;
-        case 'monthly':
-            updateMonthlyView(date);
-            break;
+    if (!date || !(date instanceof Date)) {
+        console.error('Invalid date provided to updateViewDisplay');
+        showError('Failed to update view display');
+        return;
+    }
+
+    if (!['daily', 'weekly', 'monthly'].includes(viewType)) {
+        console.error(`Invalid view type: ${viewType}`);
+        showError('Failed to update view display');
+        return;
+    }
+
+    try {
+        const viewUpdaters = {
+            daily: updateDailyView,
+            weekly: updateWeeklyView,
+            monthly: updateMonthlyView
+        };
+
+        viewUpdaters[viewType](date);
+
+        // Update state
+        scheduleState.currentDate = date;
+        scheduleState.currentView = viewType;
+    } catch (error) {
+        console.error('Error updating view display:', error);
+        showError('Failed to update schedule view');
     }
 }
 
 function updateDailyView(date) {
-    // Format date for display
-    const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
-    document.getElementById('day-display').textContent = date.toLocaleDateString('en-US', options);
-    
-    // In a real application, this would load the schedule data for the selected date
-    // For now, we'll just use the static HTML content
+    try {
+        const options = { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' };
+        document.getElementById('day-display').textContent = date.toLocaleDateString('en-US', options);
+        
+        const dailySchedule = getDailySchedule(date);
+        const dailyContainer = document.getElementById('daily-schedule');
+        
+        if (!dailySchedule || !dailySchedule.length) {
+            dailyContainer.innerHTML = '<p class="no-classes">No classes scheduled for this day.</p>';
+            return;
+        }
+        
+        renderDailySchedule(dailySchedule);
+    } catch (error) {
+        console.error('Error updating daily view:', error);
+        showError('Failed to update daily schedule');
+    }
 }
 
 function updateWeeklyView(date) {
-    // Calculate the start and end of the week
-    const startOfWeek = new Date(date);
-    startOfWeek.setDate(date.getDate() - date.getDay() + 1); // Monday
-    
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6); // Sunday
-    
-    // Format dates for display
-    const options = { month: 'long', day: 'numeric' };
-    const startStr = startOfWeek.toLocaleDateString('en-US', options);
-    const endStr = endOfWeek.toLocaleDateString('en-US', options);
-    const yearStr = endOfWeek.getFullYear();
-    
-    document.getElementById('week-display').textContent = `${startStr} - ${endStr}, ${yearStr}`;
-    
-    // In a real application, this would load the schedule data for the selected week
-    // For now, we'll just use the static HTML content
+    try {
+        const startOfWeek = new Date(date);
+        startOfWeek.setDate(date.getDate() - date.getDay() + 1);
+        
+        const endOfWeek = new Date(startOfWeek);
+        endOfWeek.setDate(startOfWeek.getDate() + 6);
+        
+        const options = { month: 'long', day: 'numeric' };
+        const startStr = startOfWeek.toLocaleDateString('en-US', options);
+        const endStr = endOfWeek.toLocaleDateString('en-US', options);
+        const yearStr = endOfWeek.getFullYear();
+        
+        document.getElementById('week-display').textContent = `${startStr} - ${endStr}, ${yearStr}`;
+        
+        const weeklySchedule = getWeeklySchedule(startOfWeek, endOfWeek);
+        if (weeklySchedule && weeklySchedule.length) {
+            renderWeeklySchedule(weeklySchedule);
+        } else {
+            document.getElementById('weekly-schedule').innerHTML = '<p class="no-classes">No classes scheduled for this week.</p>';
+        }
+    } catch (error) {
+        console.error('Error updating weekly view:', error);
+        showError('Failed to update weekly schedule');
+    }
 }
 
 function updateMonthlyView(date) {
-    // Format month for display
-    const options = { month: 'long', year: 'numeric' };
-    document.getElementById('month-display').textContent = date.toLocaleDateString('en-US', options);
-    
-    // In a real application, this would generate the calendar for the selected month
-    // For now, we'll just use the static HTML content
+    try {
+        const options = { month: 'long', year: 'numeric' };
+        document.getElementById('month-display').textContent = date.toLocaleDateString('en-US', options);
+        
+        const firstDay = new Date(date.getFullYear(), date.getMonth(), 1);
+        const lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        
+        const monthlySchedule = getMonthlySchedule(firstDay, lastDay);
+        if (monthlySchedule && monthlySchedule.length) {
+            renderMonthlySchedule(monthlySchedule);
+        } else {
+            document.getElementById('monthly-schedule').innerHTML = '<p class="no-classes">No classes scheduled for this month.</p>';
+        }
+    } catch (error) {
+        console.error('Error updating monthly view:', error);
+        showError('Failed to update monthly schedule');
+    }
 }
 
-function setupNavigation(currentDate) {
-    // Daily view navigation
-    document.getElementById('prev-day').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() - 1);
-        updateDailyView(currentDate);
-    });
+function getDailySchedule(date) {
+    if (!scheduleState.scheduleData) return null;
     
-    document.getElementById('next-day').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() + 1);
-        updateDailyView(currentDate);
+    const dateStr = date.toISOString().split('T')[0];
+    return scheduleState.scheduleData.filter(class => {
+        const classDate = new Date(class.schedule).toISOString().split('T')[0];
+        return classDate === dateStr;
     });
+}
+
+function getWeeklySchedule(startDate, endDate) {
+    if (!scheduleState.scheduleData) return [];
     
-    // Weekly view navigation
-    document.getElementById('prev-week').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() - 7);
-        updateWeeklyView(currentDate);
+    return scheduleState.scheduleData.filter(class => {
+        const classDate = new Date(class.schedule);
+        return classDate >= startDate && classDate <= endDate;
     });
+}
+
+function getMonthlySchedule(firstDay, lastDay) {
+    if (!scheduleState.scheduleData) return [];
     
-    document.getElementById('next-week').addEventListener('click', function() {
-        currentDate.setDate(currentDate.getDate() + 7);
-        updateWeeklyView(currentDate);
+    return scheduleState.scheduleData.filter(class => {
+        const classDate = new Date(class.schedule);
+        return classDate >= firstDay && classDate <= lastDay;
     });
-    
-    // Monthly view navigation
-    document.getElementById('prev-month').addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() - 1);
-        updateMonthlyView(currentDate);
+}
+
+function renderDailySchedule(schedule) {
+    const container = document.getElementById('daily-schedule');
+    container.innerHTML = schedule.map(class => `
+        <div class="class-block has-class" data-class-id="${class.id}">
+            <div class="class-header">
+                <h3>${class.code}: ${class.name}</h3>
+                <span class="class-type">${class.type}</span>
+            </div>
+            <div class="class-info">
+                <p><i class="fas fa-user"></i> ${class.teacher}</p>
+                <p><i class="fas fa-location-dot"></i> ${class.room}</p>
+                <p><i class="fas fa-clock"></i> ${formatTime(class.schedule)}</p>
+                <p><i class="fas fa-graduation-cap"></i> ${class.credits}</p>
+            </div>
+        </div>
+    `).join('');
+}
+
+function renderWeeklySchedule(schedule) {
+    // Implementation for rendering weekly schedule
+    // This would populate the timetable grid with the schedule data
+}
+
+function renderMonthlySchedule(schedule) {
+    // Implementation for rendering monthly schedule
+    // This would populate the calendar grid with the schedule data
+}
+
+function formatTime(dateString) {
+    const date = new Date(dateString);
+    return date.toLocaleTimeString('en-US', {
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
     });
-    
-    document.getElementById('next-month').addEventListener('click', function() {
-        currentDate.setMonth(currentDate.getMonth() + 1);
-        updateMonthlyView(currentDate);
-    });
+}
+
+function setupNavigation() {
+    try {
+        // Daily view navigation
+        document.getElementById('prev-day').addEventListener('click', () => navigateDate('daily', -1));
+        document.getElementById('next-day').addEventListener('click', () => navigateDate('daily', 1));
+        
+        // Weekly view navigation
+        document.getElementById('prev-week').addEventListener('click', () => navigateDate('weekly', -7));
+        document.getElementById('next-week').addEventListener('click', () => navigateDate('weekly', 7));
+        
+        // Monthly view navigation
+        document.getElementById('prev-month').addEventListener('click', () => navigateMonth(-1));
+        document.getElementById('next-month').addEventListener('click', () => navigateMonth(1));
+    } catch (error) {
+        console.error('Error setting up navigation:', error);
+        showError('Failed to set up schedule navigation');
+    }
 }
 
 function setupClassDetailsModal() {
@@ -548,57 +761,40 @@ function openClassDetailsModal(element) {
     modal.style.display = 'block';
 }
 
-function loadSemesterData(semesterId) {
-    console.log(`Loading data for semester ${semesterId}`);
-    
-    // In a real application, this would fetch data from a server or local storage
-    // For now, we'll just simulate loading data
-    
-    // Sample data structure that would be loaded
-    const semesterData = {
-        id: semesterId,
-        name: semesterId === '1' ? '1st Semester (Aug-Dec)' : 
-              semesterId === '2' ? '2nd Semester (Jan-May)' : 'Summer (Jun-Jul)',
-        courses: [
-            {
-                id: 'cs101',
-                code: 'CS101',
-                name: 'Introduction to Computing',
-                type: 'Lecture',
-                teacher: 'Dr. Smith',
-                room: 'LR 1',
-                schedule: 'Monday, 9:00 AM - 12:00 PM',
-                credits: 3,
-                description: 'Basic concepts of computing and computer science.'
-            },
-            {
-                id: 'phys101-lab',
-                code: 'PHYS101',
-                name: 'Physics for Computing',
-                type: 'Laboratory',
-                teacher: 'Prof. Johnson',
-                room: 'Lab 1',
-                schedule: 'Monday, 1:00 PM - 3:00 PM',
-                credits: 4,
-                description: 'Laboratory component of Physics for Computing.'
-            },
-            {
-                id: 'cs102',
-                code: 'CS102',
-                name: 'Computer Programming 1',
-                type: 'Lecture',
-                teacher: 'Dr. Smith',
-                room: 'LR 2',
-                schedule: 'Monday, 4:00 PM - 6:00 PM',
-                credits: 4,
-                description: 'Introduction to programming concepts and problem-solving.'
-            }
-        ]
-    };
-    
-    // In a real application, this data would be used to populate the schedule views
-    // For now, we'll just log it to the console
-    console.log('Semester data loaded:', semesterData);
+async function loadSemesterData(semesterId) {
+    try {
+        scheduleState.isLoading = true;
+        scheduleState.error = null;
+        
+        // Show loading state
+        const container = document.querySelector('.schedule-container');
+        container.classList.add('loading');
+        
+        // In a real application, this would be an API call
+        // Simulating API delay
+        await new Promise(resolve => setTimeout(resolve, 500));
+        
+        const semesterData = {
+            id: semesterId,
+            name: getSemesterName(semesterId),
+            courses: generateSampleCourses(semesterId)
+        };
+        
+        // Process and store the data
+        scheduleState.currentSemester = semesterId;
+        scheduleState.scheduleData = processSemesterData(semesterData.courses);
+        
+        // Update the current view
+        updateViewDisplay(scheduleState.currentView, scheduleState.currentDate);
+        
+    } catch (error) {
+        console.error('Error loading semester data:', error);
+        scheduleState.error = 'Failed to load semester data';
+        showError('Failed to load semester data. Please try again.');
+    } finally {
+        scheduleState.isLoading = false;
+        document.querySelector('.schedule-container').classList.remove('loading');
+    }
 }
         
         // Get the first day of the month
@@ -710,6 +906,17 @@ function loadSemesterData(semesterId) {
     function updateDailySchedule(date) {
         const dayOfWeek = date.getDay(); // 0 = Sunday, 1 = Monday, etc.
         const dailySchedule = document.querySelector('.daily-schedule');
+        if (!dailySchedule) {
+            console.error('Daily schedule container not found');
+            return;
+        }
+
+        // Update schedule date display
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const scheduleDate = document.querySelector('.schedule-date');
+        if (scheduleDate) {
+            scheduleDate.textContent = date.toLocaleDateString('en-US', options);
+        }
         
         // Clear existing class blocks
         const classBlocks = dailySchedule.querySelectorAll('.class-block');
@@ -717,66 +924,81 @@ function loadSemesterData(semesterId) {
             block.className = 'class-block';
             block.innerHTML = '';
         });
-        
-        // Add classes based on the day of the week
-        // This is just for demonstration - in a real app, this would come from your database
-        if (dayOfWeek === 1 || dayOfWeek === 3) { // Monday or Wednesday
-            // Add classes for Monday/Wednesday
-            const classBlock1 = dailySchedule.children[4].querySelector('.class-block'); // 12:00 PM
-            classBlock1.className = 'class-block has-class';
-            classBlock1.innerHTML = `
-                <div class="class-details">
-                    <h3>CC 101</h3>
-                    <p>Introduction to Computing</p>
-                    <p>Room: 104 ADTECH</p>
-                    <p>12:00 PM - 3:00 PM</p>
-                </div>
-            `;
-            
-            const classBlock2 = dailySchedule.children[7].querySelector('.class-block'); // 3:00 PM
-            classBlock2.className = 'class-block has-class';
-            classBlock2.innerHTML = `
-                <div class="class-details">
-                    <h3>CC 100</h3>
-                    <p>Introduction to Computing</p>
-                    <p>Room: 104 ADTECH</p>
-                    <p>3:00 PM - 5:00 PM</p>
-                </div>
-            `;
-        } else if (dayOfWeek === 2 || dayOfWeek === 4) { // Tuesday or Thursday
-            // Add classes for Tuesday/Thursday
-            const classBlock1 = dailySchedule.children[2].querySelector('.class-block'); // 10:00 AM
-            classBlock1.className = 'class-block has-class';
-            classBlock1.innerHTML = `
-                <div class="class-details">
-                    <h3>CS 201</h3>
-                    <p>Data Structures</p>
-                    <p>Room: 105 ADTECH</p>
-                    <p>10:00 AM - 1:00 PM</p>
-                </div>
-            `;
-            
-            const classBlock2 = dailySchedule.children[9].querySelector('.class-block'); // 5:00 PM
-            classBlock2.className = 'class-block has-class';
-            classBlock2.innerHTML = `
-                <div class="class-details">
-                    <h3>CC 100</h3>
-                    <p>Introduction to Computing</p>
-                    <p>Room: 104 ADTECH</p>
-                    <p>5:30 PM - 7:00 PM</p>
-                </div>
-            `;
+
+        // Get user's enrolled courses from session storage or API
+        let enrolledCourses;
+        try {
+            enrolledCourses = JSON.parse(sessionStorage.getItem('enrolledCourses')) || [];
+        } catch (error) {
+            console.error('Error loading enrolled courses:', error);
+            enrolledCourses = [];
         }
-        
-        // Add click event to class blocks
-        const newClassBlocks = dailySchedule.querySelectorAll('.class-block.has-class');
-        newClassBlocks.forEach(block => {
-            block.addEventListener('click', function() {
-                const className = this.querySelector('h3').textContent;
-                const classDetails = Array.from(this.querySelectorAll('p')).map(p => p.textContent);
-                showClassDetails(className, classDetails);
-            });
+
+        // Filter courses for the current day
+        const todayCourses = enrolledCourses.filter(course => {
+            const courseSchedule = course.schedule.split(' ')[0]; // Get days part of schedule
+            const days = courseSchedule.split('');
+            const dayMap = { 'M': 1, 'T': 2, 'W': 3, 'H': 4, 'F': 5 };
+            return days.some(day => dayMap[day] === dayOfWeek);
         });
+
+        // Sort courses by start time
+        todayCourses.sort((a, b) => {
+            const timeA = a.schedule.split(' ')[1]; // Get time part of schedule
+            const timeB = b.schedule.split(' ')[1];
+            return new Date('1970/01/01 ' + timeA) - new Date('1970/01/01 ' + timeB);
+        });
+
+        // Add courses to schedule
+        todayCourses.forEach(course => {
+            const [startTime] = course.schedule.split(' - ')[0].split(' ').slice(-1);
+            const timeIndex = getTimeSlotIndex(startTime);
+            
+            if (timeIndex !== -1 && dailySchedule.children[timeIndex]) {
+                const classBlock = dailySchedule.children[timeIndex].querySelector('.class-block');
+                classBlock.className = 'class-block has-class';
+                classBlock.innerHTML = `
+                    <div class="class-details">
+                        <h3>${course.code}</h3>
+                        <p>${course.title}</p>
+                        <p>Room: ${course.room}</p>
+                        <p>${course.schedule}</p>
+                    </div>
+                `;
+
+                // Add click event listener
+                classBlock.addEventListener('click', () => {
+                    showClassDetails(course.code, [
+                        course.title,
+                        `Room: ${course.room}`,
+                        course.schedule,
+                        `Professor: ${course.teacher}`,
+                        `Enrolled: ${course.enrolled}/${course.capacity}`
+                    ]);
+                });
+            }
+        });
+
+        // Dispatch schedule updated event
+        const event = new CustomEvent('scheduleUpdated', {
+            detail: {
+                date: date,
+                courses: todayCourses,
+                timestamp: new Date().toISOString()
+            }
+        });
+        document.dispatchEvent(event);
+    }
+
+    // Helper function to get time slot index
+    function getTimeSlotIndex(time) {
+        const timeSlots = [
+            '7:00 AM', '8:00 AM', '9:00 AM', '10:00 AM', '11:00 AM',
+            '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM',
+            '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM'
+        ];
+        return timeSlots.indexOf(time);
+    }
     }
     
     // Function to update weekly view

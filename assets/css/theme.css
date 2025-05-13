@@ -1,0 +1,52 @@
+/* Theme Variables and Overrides */
+:root {
+    /* Brand Colors */
+    --color-primary: #1e3a2b;      /* Dark Green */
+    --color-primary-dark: #152a1f;  /* Darker Green */
+    --color-primary-light: #4caf50; /* Light Green */
+    
+    /* Semantic Colors */
+    --color-success: #4caf50;   /* Success Green */
+    --color-warning: #ff9800;   /* Warning Orange */
+    --color-error: #f44336;    /* Error Red */
+    --color-info: #2196f3;     /* Info Blue */
+    
+    /* Text Colors */
+    --color-text: #333333;
+    --color-text-secondary: #666666;
+    
+    /* Background Colors */
+    --color-background: #ffffff;
+    --color-surface: #f5f5f5;
+    --color-surface-variant: #e6e9f7;
+    
+    /* Border Colors */
+    --color-border: #dadce0;
+    
+    /* Custom Shadows */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 10px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 4px 20px rgba(0, 0, 0, 0.15);
+    
+    /* Layout Spacing */
+    --spacing-page: 2rem;
+    --spacing-section: 1.5rem;
+    --spacing-element: 1rem;
+    
+    /* Font Sizes */
+    --font-size-h1: 2rem;
+    --font-size-h2: 1.5rem;
+    --font-size-h3: 1.25rem;
+    --font-size-body: 1rem;
+    --font-size-small: 0.875rem;
+    
+    /* Border Radius */
+    --radius-sm: 5px;
+    --radius-md: 10px;
+    --radius-lg: 15px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s;
+    --transition-normal: 0.3s;
+    --transition-slow: 0.5s;
+}

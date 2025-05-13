@@ -4,8 +4,8 @@
  * Integrates with the scheduling system
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize data storage
+const CurriculumManager = (() => {
+    // Data and state
     let curriculumData = {
         curricula: {},
         programs: {},
@@ -14,47 +14,147 @@ document.addEventListener('DOMContentLoaded', () => {
         schedules: {}
     };
 
-    // DOM Elements
-    const curriculumList = document.getElementById('curriculum-list');
-    const programsList = document.getElementById('programs-list');
-    const subjectsList = document.getElementById('subjects-list');
-    
-    const addCurriculumBtn = document.getElementById('add-curriculum-btn');
-    const addProgramBtn = document.getElementById('add-program-btn');
-    const addSubjectBtn = document.getElementById('add-subject-btn');
-    
-    const curriculumModal = document.getElementById('curriculum-modal');
-    const programModal = document.getElementById('program-modal');
-    const subjectModal = document.getElementById('subject-modal');
-    const subjectDetailsModal = document.getElementById('subject-details-modal');
-    
-    const saveCurriculumBtn = document.getElementById('save-curriculum');
-    const saveProgramBtn = document.getElementById('save-program');
-    const saveSubjectBtn = document.getElementById('save-subject');
-    
-    const searchInput = document.getElementById('search-input');
-    const searchButton = document.getElementById('search-button');
+    const state = {
+        currentCurriculumId: null,
+        currentProgramId: null,
+        currentSubjectId: null,
+        isEditMode: false
+    };
 
-    // State variables
-    let currentCurriculumId = null;
-    let currentProgramId = null;
-    let currentSubjectId = null;
-    let isEditMode = false;
+    // Button elements
+    const elements = {
+        // Add buttons
+        addCurriculumBtn: document.getElementById('add-curriculum-btn'),
+        addProgramBtn: document.getElementById('add-program-btn'),
+        addSubjectBtn: document.getElementById('add-subject-btn'),
+        
+        // Save buttons
+        saveCurriculumBtn: document.getElementById('save-curriculum'),
+        saveProgramBtn: document.getElementById('save-program'),
+        saveSubjectBtn: document.getElementById('save-subject'),
+        
+        // Edit/Delete buttons
+        editSubjectBtn: document.getElementById('edit-subject-btn'),
+        deleteSubjectBtn: document.getElementById('delete-subject-btn'),
+        
+        // Modals
+        curriculumModal: document.getElementById('curriculum-modal'),
+        programModal: document.getElementById('program-modal'),
+        subjectModal: document.getElementById('subject-modal'),
+        subjectDetailsModal: document.getElementById('subject-details-modal'),
+        teacherAssignmentModal: document.getElementById('teacher-assignment-modal'),
+        
+        // Lists
+        curriculumList: document.getElementById('curriculum-list'),
+        programsList: document.getElementById('programs-list'),
+        subjectsList: document.getElementById('subjects-list'),
+        
+        // Forms
+        curriculumForm: document.getElementById('curriculum-form'),
+        programForm: document.getElementById('program-form'),
+        subjectForm: document.getElementById('subject-form'),
+        teacherAssignmentForm: document.getElementById('teacher-assignment-form'),
 
-    // Load data from localStorage if exists
-    function loadData() {
-        const savedData = localStorage.getItem('curriculumManagerData');
-        if (savedData) {
-            curriculumData = JSON.parse(savedData);
+        // Search
+        searchInput: document.getElementById('search-input'),
+        searchButton: document.getElementById('search-button')
+    };
+
+    // Initialize event handlers
+    function initializeEventHandlers() {
+        // Modal close buttons
+        document.querySelectorAll('.close-modal').forEach(closeBtn => {
+            closeBtn.addEventListener('click', () => {
+                const modal = closeBtn.closest('.modal');
+                if (modal) closeModal(modal);
+            });
+        });
+
+        // Modal background click to close
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
+                    closeModal(modal);
+                }
+            });
+        });
+
+        // Add curriculum button
+        if (elements.addCurriculumBtn) {
+            elements.addCurriculumBtn.addEventListener('click', openAddCurriculumModal);
+        }
+
+        // Add program button
+        if (elements.addProgramBtn) {
+            elements.addProgramBtn.addEventListener('click', openAddProgramModal);
+            elements.addProgramBtn.disabled = !state.currentCurriculumId;
+        }
+
+        // Add subject button
+        if (elements.addSubjectBtn) {
+            elements.addSubjectBtn.addEventListener('click', openAddSubjectModal);
+            elements.addSubjectBtn.disabled = !state.currentProgramId;
+        }
+
+        // Save buttons - using direct DOM queries as a fallback
+        const saveCurriculumBtn = document.getElementById('save-curriculum');
+        if (saveCurriculumBtn) {
+            saveCurriculumBtn.addEventListener('click', saveCurriculum);
+            console.log('Save curriculum button event listener attached');
         } else {
-            // Initialize with sample data if no data exists
+            console.error('Save curriculum button not found');
+        }
+        
+        const saveProgramBtn = document.getElementById('save-program');
+        if (saveProgramBtn) {
+            saveProgramBtn.addEventListener('click', saveProgram);
+        }
+        
+        const saveSubjectBtn = document.getElementById('save-subject');
+        if (saveSubjectBtn) {
+            saveSubjectBtn.addEventListener('click', saveSubject);
+        }
+
+        // Search functionality
+        if (elements.searchButton && elements.searchInput) {
+            elements.searchButton.addEventListener('click', performSearch);
+            elements.searchInput.addEventListener('keypress', (event) => {
+                if (event.key === 'Enter') {
+                    performSearch();
+                }
+            });
+        }
+    }
+
+    // Data management functions
+    function loadData() {
+        try {
+            const savedData = localStorage.getItem('curriculumManagerData');
+            if (savedData) {
+                curriculumData = JSON.parse(savedData);
+                console.log('Data loaded successfully');
+            } else {
+                // Initialize with sample data if no data exists
+                console.log('No saved data found, initializing with sample data');
+                initializeSampleData();
+            }
+        } catch (error) {
+            console.error('Error loading data:', error);
+            showNotification('Error loading data. Initializing with sample data.', 'error');
             initializeSampleData();
         }
     }
 
-    // Save data to localStorage
     function saveData() {
-        localStorage.setItem('curriculumManagerData', JSON.stringify(curriculumData));
+        try {
+            localStorage.setItem('curriculumManagerData', JSON.stringify(curriculumData));
+            console.log('Data saved successfully');
+            return true;
+        } catch (error) {
+            console.error('Error saving data:', error);
+            showNotification('Error saving data. Please try again.', 'error');
+            return false;
+        }
     }
 
     // Initialize with sample data for demonstration
@@ -169,18 +269,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Render curricula list
     function renderCurricula() {
-        if (!curriculumList) return;
+        if (!elements.curriculumList) return;
 
         // Clear current list
-        curriculumList.innerHTML = '';
+        elements.curriculumList.innerHTML = '';
 
         const curricula = Object.values(curriculumData.curricula);
         
         if (curricula.length === 0) {
-            curriculumList.innerHTML = `
+            elements.curriculumList.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-graduation-cap"></i>
-                    <p>No curricula found. Click the "New Curriculum" button to create one.</p>
+                    <p>No curricula found. Click "Add Curriculum" to create one.</p>
                 </div>
             `;
             return;
@@ -190,43 +290,69 @@ document.addEventListener('DOMContentLoaded', () => {
         curricula.sort((a, b) => new Date(b.dateCreated) - new Date(a.dateCreated));
 
         // Create curriculum items
+        renderCurriculumItems(curricula);
+    }
+
+    function renderCurriculumItems(curricula) {
         curricula.forEach(curriculum => {
-            const curriculumItem = document.createElement('div');
-            curriculumItem.className = `curriculum-item ${curriculum.id === currentCurriculumId ? 'active' : ''}`;
-            curriculumItem.setAttribute('data-id', curriculum.id);
-            
-            curriculumItem.innerHTML = `
-                <div class="item-header">
-                    <h3 class="item-title">${curriculum.name}</h3>
-                    <span class="status-badge ${curriculum.status}">${curriculum.status}</span>
-                </div>
-                <div class="item-code">${curriculum.code}</div>
-                <p class="item-description">${curriculum.description || 'No description available'}</p>
-                <div class="item-meta">
-                    <span class="meta-item"><i class="fas fa-calendar-alt"></i> ${curriculum.year}</span>
-                    <span class="meta-item"><i class="fas fa-clock"></i> ${formatDate(curriculum.dateCreated)}</span>
-                </div>
-            `;
-            
-            curriculumList.appendChild(curriculumItem);
-            
-            // Add click event to select curriculum
-            curriculumItem.addEventListener('click', () => {
-                selectCurriculum(curriculum.id);
-            });
+            const curriculumItem = createCurriculumItem(curriculum);
+            elements.curriculumList.appendChild(curriculumItem);
         });
+    }
+
+    function createCurriculumItem(curriculum) {
+        const item = document.createElement('div');
+        item.className = `curriculum-item ${curriculum.id === state.currentCurriculumId ? 'active' : ''}`;
+        item.setAttribute('data-id', curriculum.id);
+
+        item.innerHTML = `
+            <div class="item-header">
+                <h3 class="item-title">${curriculum.name}</h3>
+                <span class="status-badge ${curriculum.status}">${curriculum.status}</span>
+                <div class="item-actions">
+                    <button class="btn-icon edit-curriculum" title="Edit curriculum">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="btn-icon delete-curriculum" title="Delete curriculum">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="item-code">${curriculum.code}</div>
+            <p class="item-description">${curriculum.description || 'No description available'}</p>
+            <div class="item-meta">
+                <span class="meta-item"><i class="fas fa-calendar-alt"></i> ${curriculum.year}</span>
+                <span class="meta-item"><i class="fas fa-clock"></i> ${formatDate(curriculum.dateCreated)}</span>
+            </div>
+        `;
+
+        // Add click handlers
+        item.querySelector('.edit-curriculum').addEventListener('click', (e) => {
+            e.stopPropagation();
+            openEditCurriculumModal(curriculum.id);
+        });
+
+        item.querySelector('.delete-curriculum').addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (confirm(`Are you sure you want to delete the curriculum "${curriculum.name}"?`)) {
+                deleteCurriculum(curriculum.id);
+            }
+        });
+
+        item.addEventListener('click', () => selectCurriculum(curriculum.id));
+        return item;
     }
 
     // Render programs list for a specific curriculum
     function renderPrograms(curriculumId) {
-        if (!programsList) return;
+        if (!elements.programsList) return;
 
         // Clear current list
-        programsList.innerHTML = '';
+        elements.programsList.innerHTML = '';
         
         // If no curriculum is selected
         if (!curriculumId) {
-            programsList.innerHTML = `
+            elements.programsList.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-book"></i>
                     <p>Select a curriculum to view its programs or add a new program.</p>
@@ -241,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         );
         
         if (programs.length === 0) {
-            programsList.innerHTML = `
+            elements.programsList.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-book"></i>
                     <p>No programs found for this curriculum. Click the "Add Program" button to create one.</p>
@@ -255,41 +381,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Create program items
         programs.forEach(program => {
-            const programItem = document.createElement('div');
-            programItem.className = `program-item ${program.id === currentProgramId ? 'active' : ''}`;
-            programItem.setAttribute('data-id', program.id);
-            
-            programItem.innerHTML = `
-                <div class="item-header">
-                    <h3 class="item-title">${program.name}</h3>
-                    <span class="item-code">${program.code}</span>
-                </div>
-                <p class="item-description">${program.description || 'No description available'}</p>
-                <div class="item-meta">
-                    <span class="meta-item"><i class="fas fa-building"></i> ${program.department}</span>
-                    <span class="meta-item"><i class="fas fa-calendar-alt"></i> ${program.years} years</span>
-                </div>
-            `;
-            
-            programsList.appendChild(programItem);
-            
-            // Add click event to select program
-            programItem.addEventListener('click', () => {
-                selectProgram(program.id);
-            });
+            const programItem = createProgramItem(program);
+            elements.programsList.appendChild(programItem);
+        });
+    }
+
+    function createProgramItem(program) {
+        const programItem = document.createElement('div');
+        programItem.className = `program-item ${program.id === state.currentProgramId ? 'active' : ''}`;
+        programItem.setAttribute('data-id', program.id);
+        
+        programItem.innerHTML = `
+            <div class="item-header">
+                <h3 class="item-title">${program.name}</h3>
+                <span class="item-code">${program.code}</span>
+            </div>
+            <p class="item-description">${program.description || 'No description available'}</p>
+            <div class="item-meta">
+                <span class="meta-item"><i class="fas fa-building"></i> ${program.department}</span>
+                <span class="meta-item"><i class="fas fa-calendar-alt"></i> ${program.years} years</span>
+            </div>
+        `;
+        
+        elements.programsList.appendChild(programItem);
+        
+        // Add click event to select program
+        programItem.addEventListener('click', () => {
+            selectProgram(program.id);
         });
     }
 
     // Render subjects list for a specific program
     function renderSubjects(programId) {
-        if (!subjectsList) return;
+        if (!elements.subjectsList) return;
 
         // Clear current list
-        subjectsList.innerHTML = '';
+        elements.subjectsList.innerHTML = '';
         
         // If no program is selected
         if (!programId) {
-            subjectsList.innerHTML = `
+            elements.subjectsList.innerHTML = `
                 <div class="empty-state">
                     <i class="fas fa-book-open"></i>
                     <p>Select a program to view its subjects or add a new subject.</p>
@@ -376,45 +507,40 @@ document.addEventListener('DOMContentLoaded', () => {
     // Selection Functions
     function selectCurriculum(curriculumId) {
         // Update current selection
-        currentCurriculumId = curriculumId;
-        currentProgramId = null;
-        
+        state.currentCurriculumId = curriculumId;
+        state.currentProgramId = null;
+        state.currentSubjectId = null;
+
         // Update UI
         document.querySelectorAll('.curriculum-item').forEach(item => {
             item.classList.toggle('active', item.getAttribute('data-id') === curriculumId);
         });
-        
+
         // Enable add program button
-        if (addProgramBtn) {
-            addProgramBtn.disabled = !curriculumId;
+        if (elements.addProgramBtn) {
+            elements.addProgramBtn.disabled = !curriculumId;
         }
-        
+
         // Render programs for this curriculum
         renderPrograms(curriculumId);
         
         // Clear subjects list
-        if (subjectsList) {
-            subjectsList.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-book-open"></i>
-                    <p>Select a program to view its subjects.</p>
-                </div>
-            `;
-        }
+        clearSubjectsList();
     }
     
     function selectProgram(programId) {
         // Update current selection
-        currentProgramId = programId;
-        
+        state.currentProgramId = programId;
+        state.currentSubjectId = null;
+
         // Update UI
         document.querySelectorAll('.program-item').forEach(item => {
             item.classList.toggle('active', item.getAttribute('data-id') === programId);
         });
-        
+
         // Enable add subject button
-        if (addSubjectBtn) {
-            addSubjectBtn.disabled = !programId;
+        if (elements.addSubjectBtn) {
+            elements.addSubjectBtn.disabled = !programId;
         }
         
         // Render subjects for this program
@@ -426,7 +552,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const subject = curriculumData.subjects[subjectId];
         if (!subject) return;
         
-        currentSubjectId = subjectId;
+        state.currentSubjectId = subjectId;
         
         // Get program and curriculum info
         const program = curriculumData.programs[subject.programId];
@@ -526,10 +652,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (deleteSubjectBtn) {
             deleteSubjectBtn.onclick = () => {
-                if (confirm(`Are you sure you want to delete the subject ${subject.code}: ${subject.name}?`)) {
-                    deleteSubject(subjectId);
-                    closeModal(subjectDetailsModal);
-                }
+                deleteSubject(subjectId);
+                closeModal(subjectDetailsModal);
             };
         }
         
@@ -595,8 +719,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Format date
     function formatDate(dateString) {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        return new Date(dateString).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
     }
     
     // Get course type display
@@ -621,878 +748,691 @@ document.addEventListener('DOMContentLoaded', () => {
     // Modal Functions
     function openModal(modal) {
         if (!modal) return;
-        modal.style.display = 'flex';
+        modal.style.display = 'block';
+        document.body.classList.add('modal-open');
     }
     
     function closeModal(modal) {
         if (!modal) return;
         modal.style.display = 'none';
-        
-        // Reset form if exists
+        document.body.classList.remove('modal-open');
         const form = modal.querySelector('form');
         if (form) form.reset();
     }
     
-    // Open add curriculum modal
+    // Curriculum modal functions
     function openAddCurriculumModal() {
-        isEditMode = false;
+        state.isEditMode = false;
         
-        // Set modal title
-        const modalTitle = document.getElementById('curriculum-modal-title');
-        if (modalTitle) modalTitle.textContent = 'Add New Curriculum';
+        // Reset the form
+        if (elements.curriculumForm) {
+            elements.curriculumForm.reset();
+        }
         
-        // Reset form
-        const form = curriculumModal.querySelector('form');
-        if (form) form.reset();
+        // Update modal title
+        const modalHeader = elements.curriculumModal.querySelector('.modal-header h2');
+        if (modalHeader) {
+            modalHeader.innerHTML = '<i class="fas fa-graduation-cap"></i> Add New Curriculum';
+        }
         
-        // Show modal
-        openModal(curriculumModal);
+        openModal(elements.curriculumModal);
     }
-    
-    // Open edit curriculum modal
+
     function openEditCurriculumModal(curriculumId) {
         const curriculum = curriculumData.curricula[curriculumId];
         if (!curriculum) return;
-        
-        isEditMode = true;
-        currentCurriculumId = curriculumId;
-        
-        // Set modal title
-        const modalTitle = document.getElementById('curriculum-modal-title');
-        if (modalTitle) modalTitle.textContent = 'Edit Curriculum';
-        
+
+        state.isEditMode = true;
+        state.currentCurriculumId = curriculumId;
+
         // Fill form with curriculum data
-        document.getElementById('curriculum-name').value = curriculum.name;
-        document.getElementById('curriculum-code').value = curriculum.code;
-        document.getElementById('curriculum-year').value = curriculum.year;
-        document.getElementById('curriculum-description').value = curriculum.description || '';
-        document.getElementById('curriculum-status').value = curriculum.status;
+        const nameInput = document.getElementById('curriculum-name');
+        const codeInput = document.getElementById('curriculum-code');
+        const yearInput = document.getElementById('curriculum-year');
+        const descriptionInput = document.getElementById('curriculum-description');
+        const statusSelect = document.getElementById('curriculum-status');
         
-        // Show modal
-        openModal(curriculumModal);
+        if (nameInput) nameInput.value = curriculum.name;
+        if (codeInput) codeInput.value = curriculum.code;
+        if (yearInput) yearInput.value = curriculum.year;
+        if (descriptionInput) descriptionInput.value = curriculum.description || '';
+        if (statusSelect) statusSelect.value = curriculum.status;
+
+        // Update modal title
+        const modalHeader = elements.curriculumModal.querySelector('.modal-header h2');
+        if (modalHeader) {
+            modalHeader.innerHTML = '<i class="fas fa-graduation-cap"></i> Edit Curriculum';
+        }
+        
+        openModal(elements.curriculumModal);
     }
-    
-    // Open add program modal
-    function openAddProgramModal() {
-        if (!currentCurriculumId) {
+
+    // CRUD Operations
+    function saveCurriculum(event) {
+        if (event) event.preventDefault();
+        
+        // Get form values directly from input elements
+        const nameInput = document.getElementById('curriculum-name');
+        const codeInput = document.getElementById('curriculum-code');
+        const yearInput = document.getElementById('curriculum-year');
+        const descriptionInput = document.getElementById('curriculum-description');
+        const statusSelect = document.getElementById('curriculum-status');
+        
+        if (!nameInput || !codeInput || !yearInput || !statusSelect) {
+            showNotification('Form elements not found', 'error');
+            return;
+        }
+        
+        const formData = {
+            name: nameInput.value.trim(),
+            code: codeInput.value.trim(),
+            year: yearInput.value.trim(),
+            description: descriptionInput ? descriptionInput.value.trim() : '',
+            status: statusSelect.value
+        };
+
+        // Validate required fields
+        const requiredFields = {
+            name: 'Curriculum Name',
+            code: 'Curriculum Code',
+            year: 'Academic Year'
+        };
+
+        const missingFields = Object.entries(requiredFields)
+            .filter(([key]) => !formData[key])
+            .map(([, label]) => label);
+
+        if (missingFields.length > 0) {
+            showNotification(`Please fill in: ${missingFields.join(', ')}`, 'error');
+            return;
+        }
+
+        // Validate curriculum code format (allow more flexible formats)
+        const codePattern = /^[A-Za-z0-9-_]+$/;
+        if (!codePattern.test(formData.code)) {
+            showNotification('Curriculum Code should contain only letters, numbers, hyphens, and underscores', 'error');
+            return;
+        }
+
+        try {
+            if (state.isEditMode && state.currentCurriculumId) {
+                // Update existing curriculum
+                curriculumData.curricula[state.currentCurriculumId] = {
+                    ...curriculumData.curricula[state.currentCurriculumId],
+                    ...formData,
+                    dateUpdated: new Date().toISOString()
+                };
+                showNotification('Curriculum updated successfully', 'success');
+            } else {
+                // Check if curriculum code already exists
+                const codeExists = Object.values(curriculumData.curricula)
+                    .some(c => c.code === formData.code);
+                
+                if (codeExists) {
+                    showNotification('A curriculum with this code already exists', 'error');
+                    return;
+                }
+
+                // Create new curriculum
+                const curriculumId = `curriculum-${Date.now()}`;
+                curriculumData.curricula[curriculumId] = {
+                    id: curriculumId,
+                    ...formData,
+                    dateCreated: new Date().toISOString(),
+                    dateUpdated: new Date().toISOString()
+                };
+                
+                // Select the new curriculum after creation
+                state.currentCurriculumId = curriculumId;
+                
+                showNotification('Curriculum created successfully', 'success');
+            }
+
+            // Save to localStorage
+            saveData();
+            
+            // Update UI
+            renderCurricula();
+            closeModal(elements.curriculumModal);
+            
+            // Reset state
+            if (!state.isEditMode) {
+                state.currentCurriculumId = null;
+            }
+            state.isEditMode = false;
+
+        } catch (error) {
+            console.error('Error saving curriculum:', error);
+            showNotification('Failed to save curriculum. Please try again.', 'error');
+        }
+    }
+
+    function saveProgram(e) {
+        if (e) e.preventDefault();
+        
+        if (!state.currentCurriculumId) {
             showNotification('Please select a curriculum first', 'error');
             return;
         }
+
+        // Get form values directly from input elements
+        const nameInput = document.getElementById('program-name');
+        const codeInput = document.getElementById('program-code');
+        const yearsSelect = document.getElementById('program-years');
+        const departmentInput = document.getElementById('program-department');
+        const descriptionInput = document.getElementById('program-description');
         
-        isEditMode = false;
-        
-        // Set modal title
-        const modalTitle = document.getElementById('program-modal-title');
-        if (modalTitle) modalTitle.textContent = 'Add New Program';
-        
-        // Reset form
-        const form = programModal.querySelector('form');
-        if (form) form.reset();
-        
-        // Show modal
-        openModal(programModal);
+        if (!nameInput || !codeInput || !yearsSelect || !departmentInput) {
+            showNotification('Form elements not found', 'error');
+            return;
+        }
+
+        const formData = {
+            name: nameInput.value.trim(),
+            code: codeInput.value.trim(),
+            years: parseInt(yearsSelect.value),
+            department: departmentInput.value.trim(),
+            description: descriptionInput ? descriptionInput.value.trim() : '',
+            curriculumId: state.currentCurriculumId
+        };
+
+        // Validate required fields
+        const requiredFields = {
+            name: 'Program Name',
+            code: 'Program Code',
+            years: 'Program Duration',
+            department: 'Department'
+        };
+
+        const missingFields = Object.entries(requiredFields)
+            .filter(([key]) => !formData[key])
+            .map(([, label]) => label);
+
+        if (missingFields.length > 0) {
+            showNotification(`Please fill in: ${missingFields.join(', ')}`, 'error');
+            return;
+        }
+
+        // Validate program code format (allow more flexible formats)
+        const codePattern = /^[A-Za-z0-9-_]+$/;
+        if (!codePattern.test(formData.code)) {
+            showNotification('Program Code should contain only letters, numbers, hyphens, and underscores', 'error');
+            return;
+        }
+
+        // Validate years (between 1 and 6)
+        if (formData.years < 1 || formData.years > 6) {
+            showNotification('Program duration must be between 1 and 6 years', 'error');
+            return;
+        }
+
+        try {
+            if (state.isEditMode && state.currentProgramId) {
+                // Check if code changed and if it exists in other programs
+                const oldProgram = curriculumData.programs[state.currentProgramId];
+                if (formData.code !== oldProgram.code) {
+                    const codeExists = Object.values(curriculumData.programs)
+                        .some(p => p.id !== state.currentProgramId && p.code === formData.code);
+                    
+                    if (codeExists) {
+                        showNotification('A program with this code already exists', 'error');
+                        return;
+                    }
+                }
+
+                // Update existing program
+                curriculumData.programs[state.currentProgramId] = {
+                    ...curriculumData.programs[state.currentProgramId],
+                    ...formData,
+                    dateUpdated: new Date().toISOString()
+                };
+                showNotification('Program updated successfully', 'success');
+            } else {
+                // Check if program code already exists
+                const codeExists = Object.values(curriculumData.programs)
+                    .some(p => p.code === formData.code);
+                
+                if (codeExists) {
+                    showNotification('A program with this code already exists', 'error');
+                    return;
+                }
+
+                // Create new program
+                const programId = `program-${Date.now()}`;
+                curriculumData.programs[programId] = {
+                    id: programId,
+                    ...formData,
+                    dateCreated: new Date().toISOString(),
+                    dateUpdated: new Date().toISOString()
+                };
+                
+                // Select the new program after creation
+                state.currentProgramId = programId;
+                
+                showNotification('Program created successfully', 'success');
+            }
+
+            saveData();
+            renderPrograms(state.currentCurriculumId);
+            closeModal(elements.programModal);
+
+        } catch (error) {
+            console.error('Error saving program:', error);
+            showNotification('Failed to save program. Please try again.', 'error');
+        }
     }
-    
-    // Open edit program modal
-    function openEditProgramModal(programId) {
-        const program = curriculumData.programs[programId];
-        if (!program) return;
+
+    async function saveSubject(e) {
+        if (e) e.preventDefault();
         
-        isEditMode = true;
-        currentProgramId = programId;
-        
-        // Set modal title
-        const modalTitle = document.getElementById('program-modal-title');
-        if (modalTitle) modalTitle.textContent = 'Edit Program';
-        
-        // Fill form with program data
-        document.getElementById('program-name').value = program.name;
-        document.getElementById('program-code').value = program.code;
-        document.getElementById('program-years').value = program.years;
-        document.getElementById('program-department').value = program.department;
-        document.getElementById('program-description').value = program.description || '';
-        
-        // Show modal
-        openModal(programModal);
-    }
-    
-    // Open add subject modal
-    function openAddSubjectModal() {
-        if (!currentProgramId) {
+        if (!state.currentProgramId) {
             showNotification('Please select a program first', 'error');
             return;
         }
-        
-        isEditMode = false;
-        
-        // Set modal title
-        const modalTitle = document.getElementById('subject-modal-title');
-        if (modalTitle) modalTitle.textContent = 'Add New Subject';
-        
-        // Reset form
-        const form = subjectModal.querySelector('form');
-        if (form) form.reset();
-        
-        // Populate prerequisites dropdown
-        populatePrerequisitesDropdown();
-        
-        // Show modal
-        openModal(subjectModal);
-    }
-    
-    // Open edit subject modal
-    function openEditSubjectModal(subjectId) {
-        const subject = curriculumData.subjects[subjectId];
-        if (!subject) return;
-        
-        isEditMode = true;
-        currentSubjectId = subjectId;
-        
-        // Set modal title
-        const modalTitle = document.getElementById('subject-modal-title');
-        if (modalTitle) modalTitle.textContent = 'Edit Subject';
-        
-        // Fill form with subject data
-        document.getElementById('subject-code').value = subject.code;
-        document.getElementById('subject-name').value = subject.name;
-        document.getElementById('subject-description').value = subject.description || '';
-        document.getElementById('subject-credits').value = subject.credits;
-        document.getElementById('subject-year').value = subject.year;
-        document.getElementById('subject-semester').value = subject.semester;
-        document.getElementById('subject-has-lecture').checked = subject.hasLecture;
-        document.getElementById('subject-has-lab').checked = subject.hasLab;
-        
-        // Populate prerequisites dropdown
-        populatePrerequisitesDropdown(subject.id);
-        
-        // Set selected prerequisites
+
+        // Get form values directly from input elements
+        const codeInput = document.getElementById('subject-code');
+        const nameInput = document.getElementById('subject-name');
+        const descriptionInput = document.getElementById('subject-description');
+        const courseTypeSelect = document.getElementById('course-type');
+        const lectureHoursInput = document.getElementById('lecture-hours');
+        const labHoursInput = document.getElementById('lab-hours');
+        const creditsInput = document.getElementById('subject-credits');
+        const semesterSelect = document.getElementById('subject-semester');
+        const yearSelect = document.getElementById('subject-year');
         const prerequisitesSelect = document.getElementById('subject-prerequisites');
-        if (prerequisitesSelect) {
-            // Clear previous selections
-            Array.from(prerequisitesSelect.options).forEach(option => {
-                option.selected = subject.prerequisites.includes(option.value);
-            });
-        }
         
-        // Show modal
-        openModal(subjectModal);
-    }
-    
-    // Populate prerequisites dropdown
-    function populatePrerequisitesDropdown(excludeSubjectId = null) {
-        const prerequisitesSelect = document.getElementById('subject-prerequisites');
-        if (!prerequisitesSelect) return;
-        
-        // Clear previous options
-        prerequisitesSelect.innerHTML = '';
-        
-        // Get all subjects from the current program
-        const subjects = Object.values(curriculumData.subjects).filter(
-            subject => subject.programId === currentProgramId && subject.id !== excludeSubjectId
-        );
-        
-        // Sort subjects by year and semester
-        subjects.sort((a, b) => {
-            if (a.year !== b.year) return a.year - b.year;
-            return a.semester - b.semester;
-        });
-        
-        // Add options for each subject
-        subjects.forEach(subject => {
-            const option = document.createElement('option');
-            option.value = subject.id;
-            option.textContent = `${subject.code}: ${subject.name} (Year ${subject.year}, Semester ${subject.semester})`;
-            prerequisitesSelect.appendChild(option);
-        });
-    }
-    
-    // CRUD Functions
-    // Save curriculum
-    function saveCurriculum(event) {
-        event.preventDefault();
-        
-        // Get form data
-        const name = document.getElementById('curriculum-name').value.trim();
-        const code = document.getElementById('curriculum-code').value.trim();
-        const year = document.getElementById('curriculum-year').value.trim();
-        const description = document.getElementById('curriculum-description').value.trim();
-        const status = document.getElementById('curriculum-status').value;
-        
-        // Validate required fields
-        if (!name || !code || !year) {
-            showNotification('Please fill in all required fields', 'error');
+        if (!codeInput || !nameInput || !courseTypeSelect || !creditsInput || !semesterSelect || !yearSelect) {
+            showNotification('Form elements not found', 'error');
             return;
         }
-        
-        if (isEditMode) {
-            // Update existing curriculum
-            curriculumData.curricula[currentCurriculumId] = {
-                ...curriculumData.curricula[currentCurriculumId],
-                name,
-                code,
-                year,
-                description,
-                status,
-                dateUpdated: new Date().toISOString()
-            };
-            
-            showNotification(`Curriculum "${name}" updated successfully`, 'success');
-        } else {
-            // Create new curriculum
-            const curriculumId = `curriculum-${Date.now()}`;
-            curriculumData.curricula[curriculumId] = {
-                id: curriculumId,
-                name,
-                code,
-                year,
-                description,
-                status,
-                dateCreated: new Date().toISOString()
-            };
-            
-            // Select the new curriculum
-            currentCurriculumId = curriculumId;
-            
-            showNotification(`Curriculum "${name}" created successfully`, 'success');
-        }
-        
-        // Save data and update UI
-        saveData();
-        renderCurricula();
-        closeModal(curriculumModal);
-    }
-    
-    // Save program
-    function saveProgram(event) {
-        event.preventDefault();
-        
-        // Get form data
-        const name = document.getElementById('program-name').value.trim();
-        const code = document.getElementById('program-code').value.trim();
-        const years = document.getElementById('program-years').value.trim();
-        const department = document.getElementById('program-department').value.trim();
-        const description = document.getElementById('program-description').value.trim();
-        
-        // Validate required fields
-        if (!name || !code || !years || !department) {
-            showNotification('Please fill in all required fields', 'error');
-            return;
-        }
-        
-        if (isEditMode) {
-            // Update existing program
-            curriculumData.programs[currentProgramId] = {
-                ...curriculumData.programs[currentProgramId],
-                name,
-                code,
-                years,
-                department,
-                description,
-                dateUpdated: new Date().toISOString()
-            };
-            
-            showNotification(`Program "${name}" updated successfully`, 'success');
-        } else {
-            // Create new program
-            const programId = `program-${Date.now()}`;
-            curriculumData.programs[programId] = {
-                id: programId,
-                name,
-                code,
-                years,
-                department,
-                description,
-                curriculumId: currentCurriculumId,
-                dateCreated: new Date().toISOString()
-            };
-            
-            // Select the new program
-            currentProgramId = programId;
-            
-            showNotification(`Program "${name}" created successfully`, 'success');
-        }
-        
-        // Save data and update UI
-        saveData();
-        renderPrograms(currentCurriculumId);
-        closeModal(programModal);
-    }
-    
-    // Save subject/course
-    function saveSubject(event) {
-        event.preventDefault();
-        
-        // Get form values
-        const subjectCode = document.getElementById('subject-code').value.trim();
-        const subjectName = document.getElementById('subject-name').value.trim();
-        const subjectDescription = document.getElementById('subject-description').value.trim();
-        const courseType = document.getElementById('course-type').value;
-        const lectureHours = courseType !== 'lab-only' ? parseInt(document.getElementById('lecture-hours').value) : 0;
-        const labHours = courseType !== 'lecture-only' ? parseInt(document.getElementById('lab-hours').value) : 0;
-        const credits = parseInt(document.getElementById('subject-credits').value);
-        const semester = parseInt(document.getElementById('subject-semester').value);
-        const year = parseInt(document.getElementById('subject-year').value);
+
+        const courseType = courseTypeSelect.value;
+        const lectureHours = (courseType !== 'lab-only' && lectureHoursInput) ? parseInt(lectureHoursInput.value) : 0;
+        const labHours = (courseType !== 'lecture-only' && labHoursInput) ? parseInt(labHoursInput.value) : 0;
         
         // Get prerequisites
-        const prerequisitesSelect = document.getElementById('subject-prerequisites');
-        const prerequisites = Array.from(prerequisitesSelect.selectedOptions).map(option => option.value);
-        
-        // Validate
-        if (!subjectCode || !subjectName || !credits) {
+        const prerequisites = prerequisitesSelect ? 
+            Array.from(prerequisitesSelect.selectedOptions).map(option => option.value) : [];
+
+        const formData = {
+            code: codeInput.value.trim(),
+            name: nameInput.value.trim(),
+            description: descriptionInput ? descriptionInput.value.trim() : '',
+            courseType: courseType,
+            lectureHours: lectureHours,
+            labHours: labHours,
+            credits: parseInt(creditsInput.value),
+            semester: parseInt(semesterSelect.value),
+            year: parseInt(yearSelect.value),
+            prerequisites: prerequisites,
+            programId: state.currentProgramId
+        };
+
+        // Validate required fields
+        if (!formData.code || !formData.name) {
             showNotification('Please fill in all required fields', 'error');
             return;
         }
+
+        try {
+            if (state.isEditMode) {
+                // Update existing subject
+                curriculumData.subjects[state.currentSubjectId] = {
+                    ...curriculumData.subjects[state.currentSubjectId],
+                    ...formData,
+                    dateUpdated: new Date().toISOString()
+                };
+                showNotification('Subject updated successfully', 'success');
+            } else {
+                // Create new subject
+                const subjectId = `subject-${Date.now()}`;
+                curriculumData.subjects[subjectId] = {
+                    id: subjectId,
+                    ...formData,
+                    assignedTeacher: null,
+                    dateCreated: new Date().toISOString(),
+                    dateUpdated: new Date().toISOString()
+                };
+                
+                // Select the new subject after creation
+                state.currentSubjectId = subjectId;
+                
+                showNotification('Subject created successfully', 'success');
+            }
+
+            saveData();
+            renderSubjects(state.currentProgramId);
+            closeModal(elements.subjectModal);
+        } catch (error) {
+            console.error('Error saving subject:', error);
+            showNotification('Error saving subject', 'error');
+        }
+    }
+
+    async function assignTeacher(e) {
+        if (e) e.preventDefault();
         
-        // Validate hours based on course type
-        if ((courseType === 'lecture-only' || courseType === 'both') && (!lectureHours || lectureHours < 1)) {
-            showNotification('Please specify valid lecture hours', 'error');
+        const form = elements.teacherAssignmentForm;
+        if (!form) return;
+
+        const teacherId = form.querySelector('#teacher-select').value;
+        if (!teacherId) {
+            showNotification('Please select a teacher', 'error');
             return;
         }
-        
-        if ((courseType === 'lab-only' || courseType === 'both') && (!labHours || labHours < 1)) {
-            showNotification('Please specify valid lab hours', 'error');
-            return;
-        }
-        
-        // Check if subject code already exists (except when editing the same subject)
-        const existingSubject = Object.values(curriculumData.subjects).find(
-            subject => subject.code === subjectCode && (!isEditMode || subject.id !== currentSubjectId)
-        );
-        
-        if (existingSubject) {
-            showNotification(`Course code ${subjectCode} already exists`, 'error');
-            return;
-        }
-        
-        // Create or update subject
-        if (isEditMode && currentSubjectId) {
-            // Update existing subject
-            curriculumData.subjects[currentSubjectId] = {
-                ...curriculumData.subjects[currentSubjectId],
-                code: subjectCode,
-                name: subjectName,
-                description: subjectDescription,
-                courseType,
-                lectureHours,
-                labHours,
-                credits,
-                semester,
-                year,
-                prerequisites
-            };
+
+        try {
+            const subject = curriculumData.subjects[state.currentSubjectId];
+            const teacher = curriculumData.teachers[teacherId];
             
-            showNotification(`Course ${subjectCode} updated successfully`, 'success');
-        } else {
-            // Create new subject
-            const newSubjectId = `${subjectCode.toLowerCase().replace(/\s+/g, '-')}-subject`;
-            
-            curriculumData.subjects[newSubjectId] = {
-                id: newSubjectId,
-                code: subjectCode,
-                name: subjectName,
-                description: subjectDescription,
-                courseType,
-                lectureHours,
-                labHours,
-                credits,
-                semester,
-                year,
-                programId: currentProgramId,
-                prerequisites,
-                assignedTeacher: null,
-                dateCreated: new Date().toISOString()
-            };
-            
-            showNotification(`Course ${subjectCode} added successfully`, 'success');
+            if (!subject || !teacher) {
+                showNotification('Invalid subject or teacher selection', 'error');
+                return;
+            }
+
+            // Calculate workload
+            const totalHours = subject.lectureHours + (subject.labHours || 0);
+            const newWorkload = teacher.currentWorkload + totalHours;
+
+            if (newWorkload > teacher.maxWorkload) {
+                if (!confirm(`This will exceed ${teacher.name}'s maximum workload. Continue anyway?`)) {
+                    return;
+                }
+            }
+
+            // Update subject and teacher
+            subject.assignedTeacher = teacherId;
+            teacher.currentWorkload = newWorkload;
+
+            saveData();
+            renderSubjects(state.currentProgramId);
+            closeModal(elements.teacherAssignmentModal);
+            showNotification(`Teacher ${teacher.name} assigned successfully`, 'success');
+        } catch (error) {
+            console.error('Error assigning teacher:', error);
+            showNotification('Error assigning teacher', 'error');
         }
-        
-        // Save data and refresh UI
-        saveData();
-        renderSubjects(currentProgramId);
-        closeModal(subjectModal);
     }
-    
-    // Delete curriculum
-    function deleteCurriculum(curriculumId) {
-        const curriculum = curriculumData.curricula[curriculumId];
-        if (!curriculum) return;
-        
-        // Check if curriculum has programs
-        const hasPrograms = Object.values(curriculumData.programs).some(
-            program => program.curriculumId === curriculumId
-        );
-        
-        if (hasPrograms) {
-            showNotification('Cannot delete curriculum that has programs. Delete all programs first.', 'error');
-            return;
+
+    // Delete operations
+    async function deleteCurriculum(curriculumId) {
+        try {
+            const curriculum = curriculumData.curricula[curriculumId];
+            if (!curriculum) return;
+
+            // Check if curriculum has any programs
+            const hasPrograms = Object.values(curriculumData.programs)
+                .some(program => program.curriculumId === curriculumId);
+
+            if (hasPrograms) {
+                showNotification('Cannot delete curriculum with existing programs', 'error');
+                return;
+            }
+
+            // Delete the curriculum
+            delete curriculumData.curricula[curriculumId];
+
+            // Reset current selections if needed
+            if (state.currentCurriculumId === curriculumId) {
+                state.currentCurriculumId = null;
+                state.currentProgramId = null;
+                state.currentSubjectId = null;
+            }
+
+            saveData();
+            renderCurricula();
+            showNotification('Curriculum deleted successfully', 'success');
+        } catch (error) {
+            console.error('Error deleting curriculum:', error);
+            showNotification('Error deleting curriculum', 'error');
         }
-        
-        // Delete curriculum
-        delete curriculumData.curricula[curriculumId];
-        
-        // Reset current selection if needed
-        if (currentCurriculumId === curriculumId) {
-            currentCurriculumId = null;
-            currentProgramId = null;
-        }
-        
-        // Save data and update UI
-        saveData();
-        renderCurricula();
-        renderPrograms(null);
-        renderSubjects(null);
-        
-        showNotification(`Curriculum "${curriculum.name}" deleted successfully`, 'success');
     }
-    
-    // Delete program
-    function deleteProgram(programId) {
-        const program = curriculumData.programs[programId];
-        if (!program) return;
-        
-        // Check if program has subjects
-        const hasSubjects = Object.values(curriculumData.subjects).some(
-            subject => subject.programId === programId
-        );
-        
-        if (hasSubjects) {
-            showNotification('Cannot delete program that has subjects. Delete all subjects first.', 'error');
-            return;
+
+    async function deleteProgram(programId) {
+        try {
+            const program = curriculumData.programs[programId];
+            if (!program) return;
+
+            // Check if program has any subjects
+            const hasSubjects = Object.values(curriculumData.subjects)
+                .some(subject => subject.programId === programId);
+
+            if (hasSubjects) {
+                showNotification('Cannot delete program with existing subjects', 'error');
+                return;
+            }
+
+            // Delete the program
+            delete curriculumData.programs[programId];
+
+            // Reset current selections if needed
+            if (state.currentProgramId === programId) {
+                state.currentProgramId = null;
+                state.currentSubjectId = null;
+            }
+
+            saveData();
+            renderPrograms(state.currentCurriculumId);
+            showNotification('Program deleted successfully', 'success');
+        } catch (error) {
+            console.error('Error deleting program:', error);
+            showNotification('Error deleting program', 'error');
         }
-        
-        // Delete program
-        delete curriculumData.programs[programId];
-        
-        // Reset current selection if needed
-        if (currentProgramId === programId) {
-            currentProgramId = null;
-        }
-        
-        // Save data and update UI
-        saveData();
-        renderPrograms(currentCurriculumId);
-        renderSubjects(null);
-        
-        showNotification(`Program "${program.name}" deleted successfully`, 'success');
     }
-    
-    // Delete subject
-    function deleteSubject(subjectId) {
-        const subject = curriculumData.subjects[subjectId];
-        if (!subject) return;
-        
-        // Check if subject is a prerequisite for other subjects
-        const isPrerequisite = Object.values(curriculumData.subjects).some(
-            s => s.prerequisites.includes(subjectId)
-        );
-        
-        if (isPrerequisite) {
-            showNotification('Cannot delete subject that is a prerequisite for other subjects.', 'error');
-            return;
+
+    async function deleteSubject(subjectId) {
+        try {
+            const subject = curriculumData.subjects[subjectId];
+            if (!subject) return;
+
+            // Check if subject is a prerequisite for other subjects
+            const isPrerequisite = Object.values(curriculumData.subjects)
+                .some(s => s.prerequisites.includes(subjectId));
+
+            if (isPrerequisite) {
+                showNotification('Cannot delete subject that is a prerequisite for other subjects', 'error');
+                return;
+            }
+
+            // Update teacher workload if assigned
+            if (subject.assignedTeacher && curriculumData.teachers[subject.assignedTeacher]) {
+                const teacher = curriculumData.teachers[subject.assignedTeacher];
+                teacher.currentWorkload -= subject.lectureHours + (subject.labHours || 0);
+            }
+
+            // Delete the subject
+            delete curriculumData.subjects[subjectId];
+
+            // Reset current selection if needed
+            if (state.currentSubjectId === subjectId) {
+                state.currentSubjectId = null;
+            }
+
+            saveData();
+            renderSubjects(state.currentProgramId);
+            showNotification('Subject deleted successfully', 'success');
+        } catch (error) {
+            console.error('Error deleting subject:', error);
+            showNotification('Error deleting subject', 'error');
         }
-        
-        // Delete subject
-        delete curriculumData.subjects[subjectId];
-        
-        // Delete any schedule associated with this subject
-        if (curriculumData.schedules[subjectId]) {
-            delete curriculumData.schedules[subjectId];
-        }
-        
-        // Save data and update UI
-        saveData();
-        renderSubjects(currentProgramId);
-        
-        showNotification(`Subject "${subject.code}: ${subject.name}" deleted successfully`, 'success');
     }
-    
-    // Show notification
+
+    // Helper functions
     function showNotification(message, type = 'info') {
-        // Create notification element
         const notification = document.createElement('div');
         notification.className = `notification ${type}`;
         
-        // Add appropriate icon based on notification type
-        let icon = '';
-        switch (type) {
-            case 'success':
-                icon = '<i class="fas fa-check-circle"></i>';
-                break;
-            case 'error':
-                icon = '<i class="fas fa-exclamation-circle"></i>';
-                break;
-            case 'warning':
-                icon = '<i class="fas fa-exclamation-triangle"></i>';
-                break;
-            default:
-                icon = '<i class="fas fa-info-circle"></i>';
-        }
+        const icons = {
+            success: 'check-circle',
+            error: 'exclamation-circle',
+            warning: 'exclamation-triangle',
+            info: 'info-circle'
+        };
         
-        notification.innerHTML = `${icon} ${message}`;
+        notification.innerHTML = `
+            <i class="fas fa-${icons[type] || icons.info}"></i>
+            <span>${message}</span>
+        `;
+        
         document.body.appendChild(notification);
         
         // Remove notification after 5 seconds
         setTimeout(() => {
             notification.style.opacity = '0';
-            setTimeout(() => {
-                document.body.removeChild(notification);
-            }, 300);
+            setTimeout(() => notification.remove(), 300);
         }, 5000);
     }
-    
-    // Open schedule editor
-    function openScheduleEditor(subjectId) {
-        // This function would integrate with the existing scheduling system
-        // For now, we'll just show a notification that this would link to the scheduling system
-        showNotification('This would open the schedule editor for this subject. Integration with scheduling system pending.', 'info');
-    }
-    
-    // Event listeners
-    function setupEventListeners() {
-        // Modal close buttons
-        document.querySelectorAll('.close-modal').forEach(closeBtn => {
-            closeBtn.addEventListener('click', () => {
-                const modal = closeBtn.closest('.modal');
-                if (modal) closeModal(modal);
-            });
-        });
-        
-        // Modal background click to close
-        document.querySelectorAll('.modal').forEach(modal => {
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal) {
-                    closeModal(modal);
-                }
-            });
-        });
-        
-        // Add curriculum button
-        if (addCurriculumBtn) {
-            addCurriculumBtn.addEventListener('click', openAddCurriculumModal);
-        }
-        
-        // Add program button
-        if (addProgramBtn) {
-            addProgramBtn.addEventListener('click', openAddProgramModal);
-            // Initially disable until a curriculum is selected
-            addProgramBtn.disabled = !currentCurriculumId;
-        }
-        
-        // Add subject button
-        if (addSubjectBtn) {
-            addSubjectBtn.addEventListener('click', openAddSubjectModal);
-            // Initially disable until a program is selected
-            addSubjectBtn.disabled = !currentProgramId;
-        }
-        
-        }
-        
-        // Search functionality
-        if (searchButton && searchInput) {
-            searchButton.addEventListener('click', performSearch);
-            searchInput.addEventListener('keypress', (event) => {
-                if (event.key === 'Enter') {
-                    performSearch();
-                }
-            });
-        }
-    }
-    
-    // Search functionality
-    const performSearch = () => {
-        const searchTerm = searchInput.value.trim().toLowerCase();
-        if (!searchTerm) return;
 
+    function formatDate(date) {
+        return new Date(date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        });
+    }
+
+    function performSearch() {
+        if (!elements.searchInput) return;
+        
+        const searchQuery = elements.searchInput.value.trim().toLowerCase();
+        if (!searchQuery) {
+            renderCurricula();
+            return;
+        }
+        
         // Search in curricula
         const matchingCurricula = Object.values(curriculumData.curricula).filter(curriculum => {
-            return curriculum.name.toLowerCase().includes(searchTerm) ||
-                curriculum.code.toLowerCase().includes(searchTerm) ||
-                curriculum.description.toLowerCase().includes(searchTerm);
+            return curriculum.name.toLowerCase().includes(searchQuery) ||
+                   curriculum.code.toLowerCase().includes(searchQuery) ||
+                   (curriculum.description && curriculum.description.toLowerCase().includes(searchQuery));
         });
-
+        
         // Search in programs
         const matchingPrograms = Object.values(curriculumData.programs).filter(program => {
-            return program.name.toLowerCase().includes(searchTerm) ||
-                program.code.toLowerCase().includes(searchTerm) ||
-                program.description.toLowerCase().includes(searchTerm);
+            return program.name.toLowerCase().includes(searchQuery) ||
+                   program.code.toLowerCase().includes(searchQuery) ||
+                   (program.description && program.description.toLowerCase().includes(searchQuery));
         });
-
+        
         // Search in subjects
         const matchingSubjects = Object.values(curriculumData.subjects).filter(subject => {
-            return subject.name.toLowerCase().includes(searchTerm) ||
-                subject.code.toLowerCase().includes(searchTerm) ||
-                subject.description.toLowerCase().includes(searchTerm);
+            return subject.name.toLowerCase().includes(searchQuery) ||
+                   subject.code.toLowerCase().includes(searchQuery) ||
+                   (subject.description && subject.description.toLowerCase().includes(searchQuery));
         });
-
-        // Display search results
-        displaySearchResults(matchingCurricula, matchingPrograms, matchingSubjects);
-    }
-    
-    // Display search results
-    function displaySearchResults(curricula, programs, subjects) {
-        // Create a modal to display search results
-        const searchResultsModal = document.createElement('div');
-        searchResultsModal.className = 'modal';
-        searchResultsModal.id = 'search-results-modal';
-        searchResultsModal.style.display = 'flex';
         
-        let resultsHtml = `
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2><i class="fas fa-search"></i> Search Results</h2>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">
-        `;
-        
-        // Add curricula results
-        if (curricula.length > 0) {
-            resultsHtml += `<h3>Curricula (${curricula.length})</h3><ul class="search-results-list">`;
-            curricula.forEach(curriculum => {
-                resultsHtml += `
-                    <li class="search-result-item" data-type="curriculum" data-id="${curriculum.id}">
-                        <div class="result-header">
-                            <span class="result-title">${curriculum.name}</span>
-                            <span class="result-code">${curriculum.code}</span>
-                        </div>
-                        <p class="result-description">${curriculum.description || 'No description'}</p>
-                    </li>
+        // Display matching curricula
+        if (elements.curriculumList) {
+            elements.curriculumList.innerHTML = '';
+            if (matchingCurricula.length > 0) {
+                renderCurriculumItems(matchingCurricula);
+            } else {
+                elements.curriculumList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p>No matching curricula found.</p>
+                    </div>
                 `;
-            });
-            resultsHtml += `</ul>`;
-        }
-        
-        // Add programs results
-        if (programs.length > 0) {
-            resultsHtml += `<h3>Programs (${programs.length})</h3><ul class="search-results-list">`;
-            programs.forEach(program => {
-                const curriculum = curriculumData.curricula[program.curriculumId] || { name: 'Unknown Curriculum' };
-                resultsHtml += `
-                    <li class="search-result-item" data-type="program" data-id="${program.id}" data-curriculum-id="${program.curriculumId}">
-                        <div class="result-header">
-                            <span class="result-title">${program.name}</span>
-                            <span class="result-code">${program.code}</span>
-                        </div>
-                        <p class="result-description">${program.description || 'No description'}</p>
-                        <div class="result-meta">Curriculum: ${curriculum.name}</div>
-                    </li>
-                `;
-            });
-            resultsHtml += `</ul>`;
-        }
-        
-        // Add subjects results
-        if (subjects.length > 0) {
-            resultsHtml += `<h3>Subjects (${subjects.length})</h3><ul class="search-results-list">`;
-            subjects.forEach(subject => {
-                const program = curriculumData.programs[subject.programId] || { name: 'Unknown Program' };
-                resultsHtml += `
-                    <li class="search-result-item" data-type="subject" data-id="${subject.id}" data-program-id="${subject.programId}">
-                        <div class="result-header">
-                            <span class="result-title">${subject.name}</span>
-                            <span class="result-code">${subject.code}</span>
-                        </div>
-                        <p class="result-description">${subject.description || 'No description'}</p>
-                        <div class="result-meta">Program: ${program.name} | Year ${subject.year}, Semester ${subject.semester}</div>
-                    </li>
-                `;
-            });
-            resultsHtml += `</ul>`;
-        }
-        
-        // No results message
-        if (curricula.length === 0 && programs.length === 0 && subjects.length === 0) {
-            resultsHtml += `
-                <div class="empty-state">
-                    <i class="fas fa-search"></i>
-                    <p>No results found. Try a different search term.</p>
-                </div>
-            `;
-        }
-        
-        resultsHtml += `
-                </div>
-                <div class="modal-footer">
-                    <button class="btn-secondary close-modal">Close</button>
-                </div>
-            </div>
-        `;
-        
-        searchResultsModal.innerHTML = resultsHtml;
-        document.body.appendChild(searchResultsModal);
-        
-        // Add event listeners for search results
-        searchResultsModal.querySelectorAll('.search-result-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const type = item.getAttribute('data-type');
-                const id = item.getAttribute('data-id');
-                
-                if (type === 'curriculum') {
-                    selectCurriculum(id);
-                } else if (type === 'program') {
-                    const curriculumId = item.getAttribute('data-curriculum-id');
-                    selectCurriculum(curriculumId);
-                    setTimeout(() => selectProgram(id), 100); // Small delay to ensure curriculum is selected first
-                } else if (type === 'subject') {
-                    const programId = item.getAttribute('data-program-id');
-                    const program = curriculumData.programs[programId];
-                    if (program) {
-                        selectCurriculum(program.curriculumId);
-                        setTimeout(() => {
-                            selectProgram(programId);
-                            setTimeout(() => viewSubjectDetails(id), 100);
-                        }, 100);
-                    }
-                }
-                
-                closeModal(searchResultsModal);
-            });
-        });
-        
-        // Add close button event listener
-        searchResultsModal.querySelectorAll('.close-modal').forEach(closeBtn => {
-            closeBtn.addEventListener('click', () => {
-                document.body.removeChild(searchResultsModal);
-            });
-        });
-        
-        // Close on background click
-        searchResultsModal.addEventListener('click', (event) => {
-            if (event.target === searchResultsModal) {
-                document.body.removeChild(searchResultsModal);
-            }
-        });
-    }
-
-
-// Open teacher assignment modal
-function openTeacherAssignmentModal(subjectId) {
-    currentSubjectId = subjectId;
-    const subject = curriculumData.subjects[subjectId];
-    const modal = document.getElementById('teacher-assignment-modal');
-
-    if (!modal || !subject) return;
-
-    // Populate course info
-    document.getElementById('course-to-assign').value = `${subject.code}: ${subject.name}`;
-
-    // Populate teacher dropdown
-    const teacherSelect = document.getElementById('teacher-select');
-    teacherSelect.innerHTML = '<option value="">Select a teacher</option>';
-
-    Object.values(curriculumData.teachers).forEach(teacher => {
-        const option = document.createElement('option');
-        option.value = teacher.id;
-        option.textContent = `${teacher.name} (${teacher.department})`;
-        if (subject.assignedTeacher === teacher.id) {
-            option.selected = true;
-        }
-        teacherSelect.appendChild(option);
-    });
-
-    // Show teacher workload when selected
-    teacherSelect.addEventListener('change', function() {
-        const teacherId = this.value;
-        const workloadDiv = document.getElementById('teacher-workload');
-
-        if (!teacherId) {
-            workloadDiv.innerHTML = '<p>Select a teacher to view their current workload</p>';
-            return;
-        }
-
-        const teacher = curriculumData.teachers[teacherId];
-        if (teacher) {
-            const courseHours = getSubjectTotalHours(subject);
-            const newWorkload = teacher.currentWorkload + (subject.assignedTeacher === teacherId ? 0 : courseHours);
-            const isOverloaded = newWorkload > teacher.maxWorkload;
-
-            workloadDiv.innerHTML = `
-                <p><strong>Current workload:</strong> ${teacher.currentWorkload} hours/week</p>
-                <p><strong>This course:</strong> ${courseHours} hours/week</p>
-                <p><strong>New workload:</strong> <span class="${isOverloaded ? 'overload' : ''}">${newWorkload} hours/week</span></p>
-                <p><strong>Maximum workload:</strong> ${teacher.maxWorkload} hours/week</p>
-                ${isOverloaded ? '<p class="warning"><i class="fas fa-exclamation-triangle"></i> This assignment will exceed the teacher\'s maximum workload!</p>' : ''}
-            `;
-        }
-    });
-
-    // If there's already an assigned teacher, trigger the change event
-    if (subject.assignedTeacher) {
-        teacherSelect.dispatchEvent(new Event('change'));
-    }
-
-    openModal(modal);
-}
-
-// Get total hours for a subject (lecture + lab)
-function getSubjectTotalHours(subject) {
-    let hours = 0;
-    if (subject.courseType === 'lecture-only') {
-        hours = subject.lectureHours;
-    } else if (subject.courseType === 'lab-only') {
-        hours = subject.labHours;
-    } else { // both
-        hours = subject.lectureHours + subject.labHours;
-    }
-    
-    // Assign teacher to subject
-    function assignTeacher(event) {
-        event.preventDefault();
-        
-        const teacherId = document.getElementById('teacher-select').value;
-        if (!teacherId) {
-            showNotification('Please select a teacher', 'error');
-            return;
-        }
-        
-        const subject = curriculumData.subjects[currentSubjectId];
-        const teacher = curriculumData.teachers[teacherId];
-        
-        if (!subject || !teacher) {
-            showNotification('Invalid course or teacher selection', 'error');
-            return;
-        }
-        
-        // Calculate new workload
-        const courseHours = getSubjectTotalHours(subject);
-        const oldTeacherId = subject.assignedTeacher;
-        const newWorkload = teacher.currentWorkload + (oldTeacherId === teacherId ? 0 : courseHours);
-        
-        // Check if this exceeds max workload
-        if (newWorkload > teacher.maxWorkload) {
-            if (!confirm(`This assignment will exceed ${teacher.name}'s maximum workload of ${teacher.maxWorkload} hours/week. Continue anyway?`)) {
-                return;
             }
         }
         
-        // Update old teacher's workload if there was one
-        if (oldTeacherId && oldTeacherId !== teacherId && curriculumData.teachers[oldTeacherId]) {
-            curriculumData.teachers[oldTeacherId].currentWorkload -= courseHours;
+        // If a curriculum is selected, filter its programs
+        if (state.currentCurriculumId && elements.programsList) {
+            const curriculumPrograms = matchingPrograms.filter(
+                program => program.curriculumId === state.currentCurriculumId
+            );
+            
+            if (curriculumPrograms.length > 0) {
+                elements.programsList.innerHTML = '';
+                curriculumPrograms.forEach(program => {
+                    const programItem = createProgramItem(program);
+                    elements.programsList.appendChild(programItem);
+                });
+            } else {
+                elements.programsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p>No matching programs found.</p>
+                    </div>
+                `;
+            }
         }
         
-        // Update new teacher's workload
-        if (oldTeacherId !== teacherId) {
-            teacher.currentWorkload = newWorkload;
+        // If a program is selected, filter its subjects
+        if (state.currentProgramId && elements.subjectsList) {
+            const programSubjects = matchingSubjects.filter(
+                subject => subject.programId === state.currentProgramId
+            );
+            
+            if (programSubjects.length > 0) {
+                elements.subjectsList.innerHTML = '';
+                programSubjects.forEach(subject => {
+                    const subjectItem = createSubjectItem(subject);
+                    elements.subjectsList.appendChild(subjectItem);
+                });
+            } else {
+                elements.subjectsList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <p>No matching subjects found.</p>
+                    </div>
+                `;
+            }
         }
-        
-        // Assign teacher to subject
-        subject.assignedTeacher = teacherId;
-        
-        saveData();
-        renderSubjects(currentProgramId);
-        showNotification(`${teacher.name} has been assigned to ${subject.code}`, 'success');
-        
-        const modal = document.getElementById('teacher-assignment-modal');
-        closeModal(modal);
     }
-    
+
+    function populatePrerequisitesDropdown() {
+        const prerequisitesSelect = document.getElementById('subject-prerequisites');
+        if (!prerequisitesSelect) return;
+        
+        // Clear current options
+        prerequisitesSelect.innerHTML = '';
+        
+        // Get all subjects from the current program
+        const subjects = Object.values(curriculumData.subjects).filter(
+            subject => subject.programId === state.currentProgramId
+        );
+        
+        // Add options for each subject
+        subjects.forEach(subject => {
+            // Skip the current subject if in edit mode
+            if (state.isEditMode && subject.id === state.currentSubjectId) return;
+            
+            const option = document.createElement('option');
+            option.value = subject.id;
+            option.textContent = `${subject.code}: ${subject.name}`;
+            prerequisitesSelect.appendChild(option);
+        });
+    }
+
     // Initialize the application
     function init() {
         loadData();
-        setupEventListeners();
+        initializeEventHandlers();
         renderCurricula();
     }
     
+    // Main initialization function
+    function initialize() {
+        // Load any existing data
+        loadData();
+        
+        // Initialize event handlers
+        initializeEventHandlers();
+        
+        // Render initial views
+        renderCurricula();
+        
+        console.log('Curriculum Manager initialized');
+    }
+    
     // Start the application
-    init();
-});
+    initialize();
+    
+    // Return the public API
+})();
+
+// The CurriculumManager is already initialized in the IIFE above
+// No need for this additional initialization
+
